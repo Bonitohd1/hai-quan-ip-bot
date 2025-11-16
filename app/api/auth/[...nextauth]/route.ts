@@ -35,17 +35,5 @@ const options: NextAuthOptions = {
   },
 };
 
-// initialize handler and wrap to log runtime errors (so Vercel logs show the stack)
-const nextAuthHandler = NextAuth(options);
-
-async function handle(req: Request, res: Response) {
-  try {
-    // delegate to NextAuth's handler
-    return await (nextAuthHandler as any)(req, res);
-  } catch (err) {
-    console.error('NextAuth handler error:', err);
-    throw err;
-  }
-}
-
-export { handle as GET, handle as POST };
+const handler = NextAuth(options);
+export { handler as GET, handler as POST };
