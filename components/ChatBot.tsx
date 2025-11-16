@@ -102,14 +102,14 @@ export default function ChatBot() {
 
         {open && (
           <>
-            <div className="p-3 flex-1 h-[28rem] overflow-y-auto bg-gradient-to-b from-blue-50/50 to-white">
+            <div className="p-3 flex-1 h-[24rem] overflow-y-auto bg-gradient-to-b from-blue-50/50 to-white">
               {messages.map((m) => (
                 <div key={m.id} className={`mb-2 flex ${m.from === 'user' ? 'justify-end' : 'justify-start'}`}>
                   {m.from === 'bot' && (
                     <div className="mr-2 mt-1 w-7 h-7 rounded-full bg-blue-900/90 text-white flex items-center justify-center text-xs shadow">🤖</div>
                   )}
                   <div
-                    className={`px-3 py-2 rounded-2xl shadow-sm max-w-[80%] whitespace-pre-wrap leading-[1.3] text-[14px] ${
+                    className={`px-3 py-2 rounded-2xl shadow-sm max-w-[80%] whitespace-pre-wrap leading-[1.2] text-[14px] ${
                       m.from === 'user'
                         ? 'bg-blue-600 text-white rounded-br-md'
                         : 'bg-white text-gray-800 border border-blue-100 rounded-bl-md'
@@ -135,7 +135,7 @@ export default function ChatBot() {
                                 <pre className="bg-gray-900 text-gray-100 p-3 rounded-md overflow-auto text-[13px]"><code {...props} className={className}>{children}</code></pre>
                               )
                             ),
-                            p: ({ children }: any) => <p className="mb-1 last:mb-0">{children}</p>,
+                            p: ({ children }: any) => <p className="mb-0">{children}</p>,
                           }}
                         >
                           {m.text}
