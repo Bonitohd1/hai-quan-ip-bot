@@ -18,7 +18,7 @@ export default function Home() {
               </svg>
               Sở hữu Trí tuệ Hải quan
             </h1>
-            <p className="text-sm opacity-90 mt-2">Hỗ trợ tư vấn và tra cứu thông tin sở hữu trí tuệ trong hoạt động hải quan</p>
+            <p className="text-sm opacity-90 mt-2 italic">Tra cứu và tư vấn sở hữu trí tuệ</p>
           </div>
           <div className="flex gap-3">
             <UserMenuButton />
