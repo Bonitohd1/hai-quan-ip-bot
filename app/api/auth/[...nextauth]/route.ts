@@ -1,6 +1,7 @@
 import NextAuth from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import type { NextAuthOptions } from 'next-auth';
+import type { NextRequest } from 'next/server';
 
 // Lightweight non-secret logging to help debug environment/config issues in Vercel logs
 console.log('NextAuth env presence', {
@@ -36,4 +37,11 @@ const options: NextAuthOptions = {
 };
 
 const handler = NextAuth(options);
-export { handler as GET, handler as POST };
+
+export async function GET(request: NextRequest) {
+  return handler(request);
+}
+
+export async function POST(request: NextRequest) {
+  return handler(request);
+}
