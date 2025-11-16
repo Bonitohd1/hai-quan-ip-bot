@@ -13,42 +13,36 @@ export default function Sidebar() {
       id: 'home', 
       label: 'Trợ lý SHTT', 
       icon: '🤖', 
-      color: 'bg-blue-700 hover:bg-blue-800', 
       href: '/' 
     },
     { 
       id: 'lich-su', 
       label: 'Lịch sử SHTT', 
       subtext: '3 trợ lý', 
-      color: 'bg-yellow-600 hover:bg-yellow-700', 
       href: '/lich-su-shtt' 
     },
     { 
       id: 'van-ban', 
       label: 'Văn Bản Pháp Luật', 
       subtext: '3 trợ lý', 
-      color: 'bg-blue-600 hover:bg-blue-700', 
       href: '/van-ban-phap-luat' 
     },
     { 
       id: 'tra-cuu', 
       label: 'Tra Cứu', 
       subtext: '3 trợ lý', 
-      color: 'bg-indigo-600 hover:bg-indigo-700', 
       href: '/tra-cuu' 
     },
     { 
       id: 'thong-ke', 
       label: 'Thống Kê SHTT', 
       subtext: '2 trợ lý', 
-      color: 'bg-blue-500 hover:bg-blue-600', 
       href: '#' 
     },
     { 
       id: 'quy-dinh', 
       label: 'Quy Định Pháp Luật', 
       subtext: '6 trợ lý', 
-      color: 'bg-slate-600 hover:bg-slate-700', 
       href: '#' 
     },
   ];
@@ -80,14 +74,22 @@ export default function Sidebar() {
             <button
               key={item.id}
               onClick={() => router.push(item.href)}
-              className={`w-full text-left p-4 rounded-lg font-semibold transition-all relative ${
+              className={`group w-full text-left p-4 rounded-lg font-semibold transition-all duration-300 ease-out relative overflow-hidden ${
                 isActive 
-                  ? 'bg-white/10 border-l-4 border-yellow-400 text-white shadow-md' 
-                  : 'bg-white/5 hover:bg-white/10 text-blue-100 hover:text-white border-l-4 border-transparent'
+                  ? 'bg-gradient-to-r from-yellow-500/20 to-yellow-600/10 border-l-4 border-yellow-400 text-white shadow-lg shadow-yellow-500/20 scale-[1.02]' 
+                  : 'bg-white/5 hover:bg-gradient-to-r hover:from-blue-500/20 hover:to-blue-600/10 text-blue-100 hover:text-white border-l-4 border-transparent hover:border-blue-400/50 hover:shadow-md hover:scale-[1.02]'
               } active:scale-95`}
             >
-              <div className="text-[15px]">{item.label}</div>
-              {item.subtext && <div className="text-xs opacity-75 mt-1">{item.subtext}</div>}
+              {!isActive && (
+                <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-in-out" />
+              )}
+              <div className="relative z-10">
+                <div className="text-[15px] flex items-center gap-2">
+                  {item.label}
+                  {isActive && <span className="text-yellow-300 animate-pulse">✦</span>}
+                </div>
+                {item.subtext && <div className="text-xs opacity-75 mt-1">{item.subtext}</div>}
+              </div>
             </button>
           );
         })}
