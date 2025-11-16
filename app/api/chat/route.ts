@@ -79,7 +79,7 @@ export async function POST(request: NextRequest) {
         let answer = extractAnswerFromDify(data);
         if (!answer) answer = `Dify không trả về câu trả lời rõ ràng. Đây là mô phỏng cho: "${query}"`;
 
-        return NextResponse.json({ answer, raw: data, conversation_id: (data && data.conversation_id) || '' });
+        return NextResponse.json({ answer, conversation_id: (data && data.conversation_id) || '' });
       } catch (fetchErr: any) {
         console.error('Dify fetch error:', fetchErr?.message || fetchErr);
         // fall through to mock
