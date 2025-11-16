@@ -6,10 +6,17 @@ import remarkGfm from 'remark-gfm';
 
 type Message = { id: number; from: 'user' | 'bot'; text: string };
 
+const SUGGESTED_QUESTIONS = [
+  'Thủ tục Hải quan là gì?',
+  'Quy định pháp luật về SHTT?',
+  'Thông tin cùng: Tra cứu một nhãn hiệu',
+];
+
 export default function ChatBot() {
   const [open, setOpen] = useState(false);
+  const [showSuggestions, setShowSuggestions] = useState(true);
   const [messages, setMessages] = useState<Message[]>([
-    { id: 1, from: 'bot', text: 'Chào bạn! Tôi là Trợ lý AI Sở hữu Trí tuệ Hải quan. Bạn muốn hỏi gì?' },
+    { id: 1, from: 'bot', text: 'Chào bạn.\n\nTôi là Trợ lý AI, chuyên gia pháp lý về Sở hữu trí tuệ (SHTT) Hải quan Việt Nam.\n\nTôi có thể hỗ trợ bạn các vấn đề sau:\n\n• **Thủ tục Hải quan**: Cung cấp thông tin về các thủ tục như tạm dừng, kiểm tra, giám sát hàng hóa liên quan đến SHTT.\n• **Quy định pháp luật**: Tra cứu và giải thích các quy định theo Luật, Nghị định, Thông tư hiện hành.\n• **Thông tin cùng**: Cung cấp các khái niệm, định nghĩa và thông tin lịch sử về bảo hộ SHTT tại biên giới.\n\nVui lòng cho tôi biết vấn đề bạn đang quan tâm.' },
   ]);
   const [input, setInput] = useState('');
   const [isSending, setIsSending] = useState(false);
@@ -21,11 +28,13 @@ export default function ChatBot() {
     if (open) bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, open]);
 
-  async function send() {
-    if (!input.trim()) return;
-    const userMsg: Message = { id: nextId.current++, from: 'user', text: input.trim() };
+  async function send(text?: string) {
+    const query = text || input.trim();
+    if (!query) return;
+    const userMsg: Message = { id: nextId.current++, from: 'user', text: query };
     setMessages((p) => [...p, userMsg]);
     setInput('');
+    setShowSuggestions(false);
     setIsSending(true);
 
 // Call Dify API endpoint
@@ -35,7 +44,7 @@ export default function ChatBot() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ query: input.trim() }),
+        body: JSON.stringify({ query }),
       });
 
       const data = await response.json();
@@ -74,8 +83,9 @@ export default function ChatBot() {
                   e.stopPropagation();
                   const ok = confirm('Bạn có chắc muốn xóa toàn bộ lịch sử chat?');
                   if (!ok) return;
-                  const welcome: Message = { id: 1, from: 'bot', text: 'Chào bạn! Tôi là Trợ lý AI Sở hữu Trí tuệ Hải quan. Bạn muốn hỏi gì?' };
+                  const welcome: Message = { id: 1, from: 'bot', text: 'Chào bạn.\n\nTôi là Trợ lý AI, chuyên gia pháp lý về Sở hữu trí tuệ (SHTT) Hải quan Việt Nam.\n\nTôi có thể hỗ trợ bạn các vấn đề sau:\n\n• **Thủ tục Hải quan**: Cung cấp thông tin về các thủ tục như tạm dừng, kiểm tra, giám sát hàng hóa liên quan đến SHTT.\n• **Quy định pháp luật**: Tra cứu và giải thích các quy định theo Luật, Nghị định, Thông tư hiện hành.\n• **Thông tin cùng**: Cung cấp các khái niệm, định nghĩa và thông tin lịch sử về bảo hộ SHTT tại biên giới.\n\nVui lòng cho tôi biết vấn đề bạn đang quan tâm.' };
                   setMessages([welcome]);
+                  setShowSuggestions(true);
                   nextId.current = 2;
                 }}
                 className="relative p-1 rounded hover:bg-white/10 transition-transform transform hover:scale-110"
@@ -145,6 +155,20 @@ export default function ChatBot() {
                   </div>
                 </div>
               ))}
+              {showSuggestions && messages.length === 1 && (
+                <div className="mb-3 flex flex-col gap-2">
+                  <div className="text-xs text-gray-500 font-medium px-2">Gợi ý câu hỏi:</div>
+                  {SUGGESTED_QUESTIONS.map((q, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => send(q)}
+                      className="bg-blue-50 hover:bg-blue-100 text-blue-900 text-sm px-4 py-2.5 rounded-xl border border-blue-200 text-left transition-all hover:shadow-md active:scale-95"
+                    >
+                      {q}
+                    </button>
+                  ))}
+                </div>
+              )}
               {isSending && (
                 <div className="mb-3 flex justify-start items-end">
                   <div className="mr-2 mt-1 w-7 h-7 rounded-full bg-blue-900/90 text-white flex items-center justify-center text-xs shadow">🤖</div>
@@ -168,11 +192,11 @@ export default function ChatBot() {
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') send();
                 }}
-                className="flex-1 border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                className="flex-1 border rounded-md px-3 py-2 text-[15px] focus:outline-none focus:ring-2 focus:ring-blue-300"
                 placeholder="Nhập câu hỏi..."
               />
               <button
-                onClick={send}
+                onClick={() => send()}
                 disabled={isSending}
                 className="bg-blue-900 hover:bg-blue-800 disabled:opacity-60 text-white px-4 py-2 rounded-md inline-flex items-center gap-2 border-2 border-yellow-500"
               >

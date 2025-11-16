@@ -74,16 +74,23 @@ export default function Sidebar() {
 
       {/* Navigation */}
       <nav className="space-y-3">
-        {menuItems.map((item) => (
-          <button
-            key={item.id}
-            onClick={() => router.push(item.href)}
-            className={`w-full text-left p-4 rounded-lg text-white font-semibold transition-all ${item.color} active:scale-95`}
-          >
-            <div className="text-sm">{item.label}</div>
-            {item.subtext && <div className="text-xs opacity-80 mt-1">{item.subtext}</div>}
-          </button>
-        ))}
+        {menuItems.map((item) => {
+          const isActive = pathname === item.href;
+          return (
+            <button
+              key={item.id}
+              onClick={() => router.push(item.href)}
+              className={`w-full text-left p-4 rounded-lg font-semibold transition-all relative ${
+                isActive 
+                  ? 'bg-white/10 border-l-4 border-yellow-400 text-white shadow-md' 
+                  : 'bg-white/5 hover:bg-white/10 text-blue-100 hover:text-white border-l-4 border-transparent'
+              } active:scale-95`}
+            >
+              <div className="text-[15px]">{item.label}</div>
+              {item.subtext && <div className="text-xs opacity-75 mt-1">{item.subtext}</div>}
+            </button>
+          );
+        })}
       </nav>
     </aside>
   );
