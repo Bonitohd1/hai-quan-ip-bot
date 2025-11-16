@@ -68,7 +68,143 @@ export default function ChatBot() {
   }
   return (
     <div className="fixed bottom-4 right-4 lg:bottom-6 lg:right-6 z-50">
-      <div className={`flex flex-col w-[calc(100vw-2rem)] sm:w-[26rem] max-w-sm bg-white shadow-2xl rounded-2xl overflow-hidden border border-blue-100 ${open ? '' : 'h-12'}`}>
+      {/* Mobile: Floating Icon */}
+      <div className="lg:hidden">
+        {!open ? (
+          <button
+            onClick={() => setOpen(true)}
+            className="w-14 h-14 bg-blue-900 hover:bg-blue-800 rounded-full shadow-2xl flex items-center justify-center border-2 border-yellow-500 transition-transform active:scale-95"
+            aria-label="Mở chat"
+          >
+            <span className="text-2xl">💬</span>
+          </button>
+        ) : (
+          <div className="fixed inset-0 bg-black/50 flex items-end" onClick={() => setOpen(false)}>
+            <div className="w-full bg-white rounded-t-3xl shadow-2xl max-h-[80vh] flex flex-col" onClick={(e) => e.stopPropagation()}>
+              <div className="flex items-center justify-between bg-blue-900 text-white px-4 py-3 rounded-t-3xl">
+                <div className="flex items-center gap-2">
+                  <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-yellow-500/90 text-blue-950 font-bold">🤖</span>
+                  <span className="font-semibold tracking-wide">Trợ lý SHTT</span>
+                </div>
+                <button onClick={() => setOpen(false)} className="text-white hover:bg-white/10 p-1 rounded">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                    <path fillRule="evenodd" d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z" clipRule="evenodd" />
+                  </svg>
+                </button>
+              </div>
+              <div className="p-3 flex-1 overflow-y-auto bg-gradient-to-b from-blue-50/50 to-white">
+                {messages.map((m) => (
+                  <div key={m.id} className={`mb-2 flex ${m.from === 'user' ? 'justify-end' : 'justify-start'}`}>
+                    {m.from === 'bot' && (
+                      <div className="mr-2 mt-1 w-7 h-7 rounded-full bg-blue-900/90 text-white flex items-center justify-center text-xs shadow">🤖</div>
+                    )}
+                    <div
+                      className={`px-3 py-2 rounded-2xl shadow-sm max-w-[80%] whitespace-pre-wrap leading-[1.2] text-base ${
+                        m.from === 'user'
+                          ? 'bg-blue-600 text-white rounded-br-md'
+                          : 'bg-white text-gray-800 border border-blue-100 rounded-bl-md'
+                      }`}
+                    >
+                      <div className={`relative ${m.from === 'bot' && !expanded[m.id] && m.text.length > 400 ? 'max-h-56 overflow-hidden pr-1' : ''}`}>
+                        {m.from === 'bot' ? (
+                          <ReactMarkdown
+                            remarkPlugins={[remarkGfm]}
+                            components={{
+                              a: (props: any) => (
+                                <a {...props} className="text-blue-600 underline hover:text-blue-800" target="_blank" rel="noreferrer" />
+                              ),
+                              ul: ({ children }: any) => <ul className="list-disc pl-4">{children}</ul>,
+                              ol: ({ children }: any) => <ol className="list-decimal pl-4">{children}</ol>,
+                              li: ({ children }: any) => <li className="ml-1">{children}</li>,
+                              strong: ({ children }: any) => <strong className="font-bold text-gray-900">{children}</strong>,
+                              em: ({ children }: any) => <em className="italic">{children}</em>,
+                              code: ({ inline, className, children, ...props }: any) => (
+                                inline ? (
+                                  <code className="px-1 py-0.5 rounded bg-gray-100 text-[13px]" {...props}>{children}</code>
+                                ) : (
+                                  <pre className="bg-gray-900 text-gray-100 p-3 rounded-md overflow-auto text-[13px]"><code {...props} className={className}>{children}</code></pre>
+                                )
+                              ),
+                              p: ({ children }: any) => <p className="mb-0">{children}</p>,
+                            }}
+                          >
+                            {m.text}
+                          </ReactMarkdown>
+                        ) : (
+                          m.text
+                        )}
+                        {m.from === 'bot' && !expanded[m.id] && m.text.length > 400 && (
+                          <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-white to-transparent" />
+                        )}
+                      </div>
+                      {m.from === 'bot' && m.text.length > 400 && (
+                        <button
+                          className="mt-2 text-xs font-medium text-blue-700 hover:text-blue-900"
+                          onClick={() => setExpanded((p) => ({ ...p, [m.id]: !p[m.id] }))}
+                        >
+                          {expanded[m.id] ? 'Thu gọn' : 'Xem thêm'}
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                ))}
+                {showSuggestions && messages.length === 1 && (
+                  <div className="mb-2 flex flex-col gap-1.5">
+                    <div className="text-xs text-gray-500 font-medium px-2">Gợi ý câu hỏi:</div>
+                    {SUGGESTED_QUESTIONS.map((q, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => send(q)}
+                        className="bg-blue-50 hover:bg-blue-100 text-blue-900 text-sm px-3 py-2 rounded-xl border border-blue-200 text-left transition-all hover:shadow-md active:scale-95"
+                      >
+                        {q}
+                      </button>
+                    ))}
+                  </div>
+                )}
+                {isSending && (
+                  <div className="mb-2 flex justify-start items-end">
+                    <div className="mr-2 mt-1 w-7 h-7 rounded-full bg-blue-900/90 text-white flex items-center justify-center text-xs shadow">🤖</div>
+                    <div className="px-4 py-3 rounded-2xl bg-white border border-blue-100 shadow-sm text-gray-500">
+                      <span className="inline-flex gap-1">
+                        <span className="w-2 h-2 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.2s]"></span>
+                        <span className="w-2 h-2 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.1s]"></span>
+                        <span className="w-2 h-2 bg-blue-500 rounded-full animate-bounce"></span>
+                      </span>
+                    </div>
+                  </div>
+                )}
+                <div ref={bottomRef} />
+              </div>
+              <div className="p-3 border-t bg-white flex gap-2 safe-bottom">
+                <input
+                  aria-label="message"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') send();
+                  }}
+                  className="flex-1 border rounded-md px-3 py-3 text-base focus:outline-none focus:ring-2 focus:ring-blue-300"
+                  placeholder="Nhập câu hỏi..."
+                />
+                <button
+                  onClick={() => send()}
+                  disabled={isSending}
+                  className="bg-blue-900 hover:bg-blue-800 disabled:opacity-60 text-white px-4 py-3 rounded-md inline-flex items-center gap-2 border-2 border-yellow-500 min-w-[70px] justify-center"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Desktop: Traditional Chat Panel */}
+      <div className="hidden lg:block">
+        <div className={`flex flex-col w-[26rem] max-w-sm bg-white shadow-2xl rounded-2xl overflow-hidden border border-blue-100 ${open ? '' : 'h-12'}`}>
         <div className="flex items-center justify-between bg-blue-900 text-white px-4 py-2 cursor-pointer" onClick={() => setOpen((o) => !o)}>
           <div className="flex items-center gap-2">
             <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-yellow-500/90 text-blue-950 font-bold">🤖</span>
@@ -211,6 +347,7 @@ export default function ChatBot() {
             </div>
           </>
         )}
+        </div>
       </div>
     </div>
   );

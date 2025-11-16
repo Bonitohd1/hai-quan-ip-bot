@@ -9,6 +9,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <head>
         <title>Sở hữu trí tuệ Hải quan - Trợ lý AI</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <style>{`
+          * { -webkit-tap-highlight-color: transparent; }
+          input, textarea, select { font-size: 16px !important; }
+          body { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+        `}</style>
       </head>
       <body className="bg-gray-50">
         <AuthProvider>
