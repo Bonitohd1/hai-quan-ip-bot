@@ -1,5 +1,6 @@
 'use client';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter, usePathname } from 'next/navigation';
 import { useState } from 'react';
 import UserMenuButton from './UserMenuButton';
@@ -78,11 +79,13 @@ export default function Sidebar() {
           isCollapsed ? 'opacity-0 h-0 overflow-hidden' : 'opacity-100'
         }`}>
           <div className="flex justify-center mb-3">
-            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center shadow-lg">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-12 h-12 text-blue-950">
-                <path fillRule="evenodd" d="M12.516 2.17a.75.75 0 00-1.032 0 11.209 11.209 0 01-7.877 3.08.75.75 0 00-.722.515A12.74 12.74 0 002.25 9.75c0 5.942 4.064 10.933 9.563 12.348a.749.749 0 00.374 0c5.499-1.415 9.563-6.406 9.563-12.348 0-1.39-.223-2.73-.635-3.985a.75.75 0 00-.722-.516l-.143.001c-2.996 0-5.717-1.17-7.734-3.08zm3.094 8.016a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clipRule="evenodd" />
-              </svg>
-            </div>
+            <Image 
+              src="/logoHQdaxoanen.png" 
+              alt="Logo Hải Quan Việt Nam" 
+              width={80} 
+              height={80}
+              className="rounded-full"
+            />
           </div>
           <h2 className="font-bold text-lg text-yellow-400">
             SHTT Hải Quan

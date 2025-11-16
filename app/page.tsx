@@ -13,7 +13,9 @@ export default function Home() {
         <div className="flex justify-between items-center">
           <div>
             <h1 className="text-3xl font-bold flex items-center gap-3">
-              <span className="text-4xl">⚓</span>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-10 h-10 text-yellow-400">
+                <path fillRule="evenodd" d="M12.516 2.17a.75.75 0 00-1.032 0 11.209 11.209 0 01-7.877 3.08.75.75 0 00-.722.515A12.74 12.74 0 002.25 9.75c0 5.942 4.064 10.933 9.563 12.348a.749.749 0 00.374 0c5.499-1.415 9.563-6.406 9.563-12.348 0-1.39-.223-2.73-.635-3.985a.75.75 0 00-.722-.516l-.143.001c-2.996 0-5.717-1.17-7.734-3.08zm3.094 8.016a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clipRule="evenodd" />
+              </svg>
               Sở hữu Trí tuệ Hải quan
             </h1>
             <p className="text-sm opacity-90 mt-2">Hỗ trợ tư vấn và tra cứu thông tin sở hữu trí tuệ trong hoạt động hải quan</p>
@@ -28,7 +30,12 @@ export default function Home() {
       <div className="flex-1">
         {/* Logo and Title */}
         <div className="text-center mb-12">
-          <div className="inline-block mb-6 text-6xl">🔍</div>
+          <div className="inline-block mb-6">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-16 h-16 text-blue-900 mx-auto">
+              <path d="M5.625 1.5c-1.036 0-1.875.84-1.875 1.875v17.25c0 1.035.84 1.875 1.875 1.875h12.75c1.035 0 1.875-.84 1.875-1.875V12.75A3.75 3.75 0 0016.5 9h-1.875a1.875 1.875 0 01-1.875-1.875V5.25A3.75 3.75 0 009 1.5H5.625z" />
+              <path d="M12.971 1.816A5.23 5.23 0 0114.25 5.25v1.875c0 .207.168.375.375.375H16.5a5.23 5.23 0 013.434 1.279 9.768 9.768 0 00-6.963-6.963z" />
+            </svg>
+          </div>
           <h2 className="text-4xl font-bold text-gray-800 mb-2">Trợ lý AI Sở hữu Trí tuệ Hải quan</h2>
           <p className="text-gray-600 text-lg">Tôi có thể giúp bạn việc gì?</p>
         </div>
