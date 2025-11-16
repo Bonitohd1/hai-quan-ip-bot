@@ -10,6 +10,7 @@ export default function ChatBot() {
     { id: 1, from: 'bot', text: 'Chào bạn! Tôi là Trợ lý AI Sở hữu Trí tuệ Hải quan. Bạn muốn hỏi gì?' },
   ]);
   const [input, setInput] = useState('');
+  const [isSending, setIsSending] = useState(false);
   const nextId = useRef(2);
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
@@ -22,6 +23,7 @@ export default function ChatBot() {
     const userMsg: Message = { id: nextId.current++, from: 'user', text: input.trim() };
     setMessages((p) => [...p, userMsg]);
     setInput('');
+    setIsSending(true);
 
 // Call Dify API endpoint
     try {
@@ -48,15 +50,17 @@ export default function ChatBot() {
         text: 'Error: Could not connect to the bot. Please try again later.',
       };
       setMessages((p) => [...p, errorMsg]);
+    } finally {
+      setIsSending(false);
     }
   }
   return (
     <div className="fixed bottom-6 right-6 z-50">
-      <div className={`flex flex-col w-80 max-w-sm bg-white shadow-xl rounded-lg overflow-hidden ${open ? '' : 'h-12'}`}>
-        <div className="flex items-center justify-between bg-blue-900 text-white px-3 py-2 cursor-pointer" onClick={() => setOpen((o) => !o)}>
+      <div className={`flex flex-col w-[22rem] max-w-sm bg-white shadow-2xl rounded-2xl overflow-hidden border border-blue-100 ${open ? '' : 'h-12'}`}>
+        <div className="flex items-center justify-between bg-blue-900 text-white px-4 py-2 cursor-pointer" onClick={() => setOpen((o) => !o)}>
           <div className="flex items-center gap-2">
-            <span>🤖</span>
-            <span className="font-semibold">Trợ lý SHTT</span>
+            <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-yellow-500/90 text-blue-950 font-bold">🤖</span>
+            <span className="font-semibold tracking-wide">Trợ lý SHTT</span>
           </div>
           <div className="flex items-center gap-2">
             {open && (
@@ -85,14 +89,35 @@ export default function ChatBot() {
 
         {open && (
           <>
-            <div className="p-3 flex-1 h-64 overflow-y-auto bg-gray-50">
+            <div className="p-4 flex-1 h-80 overflow-y-auto bg-gradient-to-b from-blue-50/50 to-white">
               {messages.map((m) => (
-                <div key={m.id} className={`mb-2 flex ${m.from === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`px-3 py-2 rounded-lg ${m.from === 'user' ? 'bg-blue-600 text-white' : 'bg-white border'} max-w-[80%]`}>
+                <div key={m.id} className={`mb-3 flex ${m.from === 'user' ? 'justify-end' : 'justify-start'}`}>
+                  {m.from === 'bot' && (
+                    <div className="mr-2 mt-1 w-7 h-7 rounded-full bg-blue-900/90 text-white flex items-center justify-center text-xs shadow">🤖</div>
+                  )}
+                  <div
+                    className={`px-4 py-3 rounded-2xl shadow-sm max-w-[80%] whitespace-pre-wrap leading-relaxed text-[14px] ${
+                      m.from === 'user'
+                        ? 'bg-blue-600 text-white rounded-br-md'
+                        : 'bg-white text-gray-800 border border-blue-100 rounded-bl-md'
+                    }`}
+                  >
                     {m.text}
                   </div>
                 </div>
               ))}
+              {isSending && (
+                <div className="mb-3 flex justify-start items-end">
+                  <div className="mr-2 mt-1 w-7 h-7 rounded-full bg-blue-900/90 text-white flex items-center justify-center text-xs shadow">🤖</div>
+                  <div className="px-4 py-3 rounded-2xl bg-white border border-blue-100 shadow-sm text-gray-500">
+                    <span className="inline-flex gap-1">
+                      <span className="w-2 h-2 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.2s]"></span>
+                      <span className="w-2 h-2 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.1s]"></span>
+                      <span className="w-2 h-2 bg-blue-500 rounded-full animate-bounce"></span>
+                    </span>
+                  </div>
+                </div>
+              )}
               <div ref={bottomRef} />
             </div>
 
@@ -104,10 +129,17 @@ export default function ChatBot() {
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') send();
                 }}
-                className="flex-1 border rounded-md px-3 py-2"
+                className="flex-1 border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-300"
                 placeholder="Nhập câu hỏi..."
               />
-              <button onClick={send} className="bg-blue-900 text-white px-3 py-2 rounded-md">
+              <button
+                onClick={send}
+                disabled={isSending}
+                className="bg-blue-900 hover:bg-blue-800 disabled:opacity-60 text-white px-4 py-2 rounded-md inline-flex items-center gap-2 border-2 border-yellow-500"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
+                  <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+                </svg>
                 Gửi
               </button>
             </div>
