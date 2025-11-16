@@ -15,6 +15,7 @@ export default function ChatBot() {
   const [isSending, setIsSending] = useState(false);
   const nextId = useRef(2);
   const bottomRef = useRef<HTMLDivElement | null>(null);
+  const [expanded, setExpanded] = useState<Record<number, boolean>>({});
 
   useEffect(() => {
     if (open) bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -58,7 +59,7 @@ export default function ChatBot() {
   }
   return (
     <div className="fixed bottom-6 right-6 z-50">
-      <div className={`flex flex-col w-[22rem] max-w-sm bg-white shadow-2xl rounded-2xl overflow-hidden border border-blue-100 ${open ? '' : 'h-12'}`}>
+      <div className={`flex flex-col w-[26rem] max-w-sm bg-white shadow-2xl rounded-2xl overflow-hidden border border-blue-100 ${open ? '' : 'h-12'}`}>
         <div className="flex items-center justify-between bg-blue-900 text-white px-4 py-2 cursor-pointer" onClick={() => setOpen((o) => !o)}>
           <div className="flex items-center gap-2">
             <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-yellow-500/90 text-blue-950 font-bold">🤖</span>
@@ -98,35 +99,48 @@ export default function ChatBot() {
                     <div className="mr-2 mt-1 w-7 h-7 rounded-full bg-blue-900/90 text-white flex items-center justify-center text-xs shadow">🤖</div>
                   )}
                   <div
-                    className={`px-4 py-3 rounded-2xl shadow-sm max-w-[80%] whitespace-pre-wrap leading-relaxed text-[14px] ${
+                    className={`px-4 py-3 rounded-2xl shadow-sm max-w-[80%] whitespace-pre-wrap leading-6 text-[14px] ${
                       m.from === 'user'
                         ? 'bg-blue-600 text-white rounded-br-md'
                         : 'bg-white text-gray-800 border border-blue-100 rounded-bl-md'
                     }`}
                   >
-                    {m.from === 'bot' ? (
-                      <ReactMarkdown
-                        remarkPlugins={[remarkGfm]}
-                        components={{
-                          a: (props: any) => (
-                            <a {...props} className="text-blue-600 underline hover:text-blue-800" target="_blank" rel="noreferrer" />
-                          ),
-                          ul: ({ children }: any) => <ul className="list-disc pl-5 space-y-1">{children}</ul>,
-                          ol: ({ children }: any) => <ol className="list-decimal pl-5 space-y-1">{children}</ol>,
-                          code: ({ inline, className, children, ...props }: any) => (
-                            inline ? (
-                              <code className="px-1 py-0.5 rounded bg-gray-100 text-[13px]" {...props}>{children}</code>
-                            ) : (
-                              <pre className="bg-gray-900 text-gray-100 p-3 rounded-md overflow-auto text-[13px]"><code {...props} className={className}>{children}</code></pre>
-                            )
-                          ),
-                          p: ({ children }: any) => <p className="mb-2 last:mb-0">{children}</p>,
-                        }}
+                    <div className={`relative ${m.from === 'bot' && !expanded[m.id] && m.text.length > 400 ? 'max-h-56 overflow-hidden pr-1' : ''}`}>
+                      {m.from === 'bot' ? (
+                        <ReactMarkdown
+                          remarkPlugins={[remarkGfm]}
+                          components={{
+                            a: (props: any) => (
+                              <a {...props} className="text-blue-600 underline hover:text-blue-800" target="_blank" rel="noreferrer" />
+                            ),
+                            ul: ({ children }: any) => <ul className="list-disc pl-5 space-y-1">{children}</ul>,
+                            ol: ({ children }: any) => <ol className="list-decimal pl-5 space-y-1">{children}</ol>,
+                            code: ({ inline, className, children, ...props }: any) => (
+                              inline ? (
+                                <code className="px-1 py-0.5 rounded bg-gray-100 text-[13px]" {...props}>{children}</code>
+                              ) : (
+                                <pre className="bg-gray-900 text-gray-100 p-3 rounded-md overflow-auto text-[13px]"><code {...props} className={className}>{children}</code></pre>
+                              )
+                            ),
+                            p: ({ children }: any) => <p className="mb-2 last:mb-0">{children}</p>,
+                          }}
+                        >
+                          {m.text}
+                        </ReactMarkdown>
+                      ) : (
+                        m.text
+                      )}
+                      {m.from === 'bot' && !expanded[m.id] && m.text.length > 400 && (
+                        <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-white to-transparent" />
+                      )}
+                    </div>
+                    {m.from === 'bot' && m.text.length > 400 && (
+                      <button
+                        className="mt-2 text-xs font-medium text-blue-700 hover:text-blue-900"
+                        onClick={() => setExpanded((p) => ({ ...p, [m.id]: !p[m.id] }))}
                       >
-                        {m.text}
-                      </ReactMarkdown>
-                    ) : (
-                      m.text
+                        {expanded[m.id] ? 'Thu gọn' : 'Xem thêm'}
+                      </button>
                     )}
                   </div>
                 </div>
