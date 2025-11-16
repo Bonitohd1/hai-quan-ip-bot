@@ -23,17 +23,33 @@ export default function ChatBot() {
     setMessages((p) => [...p, userMsg]);
     setInput('');
 
-    // Mock bot response — replace with real API call later
-    setTimeout(() => {
+// Call Dify API endpoint
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ query: input.trim() }),
+      });
+
+      const data = await response.json();
       const botMsg: Message = {
         id: nextId.current++,
         from: 'bot',
-        text: `Tôi đã nhận câu hỏi của bạn: "${userMsg.text}". Hiện tại tôi đang trong chế độ thử nghiệm và sẽ trả lời sớm.`,
+        text: data.answer || 'Sorry, I could not understand. Please try again.',
       };
       setMessages((p) => [...p, botMsg]);
-    }, 700);
+    } catch (error) {
+      console.error('API error:', error);
+      const errorMsg: Message = {
+        id: nextId.current++,
+        from: 'bot',
+        text: 'Error: Could not connect to the bot. Please try again later.',
+      };
+      setMessages((p) => [...p, errorMsg]);
+    }
   }
-
   return (
     <div className="fixed bottom-6 right-6 z-50">
       <div className={`flex flex-col w-80 max-w-sm bg-white shadow-xl rounded-lg overflow-hidden ${open ? '' : 'h-12'}`}>
