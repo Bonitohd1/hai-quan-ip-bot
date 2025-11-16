@@ -6,7 +6,7 @@ const DIFY_API_KEY = process.env.DIFY_API_KEY || 'app-KGEm4cL2Xrc40xfnEkB4';
 export async function POST(request: NextRequest) {
   try {
     const { query, conversation_id } = await request.json();
-
+    
     if (!query) {
       return NextResponse.json(
         { error: 'Query is required' },
@@ -41,9 +41,13 @@ export async function POST(request: NextRequest) {
     }
 
     const data = await response.json();
+    console.log('Dify API response:', JSON.stringify(data, null, 2));
+    
+    // Extract the answer from the response
+    const answer = data.answer || data.message || 'No response from Dify';
 
     return NextResponse.json({
-      answer: data.answer || 'No response',
+      answer,
       conversation_id: data.conversation_id,
     });
   } catch (error) {
