@@ -2,6 +2,13 @@ import NextAuth from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import type { NextAuthOptions } from 'next-auth';
 
+// Lightweight non-secret logging to help debug environment/config issues in Vercel logs
+console.log('NextAuth env presence', {
+  GOOGLE_ID: !!process.env.GOOGLE_ID,
+  NEXTAUTH_URL: !!process.env.NEXTAUTH_URL,
+  NEXTAUTH_SECRET: !!process.env.NEXTAUTH_SECRET,
+});
+
 const options: NextAuthOptions = {
   providers: [
     GoogleProvider({
@@ -28,5 +35,17 @@ const options: NextAuthOptions = {
   },
 };
 
-const handler = NextAuth(options);
-export { handler as GET, handler as POST };
+// initialize handler and wrap to log runtime errors (so Vercel logs show the stack)
+const nextAuthHandler = NextAuth(options);
+
+async function handle(req: Request, res: Response) {
+  try {
+    // delegate to NextAuth's handler
+    return await (nextAuthHandler as any)(req, res);
+  } catch (err) {
+    console.error('NextAuth handler error:', err);
+    throw err;
+  }
+}
+
+export { handle as GET, handle as POST };
