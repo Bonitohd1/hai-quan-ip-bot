@@ -67,8 +67,8 @@ export default function ChatBot() {
     }
   }
   return (
-    <div className="fixed bottom-6 right-6 z-50">
-      <div className={`flex flex-col w-[26rem] max-w-sm bg-white shadow-2xl rounded-2xl overflow-hidden border border-blue-100 ${open ? '' : 'h-12'}`}>
+    <div className="fixed bottom-4 right-4 lg:bottom-6 lg:right-6 z-50">
+      <div className={`flex flex-col w-[calc(100vw-2rem)] sm:w-[26rem] max-w-sm bg-white shadow-2xl rounded-2xl overflow-hidden border border-blue-100 ${open ? '' : 'h-12'}`}>
         <div className="flex items-center justify-between bg-blue-900 text-white px-4 py-2 cursor-pointer" onClick={() => setOpen((o) => !o)}>
           <div className="flex items-center gap-2">
             <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-yellow-500/90 text-blue-950 font-bold">🤖</span>
@@ -195,13 +195,13 @@ export default function ChatBot() {
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') send();
                 }}
-                className="flex-1 border rounded-md px-3 py-2 text-[15px] focus:outline-none focus:ring-2 focus:ring-blue-300"
+                className="flex-1 border rounded-md px-3 py-2.5 lg:py-2 text-[15px] text-base focus:outline-none focus:ring-2 focus:ring-blue-300"
                 placeholder="Nhập câu hỏi..."
               />
               <button
                 onClick={() => send()}
                 disabled={isSending}
-                className="bg-blue-900 hover:bg-blue-800 disabled:opacity-60 text-white px-4 py-2 rounded-md inline-flex items-center gap-2 border-2 border-yellow-500"
+                className="bg-blue-900 hover:bg-blue-800 disabled:opacity-60 text-white px-3 lg:px-4 py-2.5 lg:py-2 rounded-md inline-flex items-center gap-2 border-2 border-yellow-500 min-w-[60px] justify-center"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
                   <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />

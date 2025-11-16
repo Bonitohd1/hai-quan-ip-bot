@@ -9,6 +9,7 @@ export default function Sidebar() {
   const router = useRouter();
   const pathname = usePathname();
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   const menuItems = [
     { 
@@ -51,13 +52,38 @@ export default function Sidebar() {
 
   return (
     <>
+      {/* Mobile Menu Button */}
+      <button
+        onClick={() => setIsMobileOpen(!isMobileOpen)}
+        className="fixed top-4 left-4 z-50 lg:hidden w-10 h-10 bg-blue-900 hover:bg-blue-800 rounded-lg flex items-center justify-center shadow-lg transition-colors"
+        aria-label="Toggle menu"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6 text-white">
+          {isMobileOpen ? (
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+          ) : (
+            <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+          )}
+        </svg>
+      </button>
+
+      {/* Mobile Overlay */}
+      {isMobileOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-30 lg:hidden"
+          onClick={() => setIsMobileOpen(false)}
+        />
+      )}
+
       <aside className={`bg-gradient-to-b from-blue-900 to-blue-950 text-white h-screen p-4 border-r-4 border-yellow-500 overflow-y-auto fixed left-0 top-0 transition-all duration-300 ease-in-out z-40 ${
         isCollapsed ? 'w-20' : 'w-56'
+      } ${
+        isMobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
       }`}>
         {/* Toggle Button */}
         <button
           onClick={() => setIsCollapsed(!isCollapsed)}
-          className="absolute -right-3 top-6 w-6 h-6 bg-yellow-500 hover:bg-yellow-400 rounded-full flex items-center justify-center shadow-lg transition-all duration-200 hover:scale-110 z-50"
+          className="hidden lg:block absolute -right-3 top-6 w-6 h-6 bg-yellow-500 hover:bg-yellow-400 rounded-full flex items-center justify-center shadow-lg transition-all duration-200 hover:scale-110 z-50"
           aria-label={isCollapsed ? 'Mở sidebar' : 'Đóng sidebar'}
         >
           <svg
@@ -134,8 +160,8 @@ export default function Sidebar() {
       </nav>
       </aside>
 
-      {/* Spacer div to push content */}
-      <div className={`transition-all duration-300 ${
+      {/* Spacer div to push content - hidden on mobile */}
+      <div className={`hidden lg:block transition-all duration-300 ${
         isCollapsed ? 'w-20' : 'w-56'
       }`} />
     </>

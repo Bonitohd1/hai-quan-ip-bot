@@ -9,11 +9,11 @@ export default function Home() {
   return (
     <div className="flex flex-col gap-8">
       {/* Header */}
-      <header className="bg-gradient-to-r from-blue-900 to-blue-950 text-white p-8 rounded-lg shadow-lg border-b-4 border-yellow-500">
-        <div className="flex justify-between items-center">
+      <header className="bg-gradient-to-r from-blue-900 to-blue-950 text-white p-4 lg:p-8 rounded-lg shadow-lg border-b-4 border-yellow-500">
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
           <div>
-            <h1 className="text-3xl font-bold flex items-center gap-3">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-10 h-10 text-yellow-400">
+            <h1 className="text-xl lg:text-3xl font-bold flex items-center gap-2 lg:gap-3">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8 lg:w-10 lg:h-10 text-yellow-400">
                 <path fillRule="evenodd" d="M12.516 2.17a.75.75 0 00-1.032 0 11.209 11.209 0 01-7.877 3.08.75.75 0 00-.722.515A12.74 12.74 0 002.25 9.75c0 5.942 4.064 10.933 9.563 12.348a.749.749 0 00.374 0c5.499-1.415 9.563-6.406 9.563-12.348 0-1.39-.223-2.73-.635-3.985a.75.75 0 00-.722-.516l-.143.001c-2.996 0-5.717-1.17-7.734-3.08zm3.094 8.016a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clipRule="evenodd" />
               </svg>
               Sở hữu Trí tuệ Hải quan
@@ -41,7 +41,7 @@ export default function Home() {
         </div>
 
         {/* Cards Grid */}
-        <div className="grid grid-cols-2 gap-5 max-w-3xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-5 max-w-3xl mx-auto">
           {/* Card 1 - Lịch sử SHTT */}
           <div onClick={() => router.push('/lich-su-shtt')} className="bg-white border-l-4 border-yellow-500 rounded-xl p-6 shadow-sm hover:shadow-xl transition-all duration-200 cursor-pointer hover:bg-yellow-50 hover:scale-105 active:scale-100">
             <div className="text-4xl mb-3">📚</div>
