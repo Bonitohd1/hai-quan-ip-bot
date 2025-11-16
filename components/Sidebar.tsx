@@ -1,5 +1,6 @@
 'use client';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter, usePathname } from 'next/navigation';
 import UserMenuButton from './UserMenuButton';
 
@@ -55,9 +56,18 @@ export default function Sidebar() {
   return (
     <aside className="w-56 bg-gradient-to-b from-blue-900 to-blue-950 text-white h-screen p-4 border-r-4 border-yellow-500 overflow-y-auto fixed left-0 top-0">
       {/* Logo */}
-      <div className="mb-8 pb-6 border-b-2 border-yellow-500">
-        <h2 className="font-bold text-lg flex items-center gap-2 text-yellow-400">
-          <span>⚓</span> SHTT
+      <div className="mb-8 pb-6 border-b-2 border-yellow-500 text-center">
+        <div className="flex justify-center mb-3">
+          <Image 
+            src="/logoHQdaxoanen.png" 
+            alt="Logo Hải Quan Việt Nam" 
+            width={80} 
+            height={80}
+            className="rounded-full"
+          />
+        </div>
+        <h2 className="font-bold text-lg text-yellow-400">
+          SHTT Hải Quan
         </h2>
         <p className="text-xs text-blue-200 mt-2">Sở hữu trí tuệ Hải quan</p>
       </div>
