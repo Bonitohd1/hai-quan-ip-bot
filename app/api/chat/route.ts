@@ -56,13 +56,18 @@ export async function POST(request: NextRequest) {
         const controller = new AbortController();
         const timeout = setTimeout(() => controller.abort(), 10000);
 
-        const res = await fetch(`${DIFY_API_BASE}/responses`, {
+        const res = await fetch(`${DIFY_API_BASE}/chat-messages`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${DIFY_API_KEY}`,
           },
-          body: JSON.stringify({ input: query }),
+          body: JSON.stringify({ 
+            inputs: {},
+            query: query,
+            response_mode: 'blocking',
+            user: 'user-' + Date.now()
+          }),
           signal: controller.signal,
         });
 
