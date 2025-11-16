@@ -17,7 +17,7 @@ export default function ChatBot() {
     if (open) bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, open]);
 
-  function send() {
+  async function send() {
     if (!input.trim()) return;
     const userMsg: Message = { id: nextId.current++, from: 'user', text: input.trim() };
     setMessages((p) => [...p, userMsg]);
