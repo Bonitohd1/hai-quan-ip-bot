@@ -71,11 +71,12 @@ export default function ChatBot() {
                   setMessages([welcome]);
                   nextId.current = 2;
                 }}
-                className="p-1 rounded hover:bg-white/10"
+                className="relative p-1 rounded hover:bg-white/10 transition-transform transform hover:scale-110"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 text-white opacity-90 transition-colors duration-150">
                   <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 100 2h16a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0015 2H9zM6 7a1 1 0 011 1v10a2 2 0 002 2h6a2 2 0 002-2V8a1 1 0 112 0v10a4 4 0 01-4 4H9a4 4 0 01-4-4V8a1 1 0 011-1z" clipRule="evenodd" />
                 </svg>
+                <span className="sr-only">Xóa lịch sử chat</span>
               </button>
             )}
             <div className="text-sm opacity-90">{open ? 'Đóng' : 'Mở'}</div>
