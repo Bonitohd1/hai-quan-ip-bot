@@ -102,14 +102,14 @@ export default function ChatBot() {
 
         {open && (
           <>
-            <div className="p-4 flex-1 h-80 overflow-y-auto bg-gradient-to-b from-blue-50/50 to-white">
+            <div className="p-3 flex-1 max-h-96 overflow-y-auto bg-gradient-to-b from-blue-50/50 to-white">
               {messages.map((m) => (
-                <div key={m.id} className={`mb-3 flex ${m.from === 'user' ? 'justify-end' : 'justify-start'}`}>
+                <div key={m.id} className={`mb-2 flex ${m.from === 'user' ? 'justify-end' : 'justify-start'}`}>
                   {m.from === 'bot' && (
                     <div className="mr-2 mt-1 w-7 h-7 rounded-full bg-blue-900/90 text-white flex items-center justify-center text-xs shadow">🤖</div>
                   )}
                   <div
-                    className={`px-4 py-3 rounded-2xl shadow-sm max-w-[80%] whitespace-pre-wrap leading-6 text-[14px] ${
+                    className={`px-3 py-2 rounded-2xl shadow-sm max-w-[80%] whitespace-pre-wrap leading-5 text-[14px] ${
                       m.from === 'user'
                         ? 'bg-blue-600 text-white rounded-br-md'
                         : 'bg-white text-gray-800 border border-blue-100 rounded-bl-md'
@@ -123,8 +123,8 @@ export default function ChatBot() {
                             a: (props: any) => (
                               <a {...props} className="text-blue-600 underline hover:text-blue-800" target="_blank" rel="noreferrer" />
                             ),
-                            ul: ({ children }: any) => <ul className="list-disc pl-5 space-y-1">{children}</ul>,
-                            ol: ({ children }: any) => <ol className="list-decimal pl-5 space-y-1">{children}</ol>,
+                            ul: ({ children }: any) => <ul className="list-disc pl-4 space-y-0.5">{children}</ul>,
+                            ol: ({ children }: any) => <ol className="list-decimal pl-4 space-y-0.5">{children}</ol>,
                             li: ({ children }: any) => <li className="ml-1">{children}</li>,
                             strong: ({ children }: any) => <strong className="font-bold text-gray-900">{children}</strong>,
                             em: ({ children }: any) => <em className="italic">{children}</em>,
@@ -135,7 +135,7 @@ export default function ChatBot() {
                                 <pre className="bg-gray-900 text-gray-100 p-3 rounded-md overflow-auto text-[13px]"><code {...props} className={className}>{children}</code></pre>
                               )
                             ),
-                            p: ({ children }: any) => <p className="mb-2 last:mb-0">{children}</p>,
+                            p: ({ children }: any) => <p className="mb-1.5 last:mb-0">{children}</p>,
                           }}
                         >
                           {m.text}
@@ -159,13 +159,13 @@ export default function ChatBot() {
                 </div>
               ))}
               {showSuggestions && messages.length === 1 && (
-                <div className="mb-3 flex flex-col gap-2">
+                <div className="mb-2 flex flex-col gap-1.5">
                   <div className="text-xs text-gray-500 font-medium px-2">Gợi ý câu hỏi:</div>
                   {SUGGESTED_QUESTIONS.map((q, idx) => (
                     <button
                       key={idx}
                       onClick={() => send(q)}
-                      className="bg-blue-50 hover:bg-blue-100 text-blue-900 text-sm px-4 py-2.5 rounded-xl border border-blue-200 text-left transition-all hover:shadow-md active:scale-95"
+                      className="bg-blue-50 hover:bg-blue-100 text-blue-900 text-sm px-3 py-2 rounded-xl border border-blue-200 text-left transition-all hover:shadow-md active:scale-95"
                     >
                       {q}
                     </button>
@@ -173,7 +173,7 @@ export default function ChatBot() {
                 </div>
               )}
               {isSending && (
-                <div className="mb-3 flex justify-start items-end">
+                <div className="mb-2 flex justify-start items-end">
                   <div className="mr-2 mt-1 w-7 h-7 rounded-full bg-blue-900/90 text-white flex items-center justify-center text-xs shadow">🤖</div>
                   <div className="px-4 py-3 rounded-2xl bg-white border border-blue-100 shadow-sm text-gray-500">
                     <span className="inline-flex gap-1">
@@ -187,7 +187,7 @@ export default function ChatBot() {
               <div ref={bottomRef} />
             </div>
 
-            <div className="p-3 border-t bg-white flex gap-2">
+            <div className="p-2.5 border-t bg-white flex gap-2">
               <input
                 aria-label="message"
                 value={input}
