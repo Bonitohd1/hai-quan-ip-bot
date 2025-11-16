@@ -16,7 +16,7 @@ export default function ChatBot() {
   const [open, setOpen] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(true);
   const [messages, setMessages] = useState<Message[]>([
-    { id: 1, from: 'bot', text: 'Chào bạn.\n\nTôi là Trợ lý AI, chuyên gia pháp lý về Sở hữu trí tuệ (SHTT) Hải quan Việt Nam.\n\nTôi có thể hỗ trợ bạn các vấn đề sau:\n\n• **Thủ tục Hải quan**: Cung cấp thông tin về các thủ tục như tạm dừng, kiểm tra, giám sát hàng hóa liên quan đến SHTT.\n• **Quy định pháp luật**: Tra cứu và giải thích các quy định theo Luật, Nghị định, Thông tư hiện hành.\n• **Thông tin cùng**: Cung cấp các khái niệm, định nghĩa và thông tin lịch sử về bảo hộ SHTT tại biên giới.\n\nVui lòng cho tôi biết vấn đề bạn đang quan tâm.' },
+    { id: 1, from: 'bot', text: 'Xin chào! Tôi là Trợ lý AI về Sở hữu trí tuệ Hải quan Việt Nam. Bạn muốn hỏi gì?' },
   ]);
   const [input, setInput] = useState('');
   const [isSending, setIsSending] = useState(false);
@@ -83,7 +83,7 @@ export default function ChatBot() {
                   e.stopPropagation();
                   const ok = confirm('Bạn có chắc muốn xóa toàn bộ lịch sử chat?');
                   if (!ok) return;
-                  const welcome: Message = { id: 1, from: 'bot', text: 'Chào bạn.\n\nTôi là Trợ lý AI, chuyên gia pháp lý về Sở hữu trí tuệ (SHTT) Hải quan Việt Nam.\n\nTôi có thể hỗ trợ bạn các vấn đề sau:\n\n• **Thủ tục Hải quan**: Cung cấp thông tin về các thủ tục như tạm dừng, kiểm tra, giám sát hàng hóa liên quan đến SHTT.\n• **Quy định pháp luật**: Tra cứu và giải thích các quy định theo Luật, Nghị định, Thông tư hiện hành.\n• **Thông tin cùng**: Cung cấp các khái niệm, định nghĩa và thông tin lịch sử về bảo hộ SHTT tại biên giới.\n\nVui lòng cho tôi biết vấn đề bạn đang quan tâm.' };
+                  const welcome: Message = { id: 1, from: 'bot', text: 'Xin chào! Tôi là Trợ lý AI về Sở hữu trí tuệ Hải quan Việt Nam. Bạn muốn hỏi gì?' };
                   setMessages([welcome]);
                   setShowSuggestions(true);
                   nextId.current = 2;
@@ -125,6 +125,9 @@ export default function ChatBot() {
                             ),
                             ul: ({ children }: any) => <ul className="list-disc pl-5 space-y-1">{children}</ul>,
                             ol: ({ children }: any) => <ol className="list-decimal pl-5 space-y-1">{children}</ol>,
+                            li: ({ children }: any) => <li className="ml-1">{children}</li>,
+                            strong: ({ children }: any) => <strong className="font-bold text-gray-900">{children}</strong>,
+                            em: ({ children }: any) => <em className="italic">{children}</em>,
                             code: ({ inline, className, children, ...props }: any) => (
                               inline ? (
                                 <code className="px-1 py-0.5 rounded bg-gray-100 text-[13px]" {...props}>{children}</code>
