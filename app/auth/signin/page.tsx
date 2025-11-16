@@ -10,15 +10,10 @@ export default function SignIn() {
 
   const handleGoogleSignIn = async () => {
     setIsLoading(true);
-    const result = await signIn('google', {
-      redirect: false,
+    // Use redirect: true to open Google login page directly (not popup)
+    await signIn('google', {
       callbackUrl: '/',
     });
-    
-    if (result?.ok) {
-      router.push('/');
-    }
-    setIsLoading(false);
   };
 
   return (
