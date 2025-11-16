@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 type Message = { id: number; from: 'user' | 'bot'; text: string };
 
@@ -102,7 +104,30 @@ export default function ChatBot() {
                         : 'bg-white text-gray-800 border border-blue-100 rounded-bl-md'
                     }`}
                   >
-                    {m.text}
+                    {m.from === 'bot' ? (
+                      <ReactMarkdown
+                        remarkPlugins={[remarkGfm]}
+                        components={{
+                          a: (props: any) => (
+                            <a {...props} className="text-blue-600 underline hover:text-blue-800" target="_blank" rel="noreferrer" />
+                          ),
+                          ul: ({ children }: any) => <ul className="list-disc pl-5 space-y-1">{children}</ul>,
+                          ol: ({ children }: any) => <ol className="list-decimal pl-5 space-y-1">{children}</ol>,
+                          code: ({ inline, className, children, ...props }: any) => (
+                            inline ? (
+                              <code className="px-1 py-0.5 rounded bg-gray-100 text-[13px]" {...props}>{children}</code>
+                            ) : (
+                              <pre className="bg-gray-900 text-gray-100 p-3 rounded-md overflow-auto text-[13px]"><code {...props} className={className}>{children}</code></pre>
+                            )
+                          ),
+                          p: ({ children }: any) => <p className="mb-2 last:mb-0">{children}</p>,
+                        }}
+                      >
+                        {m.text}
+                      </ReactMarkdown>
+                    ) : (
+                      m.text
+                    )}
                   </div>
                 </div>
               ))}
