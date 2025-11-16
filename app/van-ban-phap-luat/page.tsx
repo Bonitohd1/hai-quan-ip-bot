@@ -63,35 +63,35 @@ export default function VanBanPhapLuat() {
         <p className="text-sm opacity-90 mt-2">Tập hợp các quy định và văn bản pháp luật về sở hữu trí tuệ</p>
       </div>
 
-      {/* Documents List */}
-      <div className="grid grid-cols-4 gap-4 mb-8">
+      {/* Statistics */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4 mb-6 lg:mb-8">
         {stats.map((stat, i) => (
-          <div key={i} className={`${stat.color} text-white rounded-lg p-6 shadow-md`}>
-            <p className="text-sm opacity-90 mb-2">{stat.label}</p>
-            <p className="text-3xl font-bold">{stat.value}</p>
+          <div key={i} className={`${stat.color} text-white rounded-xl p-4 lg:p-5 shadow-md`}>
+            <p className="text-xs lg:text-sm opacity-90 mb-1.5 font-medium">{stat.label}</p>
+            <p className="text-2xl lg:text-3xl font-bold">{stat.value}</p>
           </div>
         ))}
       </div>
 
       {/* Documents List */}
-      <div className="grid grid-cols-1 gap-4 max-w-5xl">
+      <div className="grid grid-cols-1 gap-3 lg:gap-4 max-w-5xl">
         {documents.map((doc) => (
-          <div key={doc.id} className="bg-white p-6 rounded-lg border-l-4 border-blue-900 shadow hover:shadow-lg transition">
-            <div className="flex justify-between items-start mb-3">
+          <div key={doc.id} className="bg-white p-4 lg:p-6 rounded-xl border-l-4 border-blue-900 shadow hover:shadow-lg transition">
+            <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start gap-3 mb-3">
               <div className="flex-1">
-                <h3 className="text-lg font-bold text-blue-900">{doc.title}</h3>
-                <p className="text-gray-600 text-sm mt-2">{doc.description}</p>
+                <h3 className="text-base lg:text-lg font-bold text-blue-900">{doc.title}</h3>
+                <p className="text-gray-600 text-sm mt-1.5 lg:mt-2 leading-relaxed">{doc.description}</p>
               </div>
-              <div className="flex gap-2 ml-4">
+              <div className="flex gap-2 flex-wrap">
                 <span className="bg-blue-100 text-blue-900 px-3 py-1 rounded-full text-xs font-semibold">{doc.type}</span>
                 <span className="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-xs font-semibold">{doc.year}</span>
               </div>
             </div>
-            <div className="flex gap-3 mt-4">
-              <button className="bg-blue-900 text-white px-4 py-2 rounded text-sm font-semibold hover:bg-blue-950 transition">
+            <div className="flex gap-2 lg:gap-3 mt-3 lg:mt-4 flex-wrap">
+              <button className="bg-blue-900 text-white px-4 py-2.5 rounded-lg text-sm font-semibold hover:bg-blue-950 transition active:scale-95">
                 📄 Xem chi tiết
               </button>
-              <button className="border border-blue-900 text-blue-900 px-4 py-2 rounded text-sm font-semibold hover:bg-blue-50 transition">
+              <button className="border-2 border-blue-900 text-blue-900 px-4 py-2.5 rounded-lg text-sm font-semibold hover:bg-blue-50 transition active:scale-95">
                 ⬇️ Tải xuống
               </button>
             </div>
@@ -100,12 +100,12 @@ export default function VanBanPhapLuat() {
       </div>
 
       {/* Search/Filter */}
-      <div className="bg-yellow-50 p-6 rounded-lg border-l-4 border-yellow-500 max-w-5xl">
-        <h3 className="font-bold text-blue-900 mb-3">🔍 Tìm kiếm văn bản</h3>
+      <div className="bg-yellow-50 p-5 lg:p-6 rounded-xl border-l-4 border-yellow-500 max-w-5xl">
+        <h3 className="font-bold text-blue-900 mb-3 text-base">🔍 Tìm kiếm văn bản</h3>
         <input
           type="text"
           placeholder="Nhập từ khóa tìm kiếm..."
-          className="w-full px-4 py-2 border-2 border-yellow-500 rounded-lg focus:outline-none focus:border-blue-900"
+          className="w-full px-4 py-3 text-base border-2 border-yellow-500 rounded-lg focus:outline-none focus:border-blue-900"
         />
       </div>
 

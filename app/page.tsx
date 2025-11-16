@@ -29,45 +29,45 @@ export default function Home() {
       {/* Main Content */}
       <div className="flex-1">
         {/* Logo and Title */}
-        <div className="text-center mb-12">
-          <div className="inline-block mb-6">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-16 h-16 text-blue-900 mx-auto">
+        <div className="text-center mb-8 lg:mb-10">
+          <div className="inline-block mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-12 h-12 lg:w-14 lg:h-14 text-blue-900 mx-auto">
               <path d="M5.625 1.5c-1.036 0-1.875.84-1.875 1.875v17.25c0 1.035.84 1.875 1.875 1.875h12.75c1.035 0 1.875-.84 1.875-1.875V12.75A3.75 3.75 0 0016.5 9h-1.875a1.875 1.875 0 01-1.875-1.875V5.25A3.75 3.75 0 009 1.5H5.625z" />
               <path d="M12.971 1.816A5.23 5.23 0 0114.25 5.25v1.875c0 .207.168.375.375.375H16.5a5.23 5.23 0 013.434 1.279 9.768 9.768 0 00-6.963-6.963z" />
             </svg>
           </div>
-          <h2 className="text-4xl font-bold text-gray-800 mb-2">Trợ lý AI Sở hữu Trí tuệ Hải quan</h2>
-          <p className="text-gray-600 text-lg">Tôi có thể giúp bạn việc gì?</p>
+          <h2 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-2 px-4">Trợ lý AI Sở hữu Trí tuệ Hải quan</h2>
+          <p className="text-gray-600 text-base lg:text-lg px-4">Tôi có thể giúp bạn việc gì?</p>
         </div>
 
         {/* Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-5 max-w-3xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 lg:gap-4 max-w-4xl mx-auto">
           {/* Card 1 - Lịch sử SHTT */}
-          <div onClick={() => router.push('/lich-su-shtt')} className="bg-white border-l-4 border-yellow-500 rounded-xl p-6 shadow-sm hover:shadow-xl transition-all duration-200 cursor-pointer hover:bg-yellow-50 hover:scale-105 active:scale-100">
-            <div className="text-4xl mb-3">📚</div>
-            <h3 className="text-lg font-bold text-blue-900 mb-2">Lịch sử SHTT</h3>
-            <p className="text-gray-600 text-[15px]">Tìm hiểu lịch sử phát triển của sở hữu trí tuệ</p>
+          <div onClick={() => router.push('/lich-su-shtt')} className="bg-white border-l-4 border-yellow-500 rounded-xl p-5 shadow-sm hover:shadow-xl transition-all duration-200 cursor-pointer hover:bg-yellow-50 active:scale-[0.98]">
+            <div className="text-3xl lg:text-4xl mb-2">📚</div>
+            <h3 className="text-base lg:text-lg font-bold text-blue-900 mb-1.5">Lịch sử SHTT</h3>
+            <p className="text-gray-600 text-sm lg:text-[15px] leading-snug">Tìm hiểu lịch sử phát triển của sở hữu trí tuệ</p>
           </div>
 
           {/* Card 2 - Văn bản Pháp luật */}
-          <div onClick={() => router.push('/van-ban-phap-luat')} className="bg-white border-l-4 border-blue-600 rounded-xl p-6 shadow-sm hover:shadow-xl transition-all duration-200 cursor-pointer hover:bg-blue-50 hover:scale-105 active:scale-100">
-            <div className="text-4xl mb-3">⚖️</div>
-            <h3 className="text-lg font-bold text-blue-900 mb-2">Văn Bản Pháp Luật</h3>
-            <p className="text-gray-600 text-[15px]">Xem các quy định và pháp luật liên quan</p>
+          <div onClick={() => router.push('/van-ban-phap-luat')} className="bg-white border-l-4 border-blue-600 rounded-xl p-5 shadow-sm hover:shadow-xl transition-all duration-200 cursor-pointer hover:bg-blue-50 active:scale-[0.98]">
+            <div className="text-3xl lg:text-4xl mb-2">⚖️</div>
+            <h3 className="text-base lg:text-lg font-bold text-blue-900 mb-1.5">Văn Bản Pháp Luật</h3>
+            <p className="text-gray-600 text-sm lg:text-[15px] leading-snug">Xem các quy định và pháp luật liên quan</p>
           </div>
 
           {/* Card 3 - Tra cứu */}
-          <div onClick={() => router.push('/tra-cuu')} className="bg-white border-l-4 border-indigo-600 rounded-xl p-6 shadow-sm hover:shadow-xl transition-all duration-200 cursor-pointer hover:bg-indigo-50 hover:scale-105 active:scale-100">
-            <div className="text-4xl mb-3">🔎</div>
-            <h3 className="text-lg font-bold text-blue-900 mb-2">Tra Cứu</h3>
-            <p className="text-gray-600 text-[15px]">Tra cứu thông tin và dữ liệu sở hữu trí tuệ</p>
+          <div onClick={() => router.push('/tra-cuu')} className="bg-white border-l-4 border-indigo-600 rounded-xl p-5 shadow-sm hover:shadow-xl transition-all duration-200 cursor-pointer hover:bg-indigo-50 active:scale-[0.98]">
+            <div className="text-3xl lg:text-4xl mb-2">🔎</div>
+            <h3 className="text-base lg:text-lg font-bold text-blue-900 mb-1.5">Tra Cứu</h3>
+            <p className="text-gray-600 text-sm lg:text-[15px] leading-snug">Tra cứu thông tin và dữ liệu sở hữu trí tuệ</p>
           </div>
 
           {/* Card 4 - Thống kê */}
-          <div onClick={() => router.push('/thong-ke-shtt')} className="bg-white border-l-4 border-blue-500 rounded-xl p-6 shadow-sm hover:shadow-xl transition-all duration-200 cursor-pointer hover:bg-blue-50 hover:scale-105 active:scale-100">
-            <div className="text-4xl mb-3">📊</div>
-            <h3 className="text-lg font-bold text-blue-900 mb-2">Thống Kê SHTT</h3>
-            <p className="text-gray-600 text-[15px]">Xem các con số và thống kê liên quan</p>
+          <div onClick={() => router.push('/thong-ke-shtt')} className="bg-white border-l-4 border-blue-500 rounded-xl p-5 shadow-sm hover:shadow-xl transition-all duration-200 cursor-pointer hover:bg-blue-50 active:scale-[0.98]">
+            <div className="text-3xl lg:text-4xl mb-2">📊</div>
+            <h3 className="text-base lg:text-lg font-bold text-blue-900 mb-1.5">Thống Kê SHTT</h3>
+            <p className="text-gray-600 text-sm lg:text-[15px] leading-snug">Xem các con số và thống kê liên quan</p>
           </div>
         </div>
       </div>

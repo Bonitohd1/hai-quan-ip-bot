@@ -42,11 +42,11 @@ export default function LichSuSHTT() {
       </div>
 
       {/* Statistics Cards */}
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4">
         {stats.map((stat, i) => (
-          <div key={i} className={`${stat.color} text-white rounded-lg p-6 shadow-md`}>
-            <p className="text-sm opacity-90 mb-2">{stat.label}</p>
-            <p className="text-3xl font-bold">{stat.value}</p>
+          <div key={i} className={`${stat.color} text-white rounded-xl p-4 lg:p-5 shadow-md`}>
+            <p className="text-xs lg:text-sm opacity-90 mb-1.5 font-medium">{stat.label}</p>
+            <p className="text-2xl lg:text-3xl font-bold">{stat.value}</p>
           </div>
         ))}
       </div>
@@ -55,22 +55,22 @@ export default function LichSuSHTT() {
       <div className="max-w-4xl">
         <div className="relative">
           {/* Vertical line */}
-          <div className="absolute left-8 top-0 bottom-0 w-1 bg-yellow-500"></div>
+          <div className="absolute left-4 lg:left-8 top-0 bottom-0 w-0.5 lg:w-1 bg-yellow-500"></div>
 
           {/* Timeline items */}
-          <div className="space-y-8">
+          <div className="space-y-6 lg:space-y-8">
             {history.map((item, index) => (
-              <div key={index} className="relative ml-24">
+              <div key={index} className="relative ml-12 lg:ml-24">
                 {/* Dot */}
-                <div className="absolute left-0 top-2 transform -translate-x-9 w-5 h-5 bg-yellow-500 border-4 border-white rounded-full"></div>
+                <div className="absolute left-0 top-2 transform -translate-x-5 lg:-translate-x-9 w-3 h-3 lg:w-4 lg:h-4 bg-yellow-500 border-2 lg:border-4 border-white rounded-full shadow"></div>
 
                 {/* Content */}
-                <div className="bg-white p-6 rounded-lg border-l-4 border-yellow-500 shadow hover:shadow-lg transition">
-                  <div className="flex justify-between items-start mb-2">
-                    <h3 className="text-xl font-bold text-blue-900">{item.title}</h3>
-                    <span className="bg-blue-900 text-yellow-400 px-3 py-1 rounded-full text-sm font-semibold">{item.year}</span>
+                <div className="bg-white p-4 lg:p-6 rounded-xl border-l-4 border-yellow-500 shadow hover:shadow-lg transition">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 mb-2">
+                    <h3 className="text-lg lg:text-xl font-bold text-blue-900">{item.title}</h3>
+                    <span className="bg-blue-900 text-yellow-400 px-3 py-1 rounded-full text-xs lg:text-sm font-semibold w-fit">{item.year}</span>
                   </div>
-                  <p className="text-gray-600">{item.description}</p>
+                  <p className="text-gray-600 text-sm lg:text-base leading-relaxed">{item.description}</p>
                 </div>
               </div>
             ))}
@@ -79,14 +79,14 @@ export default function LichSuSHTT() {
       </div>
 
       {/* Additional info */}
-      <div className="grid grid-cols-2 gap-6 max-w-4xl">
-        <div className="bg-blue-50 p-6 rounded-lg border-l-4 border-blue-900">
-          <h3 className="font-bold text-blue-900 mb-2">📖 Tài liệu tham khảo</h3>
-          <p className="text-gray-600 text-sm">Xem thêm các tài liệu và nghiên cứu về lịch sử SHTT</p>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 max-w-4xl">
+        <div className="bg-blue-50 p-5 lg:p-6 rounded-xl border-l-4 border-blue-900">
+          <h3 className="font-bold text-blue-900 mb-2 text-base">📖 Tài liệu tham khảo</h3>
+          <p className="text-gray-600 text-sm leading-relaxed">Xem thêm các tài liệu và nghiên cứu về lịch sử SHTT</p>
         </div>
-        <div className="bg-yellow-50 p-6 rounded-lg border-l-4 border-yellow-500">
-          <h3 className="font-bold text-blue-900 mb-2">🎓 Học tập</h3>
-          <p className="text-gray-600 text-sm">Các bài giảng và khóa học về lịch sử SHTT</p>
+        <div className="bg-yellow-50 p-5 lg:p-6 rounded-xl border-l-4 border-yellow-500">
+          <h3 className="font-bold text-blue-900 mb-2 text-base">🎓 Học tập</h3>
+          <p className="text-gray-600 text-sm leading-relaxed">Các bài giảng và khóa học về lịch sử SHTT</p>
         </div>
       </div>
 
