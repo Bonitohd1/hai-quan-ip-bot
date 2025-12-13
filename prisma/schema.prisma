@@ -1,0 +1,59 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Document model for storing uploaded PDFs
+model Document {
+  id          String   @id @default(cuid())
+  code        String   @unique
+  date        String   // Format: DDMMYYYY (e.g., 16092025)
+  name        String
+  filename    String   @unique
+  type        String   // e.g., "Gia hạn", "Cấp mới"
+  description String
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([code])
+  @@index([name])
+  @@index([type])
+}
+
+// Admin user for authentication
+model AdminUser {
+  id        String   @id @default(cuid())
+  username  String   @unique
+  password  String   // Should be hashed in production
+  email     String?  @unique
+  isActive  Boolean  @default(true)
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Activity log for tracking document uploads and operations
+model ActivityLog {
+  id        String   @id @default(cuid())
+  action    String   // e.g., "UPLOAD", "DELETE", "VIEW", "DOWNLOAD"
+  resource  String   // e.g., "document", "user"
+  resourceId String
+  details   String?  // JSON stringified details
+  ipAddress String?
+  userAgent String?
+  
+  createdAt DateTime @default(now())
+  
+  @@index([action])
+  @@index([resourceId])
+  @@index([createdAt])
+}
