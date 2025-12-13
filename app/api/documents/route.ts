@@ -1,15 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
-
-const DOCUMENTS_FILE = path.join(process.cwd(), 'lib', 'documents.json');
+import prisma from '@/lib/prisma';
+import { CreateDocumentSchema } from '@/lib/validations';
+import { logger } from '@/lib/logger';
 
 export async function GET() {
   try {
-    const data = fs.readFileSync(DOCUMENTS_FILE, 'utf-8');
-    const documents = JSON.parse(data);
-    return NextResponse.json(documents);
+    const documents = await prisma.document.findMany({
+      orderBy: { createdAt: 'desc' },
+    });
+    return NextResponse.json({ documents });
   } catch (error) {
+    logger.error('Error fetching documents', error instanceof Error ? error : new Error(String(error)));
     return NextResponse.json({ documents: [] });
   }
 }
@@ -31,44 +34,52 @@ export async function POST(request: NextRequest) {
     const codeParts = filename.match(/^(\d+)/);
     const code = codeParts ? codeParts[1] : Date.now().toString();
 
+    // Validate with Zod
+    const validation = CreateDocumentSchema.safeParse({
+      code,
+      date: date || new Date().toLocaleDateString('vi-VN'),
+      name,
+      filename: filename.replace(/[^a-zA-Z0-9._-]/g, '_'),
+      type: type || 'Gia hạn',
+      description: `Công văn ${type || 'gia hạn'} bảo hộ cho ${name}`,
+    });
+
+    if (!validation.success) {
+      return NextResponse.json({ error: 'Dữ liệu không hợp lệ' }, { status: 400 });
+    }
+
     // Lưu file PDF
     const docDir = path.join(process.cwd(), 'public', 'documents');
     if (!fs.existsSync(docDir)) {
       fs.mkdirSync(docDir, { recursive: true });
     }
 
-    const sanitizedFilename = filename.replace(/[^a-zA-Z0-9._-]/g, '_');
+    const sanitizedFilename = validation.data.filename;
     const filepath = path.join(docDir, sanitizedFilename);
     const buffer = await file.arrayBuffer();
     fs.writeFileSync(filepath, Buffer.from(buffer));
 
-    // Cập nhật documents.json
-    const data = fs.readFileSync(DOCUMENTS_FILE, 'utf-8');
-    const documents = JSON.parse(data);
-
-    const newDoc = {
-      id: code,
-      code,
-      date: date || new Date().toLocaleDateString('vi-VN'),
-      name,
-      filename: sanitizedFilename,
-      type: type || 'Gia hạn',
-      description: `Công văn ${type || 'gia hạn'} bảo hộ cho ${name}`,
-    };
-
     // Kiểm tra xem mã này đã tồn tại chưa
-    const existingIndex = documents.documents.findIndex((d: any) => d.code === code);
-    if (existingIndex >= 0) {
-      documents.documents[existingIndex] = newDoc;
+    const existing = await prisma.document.findUnique({ where: { code } });
+
+    let document;
+    if (existing) {
+      // Update existing
+      document = await prisma.document.update({
+        where: { code },
+        data: validation.data,
+      });
     } else {
-      documents.documents.push(newDoc);
+      // Create new
+      document = await prisma.document.create({
+        data: validation.data,
+      });
     }
 
-    fs.writeFileSync(DOCUMENTS_FILE, JSON.stringify(documents, null, 2));
-
-    return NextResponse.json({ success: true, document: newDoc });
+    logger.info(`Document ${existing ? 'updated' : 'created'}`, { code, name });
+    return NextResponse.json({ success: true, document });
   } catch (error) {
-    console.error('Upload error:', error);
+    logger.error('Upload error', error instanceof Error ? error : new Error(String(error)));
     return NextResponse.json({ error: 'Lỗi upload file' }, { status: 500 });
   }
 }
@@ -77,22 +88,24 @@ export async function DELETE(request: NextRequest) {
   try {
     const { code } = await request.json();
 
-    const data = fs.readFileSync(DOCUMENTS_FILE, 'utf-8');
-    const documents = JSON.parse(data);
-
-    const docToDelete = documents.documents.find((d: any) => d.code === code);
-    if (docToDelete) {
-      const filepath = path.join(process.cwd(), 'public', 'documents', docToDelete.filename);
-      if (fs.existsSync(filepath)) {
-        fs.unlinkSync(filepath);
-      }
+    const docToDelete = await prisma.document.findUnique({ where: { code } });
+    if (!docToDelete) {
+      return NextResponse.json({ error: 'Công văn không tìm thấy' }, { status: 404 });
     }
 
-    documents.documents = documents.documents.filter((d: any) => d.code !== code);
-    fs.writeFileSync(DOCUMENTS_FILE, JSON.stringify(documents, null, 2));
+    // Xóa file
+    const filepath = path.join(process.cwd(), 'public', 'documents', docToDelete.filename);
+    if (fs.existsSync(filepath)) {
+      fs.unlinkSync(filepath);
+    }
 
+    // Xóa từ database
+    await prisma.document.delete({ where: { code } });
+
+    logger.info('Document deleted', { code });
     return NextResponse.json({ success: true });
   } catch (error) {
+    logger.error('Delete error', error instanceof Error ? error : new Error(String(error)));
     return NextResponse.json({ error: 'Lỗi xóa công văn' }, { status: 500 });
   }
 }

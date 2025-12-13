@@ -7,7 +7,7 @@ export const CreateDocumentSchema = z.object({
   name: z.string().min(1, 'Tên công văn không được để trống'),
   filename: z.string().min(1, 'Tên file không được để trống'),
   type: z.string().min(1, 'Loại công văn không được để trống'),
-  description: z.string().optional(),
+  description: z.string().min(1, 'Mô tả không được để trống'),
 });
 
 export const UpdateDocumentSchema = CreateDocumentSchema.partial();

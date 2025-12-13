@@ -1,4 +1,6 @@
 ﻿import { NextRequest, NextResponse } from 'next/server';
+import prisma from '@/lib/prisma';
+import { logger } from '@/lib/logger';
 
 function extractAnswerFromDify(data: any): string | null {
   if (!data) return null;
@@ -39,6 +41,43 @@ function extractAnswerFromDify(data: any): string | null {
   return null;
 }
 
+async function searchDocuments(query: string) {
+  try {
+    const searchTerms = query.toLowerCase().split(' ').filter(t => t.length > 2);
+    
+    if (searchTerms.length === 0) {
+      return null;
+    }
+
+    // Search in document name and description
+    const documents = await prisma.document.findMany({
+      where: {
+        OR: searchTerms.map(term => ({
+          OR: [
+            { name: { contains: term, mode: 'insensitive' } },
+            { description: { contains: term, mode: 'insensitive' } },
+            { code: { contains: term } },
+          ]
+        }))
+      },
+      take: 5,
+    });
+
+    if (documents.length === 0) {
+      return null;
+    }
+
+    const docList = documents
+      .map(doc => `- ${doc.code}: ${doc.name}`)
+      .join('\n');
+
+    return `Tìm thấy ${documents.length} công văn liên quan:\n${docList}\n\nVui lòng xem chi tiết trong mục "Tài liệu".`;
+  } catch (error) {
+    logger.error('Document search error', error instanceof Error ? error : new Error(String(error)));
+    return null;
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     const { query } = await request.json();
@@ -74,8 +113,12 @@ export async function POST(request: NextRequest) {
         clearTimeout(timeout);
 
         if (!res.ok) {
-          console.error('Dify returned non-OK status', res.status);
-          // fallback to mock reply so the user still gets an answer
+          logger.warn('Dify returned non-OK status', { status: res.status });
+          // fallback to document search
+          const docAnswer = await searchDocuments(query);
+          if (docAnswer) {
+            return NextResponse.json({ answer: docAnswer }, { status: 200 });
+          }
           const fallback = `Dify API returned ${res.status}. Trả về câu trả lời mô phỏng cho: "${query}"`;
           return NextResponse.json({ answer: fallback }, { status: 200 });
         }
@@ -86,9 +129,15 @@ export async function POST(request: NextRequest) {
 
         return NextResponse.json({ answer, conversation_id: (data && data.conversation_id) || '' });
       } catch (fetchErr: any) {
-        console.error('Dify fetch error:', fetchErr?.message || fetchErr);
-        // fall through to mock
+        logger.warn('Dify fetch error', { error: fetchErr?.message || fetchErr });
+        // fall through to document search
       }
+    }
+
+    // Try document search fallback
+    const docAnswer = await searchDocuments(query);
+    if (docAnswer) {
+      return NextResponse.json({ answer: docAnswer });
     }
 
     // Mock fallback
@@ -101,7 +150,7 @@ export async function POST(request: NextRequest) {
     const randomAnswer = mockAnswers[Math.floor(Math.random() * mockAnswers.length)];
     return NextResponse.json({ answer: randomAnswer });
   } catch (error) {
-    console.error('Chat API error:', error);
+    logger.error('Chat API error', error instanceof Error ? error : new Error(String(error)));
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
