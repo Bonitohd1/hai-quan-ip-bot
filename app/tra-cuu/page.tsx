@@ -1,43 +1,84 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
+interface Document {
+  id: string;
+  code: string;
+  date: string;
+  name: string;
+  filename: string;
+  type: string;
+  description: string;
+}
+
 export default function TraCuu() {
-  const [searchType, setSearchType] = useState('san-pham');
+  const [searchType, setSearchType] = useState('cong-van');
   const [searchQuery, setSearchQuery] = useState('');
   const [results, setResults] = useState<any[]>([]);
   const [searched, setSearched] = useState(false);
+  const [documents, setDocuments] = useState<Document[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    loadDocuments();
+  }, []);
+
+  const loadDocuments = async () => {
+    try {
+      const res = await fetch('/api/documents');
+      const data = await res.json();
+      setDocuments(data.documents || []);
+    } catch (error) {
+      console.error('Error loading documents:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const stats = [
-    { label: 'Tổng kết quả', value: '52,340', color: 'bg-blue-500' },
-    { label: 'Sản phẩm xác thực', value: '48,200', color: 'bg-green-500' },
-    { label: 'Hàng giả phát hiện', value: '3,540', color: 'bg-red-500' },
-    { label: 'Chưa xác định', value: '600', color: 'bg-yellow-500' },
+    { label: 'Tổng công văn', value: documents.length.toString(), color: 'bg-blue-500' },
+    { label: 'Gia hạn', value: documents.filter(d => d.type === 'Gia hạn').length.toString(), color: 'bg-green-500' },
+    { label: 'Cấp mới', value: documents.filter(d => d.type === 'Cấp mới').length.toString(), color: 'bg-yellow-500' },
+    { label: 'Khác', value: documents.filter(d => !['Gia hạn', 'Cấp mới'].includes(d.type)).length.toString(), color: 'bg-purple-500' },
   ];
 
   const handleSearch = () => {
-    if (!searchQuery.trim()) return;
-    
-    // Mock results
-    const mockResults = [
-      {
-        id: 1,
-        name: 'Sản phẩm: ' + searchQuery,
-        type: 'Hàng hóa',
-        status: 'Có hàng giả',
-        description: 'Đã phát hiện vi phạm sở hữu trí tuệ'
-      },
-      {
-        id: 2,
-        name: 'Nhà sản xuất: ' + searchQuery,
-        type: 'Nhà sản xuất',
-        status: 'Bình thường',
-        description: 'Không phát hiện vi phạm'
-      }
-    ];
-    
-    setResults(mockResults);
+    if (!searchQuery.trim()) {
+      setSearched(false);
+      setResults([]);
+      return;
+    }
+
+    if (searchType === 'cong-van') {
+      // Tìm kiếm công văn
+      const filtered = documents.filter(doc =>
+        doc.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        doc.code.includes(searchQuery) ||
+        doc.description.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setResults(filtered as any[]);
+    } else {
+      // Tìm kiếm khác
+      const mockResults = [
+        {
+          id: 1,
+          name: 'Sản phẩm: ' + searchQuery,
+          type: 'Hàng hóa',
+          status: 'Có hàng giả',
+          description: 'Đã phát hiện vi phạm sở hữu trí tuệ'
+        },
+        {
+          id: 2,
+          name: 'Nhà sản xuất: ' + searchQuery,
+          type: 'Nhà sản xuất',
+          status: 'Bình thường',
+          description: 'Không phát hiện vi phạm'
+        }
+      ];
+      setResults(mockResults);
+    }
     setSearched(true);
   };
 
@@ -68,8 +109,8 @@ export default function TraCuu() {
           <label className="block text-gray-700 font-semibold mb-3 text-sm lg:text-base">Loại tra cứu:</label>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 lg:gap-3">
             {[
+              { value: 'cong-van', label: '📄 Công văn' },
               { value: 'san-pham', label: '📦 Sản phẩm' },
-              { value: 'nha-san-xuat', label: '🏭 Nhà sản xuất' },
               { value: 'vi-pham', label: '⚠️ Vi phạm' }
             ].map(option => (
               <button
@@ -129,23 +170,50 @@ export default function TraCuu() {
         <div className="max-w-4xl">
           <h2 className="text-lg lg:text-xl font-bold text-gray-800 mb-4">Kết quả tìm kiếm ({results.length})</h2>
           <div className="space-y-3 lg:space-y-4">
-            {results.map((result) => (
-              <div key={result.id} className="bg-white p-4 lg:p-6 rounded-xl border-l-4 border-indigo-600 shadow hover:shadow-lg transition">
+            {results.map((result, idx) => (
+              <div key={result.id || idx} className="bg-white p-4 lg:p-6 rounded-xl border-l-4 border-indigo-600 shadow hover:shadow-lg transition">
                 <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start gap-3 mb-3">
                   <div className="flex-1">
-                    <h3 className="text-base lg:text-lg font-bold text-blue-900">{result.name}</h3>
+                    <h3 className="text-base lg:text-lg font-bold text-blue-900">
+                      {searchType === 'cong-van' ? `CV ${result.code} - ${result.name}` : result.name}
+                    </h3>
                     <p className="text-gray-600 text-sm mt-1.5 leading-relaxed">{result.description}</p>
+                    {searchType === 'cong-van' && (
+                      <p className="text-xs text-gray-500 mt-1">📅 {result.date}</p>
+                    )}
                   </div>
                   <span className={`px-3 lg:px-4 py-1.5 lg:py-2 rounded-full text-xs lg:text-sm font-semibold w-fit ${
-                    result.status === 'Có hàng giả'
+                    searchType === 'cong-van'
+                      ? 'bg-blue-100 text-blue-900'
+                      : result.status === 'Có hàng giả'
                       ? 'bg-red-100 text-red-700'
                       : 'bg-green-100 text-green-700'
                   }`}>
-                    {result.status}
+                    {searchType === 'cong-van' ? result.type : result.status}
                   </span>
                 </div>
-                <div className="flex gap-2 lg:gap-3 mt-3 lg:mt-4">
-                  <span className="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-xs font-semibold">{result.type}</span>
+                <div className="flex gap-2 lg:gap-3 mt-3 lg:mt-4 flex-wrap">
+                  {searchType === 'cong-van' && result.filename ? (
+                    <>
+                      <a
+                        href={`/documents/${result.filename}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="bg-green-600 hover:bg-green-700 text-white px-3 lg:px-4 py-1.5 lg:py-2 rounded-full text-xs lg:text-sm font-semibold transition active:scale-95"
+                      >
+                        👁️ Xem PDF
+                      </a>
+                      <a
+                        href={`/documents/${result.filename}`}
+                        download
+                        className="bg-blue-600 hover:bg-blue-700 text-white px-3 lg:px-4 py-1.5 lg:py-2 rounded-full text-xs lg:text-sm font-semibold transition active:scale-95"
+                      >
+                        ⬇️ Tải xuống
+                      </a>
+                    </>
+                  ) : (
+                    <span className="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-xs font-semibold">{result.type}</span>
+                  )}
                 </div>
               </div>
             ))}
