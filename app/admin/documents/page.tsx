@@ -77,6 +77,69 @@ export default function AdminDocuments() {
     }
   };
 
+  const handleBulkUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    setUploading(true);
+    setMessage('⏳ Đang upload nhiều file...');
+
+    let uploaded = 0;
+    let failed = 0;
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      if (!file.name.toLowerCase().endsWith('.pdf')) continue;
+
+      // Parse tên file: "24541 16092025 Hermes.pdf" -> code, date, name
+      const nameWithoutExt = file.name.replace('.pdf', '').trim();
+      const parts = nameWithoutExt.split(/\s+/);
+      
+      let code = '';
+      let dateStr = '';
+      let nameStr = '';
+
+      if (parts.length >= 3) {
+        code = parts[0];
+        dateStr = parts[1];
+        nameStr = parts.slice(2).join(' ');
+      } else if (parts.length === 2) {
+        code = parts[0];
+        nameStr = parts[1];
+      } else {
+        nameStr = nameWithoutExt;
+      }
+
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('name', nameStr || 'Không xác định');
+      formData.append('date', dateStr || new Date().toLocaleDateString('vi-VN'));
+      formData.append('type', 'Gia hạn');
+
+      try {
+        const res = await fetch('/api/documents', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (res.ok) {
+          uploaded++;
+        } else {
+          failed++;
+        }
+      } catch (error) {
+        failed++;
+      }
+    }
+
+    setMessage(`✓ Upload xong: ${uploaded} thành công, ${failed} lỗi`);
+    setTimeout(() => {
+      loadDocuments();
+      setMessage('');
+      setUploading(false);
+    }, 1500);
+  };
+
   const handleDelete = async (code: string) => {
     if (!confirm('Xác nhận xóa công văn này?')) return;
 
@@ -110,7 +173,31 @@ export default function AdminDocuments() {
       <div className="bg-white p-5 lg:p-8 rounded-xl shadow-lg border-l-4 border-blue-900">
         <h2 className="text-lg lg:text-xl font-bold text-gray-800 mb-5 lg:mb-6">📤 Thêm Công văn Mới</h2>
 
-        <form onSubmit={handleUpload} className="space-y-4 lg:space-y-5">
+        {/* Tabs */}
+        <div className="flex gap-3 mb-6 border-b-2 border-gray-200">
+          <button
+            id="single-tab"
+            className="px-4 py-2 font-semibold text-blue-900 border-b-2 border-blue-900"
+          >
+            📄 Upload 1 file
+          </button>
+          <button
+            id="bulk-tab"
+            className="px-4 py-2 font-semibold text-gray-600 hover:text-blue-900 cursor-pointer"
+            onClick={() => {
+              document.getElementById('single-tab')?.classList.remove('border-b-2', 'border-blue-900', 'text-blue-900');
+              document.getElementById('single-tab')?.classList.add('text-gray-600');
+              document.getElementById('bulk-tab')?.classList.add('border-b-2', 'border-blue-900', 'text-blue-900');
+              document.getElementById('single-form')?.classList.add('hidden');
+              document.getElementById('bulk-form')?.classList.remove('hidden');
+            }}
+          >
+            📁 Upload nhiều file
+          </button>
+        </div>
+
+        {/* Single File Form */}
+        <form id="single-form" onSubmit={handleUpload} className="space-y-4 lg:space-y-5">
           {/* File Input */}
           <div>
             <label className="block text-gray-700 font-semibold mb-2 text-sm lg:text-base">Chọn File PDF:</label>
@@ -178,6 +265,37 @@ export default function AdminDocuments() {
             {uploading ? '⏳ Đang upload...' : '📤 Upload Công văn'}
           </button>
         </form>
+
+        {/* Bulk Upload Form */}
+        <div id="bulk-form" className="hidden space-y-4 lg:space-y-5">
+          <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+            <p className="text-sm text-blue-900">
+              💡 <strong>Cách sử dụng:</strong> Chọn thư mục hoặc nhiều file PDF. <br/>
+              Tên file nên theo định dạng: <code className="bg-white px-2 py-1 rounded">MÃCV NGÀY TÊN.pdf</code> <br/>
+              Ví dụ: <code className="bg-white px-2 py-1 rounded">24541 16092025 Hermes.pdf</code>
+            </p>
+          </div>
+
+          <div>
+            <label className="block text-gray-700 font-semibold mb-2 text-sm lg:text-base">Chọn nhiều file PDF:</label>
+            <input
+              type="file"
+              multiple
+              accept=".pdf"
+              onChange={handleBulkUpload}
+              disabled={uploading}
+              className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-900 text-sm disabled:opacity-60"
+            />
+            <p className="text-xs text-gray-500 mt-2">📂 Bạn có thể chọn cả thư mục hoặc chọn nhiều file cùng lúc</p>
+          </div>
+
+          {/* Message */}
+          {message && (
+            <div className={`p-3 rounded-lg text-sm font-semibold ${message.startsWith('✓') ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+              {message}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Documents List */}
