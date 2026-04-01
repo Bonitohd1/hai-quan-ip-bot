@@ -2,112 +2,104 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Lock, Mail, ShieldCheck, Fingerprint, ChevronRight, Globe } from 'lucide-react';
+import { Lock, Mail, ShieldCheck, Fingerprint, ChevronRight, Globe, ShieldAlert } from 'lucide-react';
 import Link from 'next/link';
 
 export default function AdminLogin() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
-  // Mock Google Login for UI demonstration
   const handleGoogleLogin = () => {
     setIsLoading(true);
-    // In real implementation: signIn('google')
     setTimeout(() => {
       router.push('/admin/documents');
     }, 1500);
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 bg-[#020617] relative overflow-hidden">
-      {/* Premium Background Effects */}
-      <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_20%_20%,#1e1b4b_0%,transparent_50%)]" />
-      <div className="absolute bottom-0 right-0 w-full h-full bg-[radial-gradient(circle_at_80%_80%,#1e1b4b_0%,transparent_50%)]" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-500/5 blur-[120px] rounded-full" />
-      
-      {/* Grid Pattern */}
-      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-soft-light" />
+    <div className="min-h-screen flex items-center justify-center p-6 bg-[#0a192f] relative overflow-hidden">
+      {/* Background Decor */}
+      <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_20%_20%,#112240_0%,transparent_50%)]" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-600/5 blur-[120px] rounded-full" />
+      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay pointer-events-none" />
 
       <div className="w-full max-w-lg relative z-10 fade-in">
-        {/* Elite Branding */}
-        <div className="mb-12 text-center">
-          <div className="inline-flex items-center justify-center w-24 h-24 rounded-[2.5rem] bg-gradient-to-br from-[#1a2b56] to-[#0f172a] shadow-2xl mb-8 relative border border-white/10 group">
-             <ShieldCheck className="w-12 h-12 text-yellow-400 group-hover:scale-110 transition-transform duration-500" />
-             <div className="absolute -bottom-2 -right-2 w-10 h-10 rounded-2xl bg-[#020617] border-2 border-yellow-400/50 flex items-center justify-center shadow-lg">
-                <Fingerprint className="w-5 h-5 text-yellow-500" />
+        <div className="mb-14 text-center">
+          <div className="inline-flex items-center justify-center w-24 h-24 rounded-[2.5rem] bg-[#112240] shadow-3xl mb-10 relative border border-[#233554] group">
+             <ShieldAlert className="w-12 h-12 text-[#eab308] group-hover:scale-110 transition-transform duration-500" />
+             <div className="absolute -bottom-2 -right-2 w-10 h-10 rounded-2xl bg-[#0a192f] border-2 border-[#eab308]/50 flex items-center justify-center shadow-lg">
+                <Fingerprint className="w-5 h-5 text-[#eab308]" />
              </div>
              {/* Glowing Pulse */}
-             <div className="absolute inset-0 rounded-[2.5rem] bg-yellow-400/20 animate-pulse blur-xl -z-10" />
+             <div className="absolute inset-0 rounded-[2.5rem] bg-[#eab308]/10 animate-pulse blur-xl -z-10" />
           </div>
-          <h1 className="text-4xl font-black text-white tracking-tighter mb-3 uppercase">Admin Portal</h1>
-          <div className="flex items-center justify-center gap-3">
-             <div className="h-px w-8 bg-gradient-to-r from-transparent to-yellow-400/50" />
-             <p className="text-yellow-400 font-bold text-[10px] uppercase tracking-[0.4em]">Internal Security System</p>
-             <div className="h-px w-8 bg-gradient-to-l from-transparent to-yellow-400/50" />
+          <h1 className="text-4xl font-black text-white tracking-tighter mb-4 uppercase italic">Admin Portal</h1>
+          <div className="flex items-center justify-center gap-4">
+             <div className="h-[2px] w-12 bg-gradient-to-r from-transparent to-[#eab308]/40" />
+             <p className="text-[#eab308] font-bold text-[10px] uppercase tracking-[0.5em] italic">Secured Gateway</p>
+             <div className="h-[2px] w-12 bg-gradient-to-l from-transparent to-[#eab308]/40" />
           </div>
         </div>
 
-        {/* Login Container */}
-        <div className="bg-white/5 backdrop-blur-3xl rounded-[3rem] p-12 border border-white/10 shadow-[0_32px_64px_-12px_rgba(0,0,0,0.6)] relative group overflow-hidden">
-           {/* Visual Flourish */}
-           <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-yellow-400 to-transparent opacity-50" />
+        <div className="bg-[#112240] rounded-[4rem] p-16 border border-[#233554] shadow-3xl relative group overflow-hidden">
+           <div className="absolute top-0 left-0 w-full h-[3px] bg-[#eab308] shadow-[0_0_20px_rgba(234,179,8,0.3)]" />
            
-           <div className="space-y-10">
-              <div className="text-center space-y-2">
-                 <h2 className="text-xl font-black text-white">Xác thực quyền quản trị</h2>
-                 <p className="text-slate-400 text-xs font-medium">Sử dụng tài khoản nội bộ Google Workspace để truy cập</p>
+           <div className="space-y-12">
+              <div className="text-center space-y-3">
+                 <h2 className="text-2xl font-black text-white italic">Xác thực quyền hạn</h2>
+                 <p className="text-slate-500 text-xs font-black uppercase tracking-widest opacity-80">Sử dụng Google Workspace định danh nội bộ</p>
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-5">
                  <button
                    onClick={handleGoogleLogin}
                    disabled={isLoading}
-                   className="w-full flex items-center justify-between px-8 py-5 bg-white hover:bg-slate-100 text-[#020617] rounded-3xl font-black text-sm transition-all duration-500 shadow-xl hover:shadow-white/10 active:scale-[0.98] group/btn"
+                   className="w-full flex items-center justify-between px-10 py-6 bg-white hover:bg-[#eab308] text-[#0a192f] rounded-[2.5rem] font-black text-sm transition-all duration-500 shadow-2xl active:scale-[0.98] group/btn"
                  >
-                    <div className="flex items-center gap-4">
-                       <div className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center shadow-inner group-hover/btn:rotate-12 transition-transform">
-                          <img src="https://authjs.dev/img/providers/google.svg" alt="Google" className="w-4 h-4" />
+                    <div className="flex items-center gap-5">
+                       <div className="w-10 h-10 rounded-full bg-[#0a192f]/5 flex items-center justify-center group-hover/btn:rotate-12 transition-transform">
+                          <img src="https://authjs.dev/img/providers/google.svg" alt="Google" className="w-5 h-5" />
                        </div>
-                       <span>Tiếp tục với Gmail</span>
+                       <span className="uppercase tracking-widest">Tiếp tục bằng Gmail</span>
                     </div>
-                    <ChevronRight className="w-4 h-4 text-slate-400 group-hover/btn:translate-x-1 transition-transform" />
+                    <ChevronRight className="w-5 h-5 text-[#0a192f]/40 group-hover/btn:translate-x-1 transition-transform" />
                  </button>
 
-                 <div className="flex items-center gap-4 py-2">
-                    <div className="h-px flex-1 bg-white/5" />
-                    <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">hoặc dùng Token</span>
-                    <div className="h-px flex-1 bg-white/5" />
+                 <div className="flex items-center gap-6 py-4">
+                    <div className="h-px flex-1 bg-[#233554]" />
+                    <span className="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em] italic">Identify Layer</span>
+                    <div className="h-px flex-1 bg-[#233554]" />
                  </div>
 
                  <div className="relative group/input">
-                    <div className="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none">
-                       <Mail className="h-4 w-4 text-slate-500 group-focus-within/input:text-yellow-400 transition-colors" />
+                    <div className="absolute inset-y-0 left-0 pl-7 flex items-center pointer-events-none">
+                       <Mail className="h-5 w-5 text-slate-600 group-focus-within/input:text-[#eab308] transition-colors" />
                     </div>
                     <input
                       type="text"
-                      className="block w-full pl-14 pr-6 py-5 bg-white/5 border border-white/5 rounded-3xl outline-none focus:border-yellow-400/50 focus:bg-white/10 text-white text-sm font-bold transition-all placeholder:text-slate-600"
-                      placeholder="Email xác nhận"
+                      className="block w-full pl-16 pr-8 py-6 bg-[#0a192f] border border-[#233554] rounded-[2.5rem] outline-none focus:border-[#eab308]/50 focus:bg-[#0a192f]/80 text-white text-sm font-black tracking-tight transition-all placeholder:text-slate-700 italic shadow-inner"
+                      placeholder="Email xác nhận danh tính"
                     />
                  </div>
               </div>
 
-              <div className="pt-6 border-t border-white/5 flex flex-col items-center gap-6">
-                 <div className="flex items-center gap-10 opacity-30">
-                    <Globe className="w-4 h-4 text-white" />
-                    <div className="h-4 w-px bg-white" />
-                    <ShieldCheck className="w-4 h-4 text-white" />
-                    <div className="h-4 w-px bg-white" />
-                    <Lock className="w-4 h-4 text-white" />
+              <div className="pt-10 border-t border-[#233554] flex flex-col items-center gap-8">
+                 <div className="flex items-center gap-12 opacity-30">
+                    <Globe className="w-5 h-5 text-white" />
+                    <div className="h-6 w-px bg-white/20" />
+                    <ShieldCheck className="w-5 h-5 text-white" />
+                    <div className="h-6 w-px bg-white/20" />
+                    <Lock className="w-5 h-5 text-white" />
                  </div>
-                 <Link href="/" className="text-[10px] font-black text-slate-500 hover:text-yellow-400 transition-colors uppercase tracking-[0.2em] flex items-center gap-2">
-                    ← Trở lại trang chủ công cộng
+                 <Link href="/" className="text-[11px] font-black text-slate-600 hover:text-[#eab308] transition-colors uppercase tracking-[0.4em] flex items-center gap-3">
+                    ← Trở lại Main Console
                  </Link>
               </div>
            </div>
         </div>
 
-        <p className="mt-12 text-center text-[10px] font-black text-slate-600 uppercase tracking-[0.4em] opacity-40">
-           © 2026 Secured Custom IP Portal v3.0
+        <p className="mt-16 text-center text-[10px] font-black text-slate-700 uppercase tracking-[0.6em] opacity-40">
+           © 2026 Secured Internal Architecture v4.0
         </p>
       </div>
     </div>
