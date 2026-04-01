@@ -1,169 +1,133 @@
 'use client';
+
+import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useRouter, usePathname } from 'next/navigation';
-import { useState } from 'react';
-import UserMenuButton from './UserMenuButton';
+import { usePathname } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { 
+  Bot, 
+  History, 
+  FileText, 
+  Search, 
+  BarChart3, 
+  BookOpen, 
+  Menu, 
+  X,
+  Sparkles,
+  ChevronRight,
+  ShieldCheck
+} from 'lucide-react';
 
 export default function Sidebar() {
-  const router = useRouter();
   const pathname = usePathname();
-  const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
+  useEffect(() => {
+    setIsMobileOpen(false);
+  }, [pathname]);
+
   const menuItems = [
-    { 
-      id: 'home', 
-      label: 'Trợ lý SHTT', 
-      icon: '🤖', 
-      href: '/' 
-    },
-    { 
-      id: 'lich-su', 
-      label: 'Lịch sử SHTT', 
-      subtext: '3 trợ lý', 
-      href: '/lich-su-shtt' 
-    },
-    { 
-      id: 'van-ban', 
-      label: 'Văn Bản Pháp Luật', 
-      subtext: '3 trợ lý', 
-      href: '/van-ban-phap-luat' 
-    },
-    { 
-      id: 'tra-cuu', 
-      label: 'Tra Cứu', 
-      subtext: '3 trợ lý', 
-      href: '/tra-cuu' 
-    },
-    { 
-      id: 'thong-ke', 
-      label: 'Thống Kê SHTT', 
-      subtext: '2 trợ lý', 
-      href: '#' 
-    },
-    { 
-      id: 'quy-dinh', 
-      label: 'Quy Định Pháp Luật', 
-      subtext: '6 trợ lý', 
-      href: '#' 
-    },
+    { id: 'trợ lý shtt', label: 'Trợ lý SHTT', subLabel: '3 trợ lý', icon: Bot, href: '/', activeIcon: true },
+    { id: 'lịch sử shtt', label: 'Lịch sử SHTT', subLabel: '3 trợ lý', icon: History, href: '/lich-su-shtt' },
+    { id: 'văn bản pháp luật', label: 'Văn Bản Pháp Luật', subLabel: '3 trợ lý', icon: FileText, href: '/van-ban-phap-luat' },
+    { id: 'tra cứu', label: 'Tra Cứu', subLabel: '3 trợ lý', icon: Search, href: '/tra-cuu' },
+    { id: 'thống kê shtt', label: 'Thống Kê SHTT', subLabel: '2 trợ lý', icon: BarChart3, href: '#' },
+    { id: 'quy định pháp luật', label: 'Quy Định Pháp Luật', subLabel: '6 trợ lý', icon: ShieldCheck, href: '#' },
   ];
 
   return (
     <>
-      {/* Mobile Menu Button */}
+      {/* Mobile Menu Trigger */}
       <button
         onClick={() => setIsMobileOpen(!isMobileOpen)}
-        className="fixed top-4 left-4 z-50 lg:hidden w-10 h-10 bg-blue-900 hover:bg-blue-800 rounded-lg flex items-center justify-center shadow-lg transition-colors"
-        aria-label="Toggle menu"
+        className="fixed top-5 left-5 z-50 lg:hidden w-10 h-10 bg-[#1a2b56] text-white rounded-lg flex items-center justify-center shadow-lg active:scale-90"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6 text-white">
-          {isMobileOpen ? (
-            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-          ) : (
-            <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-          )}
-        </svg>
+        {isMobileOpen ? <X size={20} /> : <Menu size={20} />}
       </button>
 
-      {/* Mobile Overlay */}
-      {isMobileOpen && (
-        <div 
-          className="fixed inset-0 bg-black/50 z-30 lg:hidden"
-          onClick={() => setIsMobileOpen(false)}
-        />
-      )}
+      {/* Sidebar Container */}
+      <aside className={`fixed left-0 top-0 h-screen z-40 transition-transform duration-300 lg:translate-x-0 ${
+        isMobileOpen ? 'translate-x-0' : '-translate-x-full'
+      } w-64 bg-[#1a2b56] border-r border-white/5 flex flex-col`}>
+        
+        {/* Gold Accent Line (Active Indicator global) - handled item by item */}
 
-      <aside className={`bg-gradient-to-b from-blue-900 to-blue-950 text-white h-screen p-4 border-r-4 border-yellow-500 overflow-y-auto fixed left-0 top-0 transition-all duration-300 ease-in-out z-40 ${
-        isCollapsed ? 'w-20' : 'w-56'
-      } ${
-        isMobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
-      }`}>
-        {/* Toggle Button */}
-        <button
-          onClick={() => setIsCollapsed(!isCollapsed)}
-          className="hidden lg:block absolute -right-3 top-6 w-6 h-6 bg-yellow-500 hover:bg-yellow-400 rounded-full flex items-center justify-center shadow-lg transition-all duration-200 hover:scale-110 z-50"
-          aria-label={isCollapsed ? 'Mở sidebar' : 'Đóng sidebar'}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={2.5}
-            stroke="currentColor"
-            className={`w-4 h-4 text-blue-950 transition-transform duration-300 ${
-              isCollapsed ? 'rotate-180' : ''
-            }`}
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-          </svg>
-        </button>
-
-        {/* Logo */}
-        <div className={`mb-8 pb-6 border-b-2 border-yellow-500 text-center transition-all duration-300 ${
-          isCollapsed ? 'opacity-0 h-0 overflow-hidden' : 'opacity-100'
-        }`}>
-          <div className="flex justify-center mb-3">
-            <Image 
-              src="/logoHQdaxoanen.png" 
-              alt="Logo Hải Quan Việt Nam" 
-              width={80} 
-              height={80}
-              className="rounded-full"
-            />
+        {/* Logo Section */}
+        <div className="pt-10 pb-8 px-6 flex flex-col items-center">
+          <div className="relative w-20 h-20 mb-4">
+             <Image 
+               src="/logoHQdaxoanen.png" 
+               alt="SHTT Hải Quan" 
+               fill
+               className="object-contain"
+             />
           </div>
-          <h2 className="font-bold text-lg text-yellow-400">
-            SHTT Hải Quan
-          </h2>
-          <p className="text-xs text-blue-200 mt-2">Sở hữu trí tuệ Hải quan</p>
-        </div>      {/* Navigation */}
-      <nav className="space-y-3">
-        {menuItems.map((item, idx) => {
-          const isActive = pathname === item.href;
-          const icons = ['🤖', '📚', '⚖️', '🔍', '📊', '📋'];
-          return (
-            <button
-              key={item.id}
-              onClick={() => router.push(item.href)}
-              title={isCollapsed ? item.label : ''}
-              className={`group w-full text-left rounded-lg font-semibold transition-all duration-300 ease-out relative overflow-hidden ${
-                isCollapsed ? 'p-3 flex justify-center' : 'p-4'
-              } ${
-                isActive 
-                  ? 'bg-gradient-to-r from-yellow-500/20 to-yellow-600/10 border-l-4 border-yellow-400 text-white shadow-lg shadow-yellow-500/20 scale-[1.02]' 
-                  : 'bg-white/5 hover:bg-gradient-to-r hover:from-blue-500/20 hover:to-blue-600/10 text-blue-100 hover:text-white border-l-4 border-transparent hover:border-blue-400/50 hover:shadow-md hover:scale-[1.02]'
-              } active:scale-95`}
-            >
-              {!isActive && (
-                <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-in-out" />
-              )}
-              <div className="relative z-10">
-                {isCollapsed ? (
-                  <div className="text-2xl flex items-center justify-center">
-                    {icons[idx]}
-                  </div>
-                ) : (
-                  <>
-                    <div className="text-[15px] flex items-center gap-2">
-                      <span>{icons[idx]}</span>
-                      {item.label}
-                      {isActive && <span className="text-yellow-300 animate-pulse">✦</span>}
-                    </div>
-                    {item.subtext && <div className="text-xs opacity-75 mt-1 ml-6">{item.subtext}</div>}
-                  </>
+          <div className="text-center">
+            <h1 className="text-lg font-black text-[#facc15] tracking-tight leading-none mb-1">SHTT Hải Quan</h1>
+            <p className="text-[10px] font-bold text-white uppercase tracking-wider opacity-90">Sở hữu trí tuệ Hải quan</p>
+          </div>
+          <div className="w-full h-[1px] bg-white/10 mt-6" />
+        </div>
+
+        {/* Navigation Items */}
+        <nav className="flex-1 px-3 space-y-1 overflow-y-auto custom-scrollbar pt-2">
+          {menuItems.map((item) => {
+            const isActive = pathname === item.href;
+            const Icon = item.icon;
+            
+            return (
+              <Link
+                key={item.id}
+                href={item.href}
+                className={`group flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 relative ${
+                  isActive 
+                    ? 'bg-white/10 text-white' 
+                    : 'text-blue-200/60 hover:bg-white/5 hover:text-white'
+                }`}
+              >
+                {/* Gold Indicator Line */}
+                {isActive && (
+                  <div className="absolute left-0 top-1.5 bottom-1.5 w-1 bg-[#facc15] rounded-r-full shadow-[2px_0_10px_#facc15]" />
                 )}
-              </div>
-            </button>
-          );
-        })}
-      </nav>
+
+                <div className={`p-1.5 rounded-lg transition-colors ${
+                  isActive ? 'text-[#facc15]' : 'group-hover:text-[#facc15]'
+                }`}>
+                  <Icon size={18} strokeWidth={2.5} />
+                </div>
+
+                <div className="flex flex-col">
+                  <span className="text-xs font-black tracking-tight flex items-center gap-1.5 line-clamp-1">
+                    {item.label}
+                    {item.activeIcon && isActive && <span className="text-[#facc15] text-[10px]">+</span>}
+                  </span>
+                  <span className="text-[9px] font-bold opacity-60 tracking-wider group-hover:opacity-100">{item.subLabel}</span>
+                </div>
+
+                {isActive && <div className="ml-auto w-1.5 h-1.5 bg-[#facc15] rounded-full" />}
+              </Link>
+            );
+          })}
+        </nav>
+
+        {/* Floating Chat Status (Optional but for consistency) */}
+        <div className="p-6">
+          <div className="bg-yellow-500/5 rounded-2xl p-4 border border-yellow-500/10 mb-4 hidden lg:block">
+            <div className="flex items-center gap-2 mb-2">
+               <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
+               <span className="text-[10px] font-black text-blue-200 uppercase tracking-widest">Hệ thống sẵn sàng</span>
+            </div>
+            <p className="text-[9px] font-bold text-blue-300 leading-tight">Mọi truy vấn SHTT đều được bảo mật và mã hóa.</p>
+          </div>
+        </div>
+
+        {/* Sidebar Border Decor */}
+        <div className="absolute top-0 right-0 h-full w-[2px] bg-[#facc15]" />
       </aside>
 
-      {/* Spacer div to push content - hidden on mobile */}
-      <div className={`hidden lg:block transition-all duration-300 ${
-        isCollapsed ? 'w-20' : 'w-56'
-      }`} />
+      {/* Spacer for Desktop */}
+      <div className="hidden lg:block w-64 shrink-0" />
     </>
   );
 }

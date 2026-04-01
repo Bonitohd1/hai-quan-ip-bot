@@ -5,15 +5,18 @@ import prisma from '@/lib/prisma';
 import { CreateDocumentSchema } from '@/lib/validations';
 import { logger } from '@/lib/logger';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
   try {
     const documents = await prisma.document.findMany({
       orderBy: { createdAt: 'desc' },
     });
+    logger.info(`Fetched ${documents.length} documents from ${process.env.DATABASE_URL}`);
     return NextResponse.json({ documents });
   } catch (error) {
-    logger.error('Error fetching documents', error instanceof Error ? error : new Error(String(error)));
-    return NextResponse.json({ documents: [] });
+    logger.error('CRITICAL: Error fetching documents from database', error instanceof Error ? error : new Error(String(error)));
+    return NextResponse.json({ documents: [], error: 'Không thể kết nối cơ sở dữ liệu' });
   }
 }
 

@@ -6,13 +6,13 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "sqlite"
+  url      = "file:../dev.db"
 }
 
 // Document model for storing uploaded PDFs
 model Document {
-  id          String   @id @default(cuid())
+  id          String   @id @default(uuid())
   code        String   @unique
   date        String   // Format: DDMMYYYY (e.g., 16092025)
   name        String

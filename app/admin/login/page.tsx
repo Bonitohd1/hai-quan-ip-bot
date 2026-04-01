@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { ShieldCheck, User, Lock, ArrowRight, Loader2, Sparkles } from 'lucide-react';
+import Link from 'next/link';
 
 export default function AdminLogin() {
   const [username, setUsername] = useState('');
@@ -13,7 +15,6 @@ export default function AdminLogin() {
 
   useEffect(() => {
     setMounted(true);
-    // Kiểm tra nếu đã đăng nhập
     const checkAuth = async () => {
       const res = await fetch('/api/admin/check');
       if (res.ok) {
@@ -39,95 +40,149 @@ export default function AdminLogin() {
         router.push('/admin/documents');
       } else {
         const data = await res.json();
-        setError(data.error || 'Đăng nhập thất bại');
+        setError(data.error || 'Thông tin đăng nhập không chính xác');
       }
     } catch (err) {
-      setError('Lỗi kết nối');
+      setError('Lỗi kết nối máy chủ');
     } finally {
       setLoading(false);
     }
   };
 
-  if (!mounted) {
-    return null;
-  }
+  if (!mounted) return null;
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-900 to-blue-950">
-      <div className="w-full max-w-md">
-        {/* Card */}
-        <div className="bg-white rounded-xl shadow-2xl p-8 border-t-4 border-yellow-500">
-          {/* Logo */}
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-900 rounded-full mb-4">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8 text-yellow-400">
-                <path fillRule="evenodd" d="M12.516 2.17a.75.75 0 00-1.032 0 11.209 11.209 0 01-7.877 3.08.75.75 0 00-.722.515A12.74 12.74 0 002.25 9.75c0 5.942 4.064 10.933 9.563 12.348a.749.749 0 00.374 0c5.499-1.415 9.563-6.406 9.563-12.348 0-1.39-.223-2.73-.635-3.985a.75.75 0 00-.722-.516l-.143.001c-2.996 0-5.717-1.17-7.734-3.08zm3.094 8.016a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clipRule="evenodd" />
-              </svg>
-            </div>
-            <h1 className="text-2xl font-bold text-gray-800">Admin SHTT</h1>
-            <p className="text-gray-600 text-sm mt-1">Đăng nhập để quản lý công văn</p>
-          </div>
+    <div className="fixed inset-0 flex items-center justify-center p-6 overflow-hidden">
+      {/* Dynamic Background */}
+      <div className="absolute inset-0 bg-[#0a0a0c] -z-10">
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-blue-600/10 blur-[120px] animate-pulse" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-indigo-600/10 blur-[120px] animate-pulse" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-[30%] right-[10%] w-[30%] h-[30%] rounded-full bg-blue-400/5 blur-[100px]" />
+      </div>
 
-          {/* Form */}
-          <form onSubmit={handleLogin} className="space-y-4">
-            {/* Username */}
-            <div>
-              <label className="block text-gray-700 font-semibold mb-2">Tên đăng nhập:</label>
-              <input
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="admin"
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-900 transition"
-                disabled={loading}
-              />
-            </div>
+      <div className="w-full max-w-lg relative">
+        {/* Back to Home Link */}
+        <Link 
+          href="/" 
+          className="absolute -top-12 left-0 text-blue-400/60 hover:text-blue-400 font-bold text-xs uppercase tracking-widest flex items-center gap-2 transition-all"
+        >
+          <ArrowRight className="w-3 h-3 rotate-180" />
+          Quay lại Trang chủ
+        </Link>
 
-            {/* Password */}
-            <div>
-              <label className="block text-gray-700 font-semibold mb-2">Mật khẩu:</label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-900 transition"
-                disabled={loading}
-              />
-            </div>
+        {/* Login Card */}
+        <div className="glass-effect rounded-[2.5rem] border border-white/10 p-10 lg:p-14 shadow-3xl overflow-hidden relative group">
+          {/* Top Decorative Line */}
+          <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-blue-600 via-yellow-400 to-blue-600 shadow-[0_0_20px_rgba(59,130,246,0.3)]" />
+          
+          {/* Header */}
+           <div className="text-center mb-12 relative">
+             <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-blue-600/10 border border-blue-500/20 mb-6 relative group-hover:scale-110 transition-transform duration-500">
+               <ShieldCheck className="w-10 h-10 text-blue-400" />
+               <div className="absolute -top-2 -right-2 w-6 h-6 bg-yellow-500 rounded-lg flex items-center justify-center shadow-lg border-2 border-[#0a0a0c]">
+                 <Sparkles className="w-3 h-3 text-blue-950" />
+               </div>
+             </div>
+             <h1 className="text-3xl font-black text-white tracking-tighter mb-2">
+               Hệ thống <span className="text-yellow-400 uppercase">Admin</span>
+             </h1>
+             <p className="text-blue-100/40 text-xs font-bold uppercase tracking-[0.25em]">Quản trị Dữ liệu SHTT</p>
+           </div>
 
-            {/* Error */}
-            {error && (
-              <div className="p-3 bg-red-100 text-red-700 rounded-lg text-sm font-semibold">
-                ⚠️ {error}
+           {/* Form */}
+           <form onSubmit={handleLogin} className="space-y-6 relative">
+              <div className="space-y-2">
+                <label className="block text-[10px] font-black uppercase tracking-widest text-blue-100/40 ml-4">Định danh admin</label>
+                <div className="relative group/input">
+                  <div className="absolute left-5 top-1/2 -translate-y-1/2 text-blue-400/40 group-focus-within/input:text-blue-400 transition-colors">
+                    <User className="w-5 h-5" />
+                  </div>
+                  <input
+                    type="text"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    placeholder="Tên đăng nhập"
+                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-14 py-5 text-white placeholder-white/20 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:bg-white/[0.08] transition-all font-bold"
+                    disabled={loading}
+                    required
+                  />
+                </div>
               </div>
-            )}
 
-            {/* Login Button */}
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-blue-900 hover:bg-blue-950 disabled:opacity-60 text-white px-6 py-3 rounded-lg font-semibold border-2 border-yellow-500 transition active:scale-95"
-            >
-              {loading ? '⏳ Đang đăng nhập...' : '🔐 Đăng nhập'}
-            </button>
-          </form>
+              <div className="space-y-2">
+                <label className="block text-[10px] font-black uppercase tracking-widest text-blue-100/40 ml-4">Mã bảo mật</label>
+                <div className="relative group/input">
+                  <div className="absolute left-5 top-1/2 -translate-y-1/2 text-blue-400/40 group-focus-within/input:text-blue-400 transition-colors">
+                    <Lock className="w-5 h-5" />
+                  </div>
+                  <input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Mật khẩu truy cập"
+                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-14 py-5 text-white placeholder-white/20 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:bg-white/[0.08] transition-all font-bold"
+                    disabled={loading}
+                    required
+                  />
+                </div>
+              </div>
 
-          {/* Info */}
-          <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
-            <p className="text-xs text-blue-900">
-              <strong>Demo:</strong> <br />
-              Username: <code className="bg-white px-2 py-1 rounded">admin</code> <br />
-              Password: <code className="bg-white px-2 py-1 rounded">admin123</code>
-            </p>
-          </div>
+              {error && (
+                <div className="p-4 bg-red-500/10 border border-red-500/20 text-red-500 rounded-2xl text-xs font-bold flex items-center gap-3 animate-shake">
+                  <span className="text-lg">⚠️</span> {error}
+                </div>
+              )}
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full group/btn relative overflow-hidden bg-blue-600 hover:bg-blue-500 text-white font-black uppercase tracking-widest py-5 rounded-2xl transition-all shadow-xl shadow-blue-600/20 active:scale-95 disabled:opacity-50"
+              >
+                <div className="relative z-10 flex items-center justify-center gap-3">
+                  {loading ? (
+                    <>
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      Đang xác thực...
+                    </>
+                  ) : (
+                    <>
+                      Xác nhận đăng nhập
+                      <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                    </>
+                  )}
+                </div>
+                {/* Button Glow Effect */}
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-400/0 via-white/20 to-blue-400/0 translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-700" />
+              </button>
+           </form>
+
+           {/* Footer Info */}
+           <div className="mt-12 text-center">
+             <p className="text-[10px] text-blue-100/20 font-medium">BẢN QUYỀN THUỘC VỀ TRUNG TÂM DỮ LIỆU SỮ HỮU TRÍ TUỆ HẢI QUAN © 2025</p>
+           </div>
         </div>
 
-        {/* Footer */}
-        <p className="text-center text-white text-sm mt-6 opacity-75">
-          © 2025 Sở hữu Trí tuệ Hải quan
-        </p>
+        {/* Floating Demo Info */}
+        <div className="mt-8 flex justify-center gap-6">
+           <div className="text-[10px] text-gray-600 bg-white/5 px-4 py-2 rounded-full border border-white/5">
+             USER: <span className="text-blue-400 font-bold ml-1">admin</span>
+           </div>
+           <div className="text-[10px] text-gray-600 bg-white/5 px-4 py-2 rounded-full border border-white/5">
+             PASS: <span className="text-blue-400 font-bold ml-1">admin123</span>
+           </div>
+        </div>
       </div>
+
+      <style jsx global>{`
+        @keyframes shake {
+          0%, 100% { transform: translateX(0); }
+          25% { transform: translateX(-5px); }
+          75% { transform: translateX(5px); }
+        }
+        .animate-shake {
+          animation: shake 0.2s ease-in-out 0s 2;
+        }
+      `}</style>
     </div>
   );
 }

@@ -1,8 +1,10 @@
-"use client";
+'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import Image from 'next/image';
+import { X, Send, Trash2, ChevronUp, ChevronDown } from 'lucide-react';
 
 type Message = { id: number; from: 'user' | 'bot'; text: string };
 
@@ -37,7 +39,6 @@ export default function ChatBot() {
     setShowSuggestions(false);
     setIsSending(true);
 
-// Call Dify API endpoint
     try {
       const response = await fetch('/api/chat', {
         method: 'POST',
@@ -51,7 +52,7 @@ export default function ChatBot() {
       const botMsg: Message = {
         id: nextId.current++,
         from: 'bot',
-        text: data.answer || 'Sorry, I could not understand. Please try again.',
+        text: data.answer || 'Xin lỗi, tôi không hiểu câu hỏi của bạn. Vui lòng thử lại.',
       };
       setMessages((p) => [...p, botMsg]);
     } catch (error) {
@@ -59,296 +60,175 @@ export default function ChatBot() {
       const errorMsg: Message = {
         id: nextId.current++,
         from: 'bot',
-        text: 'Error: Could not connect to the bot. Please try again later.',
+        text: 'Lỗi: Không thể kết nối tới máy chủ. Vui lòng thử lại sau.',
       };
       setMessages((p) => [...p, errorMsg]);
     } finally {
       setIsSending(false);
     }
   }
+
   return (
-    <div className="fixed bottom-4 right-4 lg:bottom-6 lg:right-6 z-50">
-      {/* Mobile: Floating Icon */}
-      <div className="lg:hidden">
-        {!open ? (
-          <button
-            onClick={() => setOpen(true)}
-            className="w-14 h-14 bg-blue-900 hover:bg-blue-800 rounded-full shadow-2xl flex items-center justify-center border-2 border-yellow-500 transition-transform active:scale-95"
-            aria-label="Mở chat"
-          >
-            <span className="text-2xl">💬</span>
-          </button>
-        ) : (
-          <div className="fixed inset-0 bg-black/50 flex items-end" onClick={() => setOpen(false)}>
-            <div className="w-full bg-white rounded-t-3xl shadow-2xl max-h-[80vh] flex flex-col" onClick={(e) => e.stopPropagation()}>
-              <div className="flex items-center justify-between bg-blue-900 text-white px-4 py-3 rounded-t-3xl">
-                <div className="flex items-center gap-2">
-                  <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-yellow-500/90 text-blue-950 font-bold">🤖</span>
-                  <span className="font-semibold tracking-wide">Trợ lý SHTT</span>
+    <div className="fixed bottom-6 right-6 z-[100] font-sans">
+      
+      {/* Floating Trigger Button (Always visible if not open on desktop, or always for mobile) */}
+      {!open && (
+        <button 
+          onClick={() => setOpen(true)}
+          className="flex items-center gap-3 bg-[#1a2b56] text-white pl-4 pr-6 py-3 rounded-xl shadow-2xl shadow-blue-900/40 hover:scale-[1.02] transition-all group active:scale-95 border border-white/10"
+        >
+          <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center p-1.5 transition-transform group-hover:rotate-12">
+             <Image 
+               src="/logoHQdaxoanen.png" 
+               alt="HQ" 
+               width={24} 
+               height={24}
+               className="object-contain"
+             />
+          </div>
+          <div className="flex flex-col items-start leading-none text-left">
+            <span className="text-xs font-black tracking-tight mb-1">Trợ lý SHTT</span>
+            <span className="text-[10px] font-bold opacity-70">Mở</span>
+          </div>
+        </button>
+      )}
+
+      {/* Chat window */}
+      {open && (
+        <div className="flex flex-col w-[90vw] sm:w-[400px] h-[600px] max-h-[85vh] bg-white shadow-2xl rounded-3xl overflow-hidden border border-slate-200 animate-in zoom-in-95 duration-300">
+          
+          {/* Custom Header */}
+          <header className="flex items-center justify-between bg-gradient-to-r from-[#1a2b56] to-[#1e3a8a] text-white px-5 py-5 shadow-lg relative overflow-hidden">
+            <div className="relative z-10 flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center p-1.5 backdrop-blur-md">
+                 <Image src="/logoHQdaxoanen.png" alt="HQ" width={32} height={32} className="object-contain" />
+              </div>
+              <div className="flex flex-col">
+                <span className="font-black tracking-tight text-base leading-none mb-1">Trợ lý SHTT</span>
+                <div className="flex items-center gap-1.5 mt-0.5">
+                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                   <span className="text-[9px] uppercase font-black text-blue-100 tracking-widest">Đang hoạt động</span>
                 </div>
-                <button onClick={() => setOpen(false)} className="text-white hover:bg-white/10 p-1 rounded">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
-                    <path fillRule="evenodd" d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z" clipRule="evenodd" />
-                  </svg>
-                </button>
-              </div>
-              <div className="p-3 flex-1 overflow-y-auto bg-gradient-to-b from-blue-50/50 to-white">
-                {messages.map((m) => (
-                  <div key={m.id} className={`mb-2 flex ${m.from === 'user' ? 'justify-end' : 'justify-start'}`}>
-                    {m.from === 'bot' && (
-                      <div className="mr-2 mt-1 w-7 h-7 rounded-full bg-blue-900/90 text-white flex items-center justify-center text-xs shadow">🤖</div>
-                    )}
-                    <div
-                      className={`px-3 py-2 rounded-2xl shadow-sm max-w-[80%] whitespace-pre-wrap leading-[1.2] text-base ${
-                        m.from === 'user'
-                          ? 'bg-blue-600 text-white rounded-br-md'
-                          : 'bg-white text-gray-800 border border-blue-100 rounded-bl-md'
-                      }`}
-                    >
-                      <div className={`relative ${m.from === 'bot' && !expanded[m.id] && m.text.length > 400 ? 'max-h-56 overflow-hidden pr-1' : ''}`}>
-                        {m.from === 'bot' ? (
-                          <ReactMarkdown
-                            remarkPlugins={[remarkGfm]}
-                            components={{
-                              a: (props: any) => (
-                                <a {...props} className="text-blue-600 underline hover:text-blue-800" target="_blank" rel="noreferrer" />
-                              ),
-                              ul: ({ children }: any) => <ul className="list-disc pl-4">{children}</ul>,
-                              ol: ({ children }: any) => <ol className="list-decimal pl-4">{children}</ol>,
-                              li: ({ children }: any) => <li className="ml-1">{children}</li>,
-                              strong: ({ children }: any) => <strong className="font-bold text-gray-900">{children}</strong>,
-                              em: ({ children }: any) => <em className="italic">{children}</em>,
-                              code: ({ inline, className, children, ...props }: any) => (
-                                inline ? (
-                                  <code className="px-1 py-0.5 rounded bg-gray-100 text-[13px]" {...props}>{children}</code>
-                                ) : (
-                                  <pre className="bg-gray-900 text-gray-100 p-3 rounded-md overflow-auto text-[13px]"><code {...props} className={className}>{children}</code></pre>
-                                )
-                              ),
-                              p: ({ children }: any) => <p className="mb-0">{children}</p>,
-                            }}
-                          >
-                            {m.text}
-                          </ReactMarkdown>
-                        ) : (
-                          m.text
-                        )}
-                        {m.from === 'bot' && !expanded[m.id] && m.text.length > 400 && (
-                          <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-white to-transparent" />
-                        )}
-                      </div>
-                      {m.from === 'bot' && m.text.length > 400 && (
-                        <button
-                          className="mt-2 text-xs font-medium text-blue-700 hover:text-blue-900"
-                          onClick={() => setExpanded((p) => ({ ...p, [m.id]: !p[m.id] }))}
-                        >
-                          {expanded[m.id] ? 'Thu gọn' : 'Xem thêm'}
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                ))}
-                {showSuggestions && messages.length === 1 && (
-                  <div className="mb-2 flex flex-col gap-1.5">
-                    <div className="text-xs text-gray-500 font-medium px-2">Gợi ý câu hỏi:</div>
-                    {SUGGESTED_QUESTIONS.map((q, idx) => (
-                      <button
-                        key={idx}
-                        onClick={() => send(q)}
-                        className="bg-blue-50 hover:bg-blue-100 text-blue-900 text-sm px-3 py-2 rounded-xl border border-blue-200 text-left transition-all hover:shadow-md active:scale-95"
-                      >
-                        {q}
-                      </button>
-                    ))}
-                  </div>
-                )}
-                {isSending && (
-                  <div className="mb-2 flex justify-start items-end">
-                    <div className="mr-2 mt-1 w-7 h-7 rounded-full bg-blue-900/90 text-white flex items-center justify-center text-xs shadow">🤖</div>
-                    <div className="px-4 py-3 rounded-2xl bg-white border border-blue-100 shadow-sm text-gray-500">
-                      <span className="inline-flex gap-1">
-                        <span className="w-2 h-2 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.2s]"></span>
-                        <span className="w-2 h-2 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.1s]"></span>
-                        <span className="w-2 h-2 bg-blue-500 rounded-full animate-bounce"></span>
-                      </span>
-                    </div>
-                  </div>
-                )}
-                <div ref={bottomRef} />
-              </div>
-              <div className="p-3 border-t bg-white flex gap-2 safe-bottom">
-                <input
-                  aria-label="message"
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') send();
-                  }}
-                  className="flex-1 border rounded-md px-3 py-3 text-base focus:outline-none focus:ring-2 focus:ring-blue-300"
-                  placeholder="Nhập câu hỏi..."
-                />
-                <button
-                  onClick={() => send()}
-                  disabled={isSending}
-                  className="bg-blue-900 hover:bg-blue-800 disabled:opacity-60 text-white px-4 py-3 rounded-md inline-flex items-center gap-2 border-2 border-yellow-500 min-w-[70px] justify-center"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
-                    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
-                  </svg>
-                </button>
               </div>
             </div>
-          </div>
-        )}
-      </div>
-
-      {/* Desktop: Traditional Chat Panel */}
-      <div className="hidden lg:block">
-        <div className={`flex flex-col w-[26rem] max-w-sm bg-white shadow-2xl rounded-2xl overflow-hidden border border-blue-100 ${open ? '' : 'h-12'}`}>
-        <div className="flex items-center justify-between bg-blue-900 text-white px-4 py-2 cursor-pointer" onClick={() => setOpen((o) => !o)}>
-          <div className="flex items-center gap-2">
-            <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-yellow-500/90 text-blue-950 font-bold">🤖</span>
-            <span className="font-semibold tracking-wide">Trợ lý SHTT</span>
-          </div>
-          <div className="flex items-center gap-2">
-            {open && (
-              <button
-                aria-label="Xóa lịch sử chat"
-                title="Xóa lịch sử chat"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  const ok = confirm('Bạn có chắc muốn xóa toàn bộ lịch sử chat?');
-                  if (!ok) return;
-                  const welcome: Message = { id: 1, from: 'bot', text: 'Xin chào! Tôi là Trợ lý AI về Sở hữu trí tuệ Hải quan Việt Nam. Bạn muốn hỏi gì?' };
-                  setMessages([welcome]);
-                  setShowSuggestions(true);
-                  nextId.current = 2;
+            
+            <div className="relative z-10 flex items-center gap-2">
+              <button 
+                onClick={() => {
+                  if (confirm('Xóa hết tin nhắn?')) {
+                    setMessages([{ id: 1, from: 'bot', text: 'Xin chào! Tôi đã sẵn sàng hỗ trợ bạn.' }]);
+                    setShowSuggestions(true);
+                  }
                 }}
-                className="relative p-1 rounded hover:bg-white/10 transition-transform transform hover:scale-110"
+                className="p-2 hover:bg-white/10 rounded-xl transition-colors"
+                title="Xóa lịch sử"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 text-white opacity-90 transition-colors duration-150">
-                  <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 100 2h16a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0015 2H9zM6 7a1 1 0 011 1v10a2 2 0 002 2h6a2 2 0 002-2V8a1 1 0 112 0v10a4 4 0 01-4 4H9a4 4 0 01-4-4V8a1 1 0 011-1z" clipRule="evenodd" />
-                </svg>
-                <span className="sr-only">Xóa lịch sử chat</span>
+                <Trash2 size={16} />
               </button>
-            )}
-            <div className="text-sm opacity-90">{open ? 'Đóng' : 'Mở'}</div>
-          </div>
-        </div>
+              <button onClick={() => setOpen(false)} className="p-2 hover:bg-white/10 rounded-xl transition-colors bg-white/5">
+                <X size={20} />
+              </button>
+            </div>
+            <div className="absolute top-0 right-0 w-32 h-32 bg-blue-400/5 blur-[40px] rounded-full translate-x-1/2 -translate-y-1/2" />
+          </header>
 
-        {open && (
-          <>
-            <div className="p-3 flex-1 h-[24rem] overflow-y-auto bg-gradient-to-b from-blue-50/50 to-white">
-              {messages.map((m) => (
-                <div key={m.id} className={`mb-2 flex ${m.from === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  {m.from === 'bot' && (
-                    <div className="mr-2 mt-1 w-7 h-7 rounded-full bg-blue-900/90 text-white flex items-center justify-center text-xs shadow">🤖</div>
-                  )}
-                  <div
-                    className={`px-3 py-2 rounded-2xl shadow-sm max-w-[80%] whitespace-pre-wrap leading-[1.2] text-[14px] ${
-                      m.from === 'user'
-                        ? 'bg-blue-600 text-white rounded-br-md'
-                        : 'bg-white text-gray-800 border border-blue-100 rounded-bl-md'
-                    }`}
-                  >
-                    <div className={`relative ${m.from === 'bot' && !expanded[m.id] && m.text.length > 400 ? 'max-h-56 overflow-hidden pr-1' : ''}`}>
-                      {m.from === 'bot' ? (
-                        <ReactMarkdown
-                          remarkPlugins={[remarkGfm]}
-                          components={{
-                            a: (props: any) => (
-                              <a {...props} className="text-blue-600 underline hover:text-blue-800" target="_blank" rel="noreferrer" />
-                            ),
-                            ul: ({ children }: any) => <ul className="list-disc pl-4">{children}</ul>,
-                            ol: ({ children }: any) => <ol className="list-decimal pl-4">{children}</ol>,
-                            li: ({ children }: any) => <li className="ml-1">{children}</li>,
-                            strong: ({ children }: any) => <strong className="font-bold text-gray-900">{children}</strong>,
-                            em: ({ children }: any) => <em className="italic">{children}</em>,
-                            code: ({ inline, className, children, ...props }: any) => (
-                              inline ? (
-                                <code className="px-1 py-0.5 rounded bg-gray-100 text-[13px]" {...props}>{children}</code>
-                              ) : (
-                                <pre className="bg-gray-900 text-gray-100 p-3 rounded-md overflow-auto text-[13px]"><code {...props} className={className}>{children}</code></pre>
-                              )
-                            ),
-                            p: ({ children }: any) => <p className="mb-0">{children}</p>,
-                          }}
-                        >
-                          {m.text}
-                        </ReactMarkdown>
-                      ) : (
-                        m.text
-                      )}
-                      {m.from === 'bot' && !expanded[m.id] && m.text.length > 400 && (
-                        <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-white to-transparent" />
-                      )}
-                    </div>
-                    {m.from === 'bot' && m.text.length > 400 && (
-                      <button
-                        className="mt-2 text-xs font-medium text-blue-700 hover:text-blue-900"
-                        onClick={() => setExpanded((p) => ({ ...p, [m.id]: !p[m.id] }))}
+          {/* Messages area */}
+          <div className="flex-1 overflow-y-auto p-5 space-y-5 bg-slate-50 custom-scrollbar scroll-smooth">
+            {messages.map((m) => (
+              <div key={m.id} className={`flex ${m.from === 'user' ? 'justify-end' : 'justify-start'}`}>
+                {m.from === 'bot' && (
+                  <div className="mr-3 mt-1 flex-shrink-0 w-8 h-8 rounded-lg bg-[#1a2b56] shadow-md flex items-center justify-center p-1.5">
+                    <Image src="/logoHQdaxoanen.png" alt="HQ" width={20} height={20} className="object-contain" />
+                  </div>
+                )}
+                <div
+                  className={`px-5 py-4 rounded-2xl shadow-sm max-w-[85%] text-[14px] leading-relaxed transition-all ${
+                    m.from === 'user'
+                      ? 'bg-[#1a2b56] text-white rounded-br-none font-bold'
+                      : 'bg-white text-slate-800 border border-slate-200 rounded-bl-none shadow-sm'
+                  }`}
+                >
+                  <div className={`relative ${m.from === 'bot' && !expanded[m.id] && m.text.length > 500 ? 'max-h-56 overflow-hidden' : ''}`}>
+                    {m.from === 'bot' ? (
+                      <ReactMarkdown
+                        remarkPlugins={[remarkGfm]}
+                        className="prose prose-sm prose-slate max-w-none prose-p:leading-relaxed prose-p:mb-3 prose-li:mb-1 font-bold opacity-90"
                       >
-                        {expanded[m.id] ? 'Thu gọn' : 'Xem thêm'}
-                      </button>
+                        {m.text}
+                      </ReactMarkdown>
+                    ) : (
+                      m.text
+                    )}
+                    {m.from === 'bot' && !expanded[m.id] && m.text.length > 500 && (
+                      <div className="absolute bottom-0 inset-x-0 h-10 bg-gradient-to-t from-white to-transparent pointer-events-none" />
                     )}
                   </div>
+                  {m.from === 'bot' && m.text.length > 500 && (
+                    <button
+                      className="mt-2.5 text-[10px] font-black text-blue-600 hover:text-blue-800 uppercase tracking-widest bg-blue-50 px-3 py-1.5 rounded-lg border border-blue-100 flex items-center gap-1.5 transition-all"
+                      onClick={() => setExpanded((p) => ({ ...p, [m.id]: !p[m.id] }))}
+                    >
+                      {expanded[m.id] ? <><ChevronUp size={12} /> Thu gọn</> : <><ChevronDown size={12} /> Xem chi tiết</>}
+                    </button>
+                  )}
                 </div>
-              ))}
-              {showSuggestions && messages.length === 1 && (
-                <div className="mb-2 flex flex-col gap-1.5">
-                  <div className="text-xs text-gray-500 font-medium px-2">Gợi ý câu hỏi:</div>
-                  {SUGGESTED_QUESTIONS.map((q, idx) => (
+              </div>
+            ))}
+            
+            {showSuggestions && messages.length === 1 && (
+              <div className="flex flex-col gap-2 pt-2 animate-in fade-in slide-in-from-bottom-4 duration-700">
+                <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] px-1 mb-1">Gợi ý tìm hiểu</p>
+                <div className="flex flex-col gap-2">
+                   {SUGGESTED_QUESTIONS.map((q, idx) => (
                     <button
                       key={idx}
                       onClick={() => send(q)}
-                      className="bg-blue-50 hover:bg-blue-100 text-blue-900 text-sm px-3 py-2 rounded-xl border border-blue-200 text-left transition-all hover:shadow-md active:scale-95"
+                      className="bg-white hover:bg-blue-50 text-slate-700 text-xs font-bold px-4 py-3 rounded-xl border border-slate-200 transition-all hover:border-blue-400/50 hover:translate-x-1 active:scale-95 text-left shadow-sm opacity-90"
                     >
                       {q}
                     </button>
                   ))}
                 </div>
-              )}
-              {isSending && (
-                <div className="mb-2 flex justify-start items-end">
-                  <div className="mr-2 mt-1 w-7 h-7 rounded-full bg-blue-900/90 text-white flex items-center justify-center text-xs shadow">🤖</div>
-                  <div className="px-4 py-3 rounded-2xl bg-white border border-blue-100 shadow-sm text-gray-500">
-                    <span className="inline-flex gap-1">
-                      <span className="w-2 h-2 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.2s]"></span>
-                      <span className="w-2 h-2 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.1s]"></span>
-                      <span className="w-2 h-2 bg-blue-500 rounded-full animate-bounce"></span>
-                    </span>
-                  </div>
-                </div>
-              )}
-              <div ref={bottomRef} />
-            </div>
+              </div>
+            )}
 
-            <div className="p-2.5 border-t bg-white flex gap-2">
+            {isSending && (
+              <div className="flex justify-start">
+                <div className="mr-3 w-8 h-8 rounded-lg bg-[#1a2b56] flex items-center justify-center p-1.5">
+                  <Image src="/logoHQdaxoanen.png" alt="HQ" width={20} height={20} className="object-contain" />
+                </div>
+                <div className="px-5 py-3 rounded-2xl bg-white border border-slate-200 shadow-sm flex gap-1.5 items-center">
+                   <div className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+                   <div className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+                   <div className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-bounce"></div>
+                </div>
+              </div>
+            )}
+            <div ref={bottomRef} className="h-2" />
+          </div>
+
+          {/* Footer input */}
+          <div className="p-4 bg-white border-t border-slate-100">
+            <div className="flex gap-2 items-center bg-slate-50 p-1.5 rounded-2xl border border-slate-200 group-within:border-blue-300 transition-colors">
               <input
                 aria-label="message"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') send();
-                }}
-                className="flex-1 border rounded-md px-3 py-2.5 lg:py-2 text-[15px] text-base focus:outline-none focus:ring-2 focus:ring-blue-300"
-                placeholder="Nhập câu hỏi..."
+                onKeyDown={(e) => { if (e.key === 'Enter') send(); }}
+                className="flex-1 bg-transparent border-none px-4 py-2.5 text-sm focus:ring-0 placeholder-slate-400 font-bold opacity-80"
+                placeholder="Nhập câu hỏi của bạn..."
               />
               <button
                 onClick={() => send()}
-                disabled={isSending}
-                className="bg-blue-900 hover:bg-blue-800 disabled:opacity-60 text-white px-3 lg:px-4 py-2.5 lg:py-2 rounded-md inline-flex items-center gap-2 border-2 border-yellow-500 min-w-[60px] justify-center"
+                disabled={isSending || !input.trim()}
+                className="bg-[#1a2b56] hover:bg-blue-950 disabled:opacity-30 text-white w-10 h-10 rounded-xl flex items-center justify-center shadow-lg shadow-blue-900/20 transition-all active:scale-95"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
-                  <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
-                </svg>
-                Gửi
+                <Send size={18} />
               </button>
             </div>
-          </>
-        )}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

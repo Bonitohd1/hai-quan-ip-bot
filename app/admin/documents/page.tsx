@@ -3,6 +3,21 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { 
+  FilePlus, 
+  Files, 
+  Trash2, 
+  Eye, 
+  LogOut, 
+  Settings, 
+  Upload, 
+  Info,
+  CheckCircle2,
+  AlertCircle,
+  FileText,
+  Search as SearchIcon,
+  Filter
+} from 'lucide-react';
 
 interface Document {
   id: string;
@@ -24,6 +39,7 @@ export default function AdminDocuments() {
   const [message, setMessage] = useState('');
   const [mounted, setMounted] = useState(false);
   const [activeTab, setActiveTab] = useState<'single' | 'bulk'>('single');
+  const [searchQuery, setSearchQuery] = useState('');
   const router = useRouter();
 
   useEffect(() => {
@@ -87,7 +103,7 @@ export default function AdminDocuments() {
     if (!files || files.length === 0) return;
 
     setUploading(true);
-    setMessage('⏳ Đang upload nhiều file...');
+    setMessage('⏳ Đang upload hàng loạt...');
 
     let uploaded = 0;
     let failed = 0;
@@ -123,22 +139,19 @@ export default function AdminDocuments() {
           body: formData,
         });
 
-        if (res.ok) {
-          uploaded++;
-        } else {
-          failed++;
-        }
+        if (res.ok) uploaded++;
+        else failed++;
       } catch (error) {
         failed++;
       }
     }
 
-    setMessage(`✓ Upload xong: ${uploaded} thành công, ${failed} lỗi`);
+    setMessage(`✓ Hoàn tất: ${uploaded} thành công, ${failed} lỗi`);
     setTimeout(() => {
       loadDocuments();
       setMessage('');
       setUploading(false);
-    }, 1500);
+    }, 2000);
   };
 
   const handleDelete = async (code: string) => {
@@ -151,7 +164,7 @@ export default function AdminDocuments() {
       });
 
       if (res.ok) {
-        setMessage('✓ Xóa thành công');
+        setMessage('✓ Đã xóa công văn');
         setTimeout(() => {
           loadDocuments();
           setMessage('');
@@ -167,208 +180,266 @@ export default function AdminDocuments() {
     router.push('/admin/login');
   };
 
-  if (!mounted) {
-    return (
-      <div className="flex flex-col gap-8 max-w-6xl mx-auto">
-        <div className="bg-gray-100 h-96 rounded-lg animate-pulse"></div>
-      </div>
-    );
-  }
+  const filteredDocs = documents.filter(doc => 
+    doc.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    doc.code.includes(searchQuery)
+  );
+
+  if (!mounted) return null;
 
   return (
-    <div className="flex flex-col gap-8 max-w-6xl mx-auto">
-      {/* Header */}
-      <header className="bg-gradient-to-r from-blue-900 to-blue-950 text-white p-5 lg:p-8 rounded-lg shadow-lg border-b-4 border-yellow-500">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl lg:text-3xl font-bold">⚙️ Admin: Quản lý Công văn</h1>
-            <p className="text-sm opacity-90 mt-2">Upload và quản lý danh sách công văn</p>
+    <div className="flex flex-col gap-10">
+      {/* Premium Header */}
+      <header className="relative overflow-hidden rounded-[2.5rem] border border-white/10 bg-white/5 p-8 lg:p-12 shadow-2xl backdrop-blur-xl">
+        <div className="absolute top-0 right-0 p-20 -translate-y-1/2 translate-x-1/2 w-80 h-80 bg-blue-600/10 blur-[100px] rounded-full" />
+        <div className="relative flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+          <div className="flex items-center gap-6">
+            <div className="w-16 h-16 rounded-3xl bg-blue-600/20 border border-blue-500/20 flex items-center justify-center shadow-xl">
+              <Settings className="w-8 h-8 text-blue-400 animate-spin-slow" />
+            </div>
+            <div>
+              <h1 className="text-3xl font-black text-white tracking-tighter">Bảng Điều Khiển <span className="text-yellow-400 lowercase">Admin</span></h1>
+              <p className="text-blue-100/40 text-xs font-bold uppercase tracking-[0.2em] mt-1">Cơ sở dữ liệu Công văn HQ</p>
+            </div>
           </div>
           <button
             onClick={handleLogout}
-            className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-semibold transition active:scale-95 text-sm"
+            className="group flex items-center gap-2 bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white px-6 py-3 rounded-2xl font-bold transition-all border border-red-500/20 active:scale-95 text-sm"
           >
-            🚪 Đăng xuất
+            <LogOut className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+            Đăng xuất
           </button>
         </div>
       </header>
 
-      {/* Upload Form */}
-      <div className="bg-white p-5 lg:p-8 rounded-xl shadow-lg border-l-4 border-blue-900">
-        <h2 className="text-lg lg:text-xl font-bold text-gray-800 mb-5 lg:mb-6">📤 Thêm Công văn Mới</h2>
+      {/* Main Grid */}
+      <div className="grid grid-cols-1 xl:grid-cols-12 gap-8 items-start">
+        
+        {/* Left: Upload Section */}
+        <div className="xl:col-span-4 flex flex-col gap-6">
+          <section className="bg-white/5 border border-white/10 glass-effect rounded-[2.5rem] p-8 lg:p-10 shadow-2xl relative overflow-hidden group">
+            <h2 className="text-xl font-black text-white mb-8 flex items-center gap-3">
+              <span className="p-2 bg-yellow-500/10 rounded-xl text-yellow-500"><Upload className="w-5 h-5" /></span>
+              Cập nhật dữ liệu
+            </h2>
 
-        {/* Tabs */}
-        <div className="flex gap-3 mb-6 border-b-2 border-gray-200">
-          <button
-            onClick={() => setActiveTab('single')}
-            className={`px-4 py-2 font-semibold border-b-2 transition ${activeTab === 'single' ? 'text-blue-900 border-blue-900' : 'text-gray-600 border-transparent'}`}
-          >
-            📄 Upload 1 file
-          </button>
-          <button
-            onClick={() => setActiveTab('bulk')}
-            className={`px-4 py-2 font-semibold border-b-2 transition ${activeTab === 'bulk' ? 'text-blue-900 border-blue-900' : 'text-gray-600 border-transparent'}`}
-          >
-            📁 Upload nhiều file
-          </button>
+            {/* Tab Switcher */}
+            <div className="flex p-1 bg-black/40 rounded-2xl border border-white/5 mb-8">
+              <button
+                onClick={() => setActiveTab('single')}
+                className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-bold transition-all ${
+                  activeTab === 'single' ? 'bg-blue-600 text-white shadow-lg' : 'text-gray-500 hover:text-white'
+                }`}
+              >
+                <FilePlus className="w-4 h-4" />
+                Đơn lẻ
+              </button>
+              <button
+                onClick={() => setActiveTab('bulk')}
+                className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-bold transition-all ${
+                  activeTab === 'bulk' ? 'bg-blue-600 text-white shadow-lg' : 'text-gray-500 hover:text-white'
+                }`}
+              >
+                <Files className="w-4 h-4" />
+                Hàng loạt
+              </button>
+            </div>
+
+            {activeTab === 'single' ? (
+              <form onSubmit={handleUpload} className="space-y-6">
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-blue-100/40 ml-2">File PDF Công văn</label>
+                  <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-white/10 rounded-2xl hover:border-blue-500/50 hover:bg-blue-500/5 transition-all cursor-pointer group/upload">
+                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                      <Upload className="w-8 h-8 text-gray-500 group-hover/upload:text-blue-400 group-hover/upload:scale-110 transition-all mb-2" />
+                      <p className="text-xs text-gray-500 font-bold group-hover/upload:text-blue-200 transition-colors">
+                        {file ? file.name : 'Nhấn để chọn file'}
+                      </p>
+                    </div>
+                    <input type="file" accept=".pdf" className="hidden" onChange={(e) => setFile(e.target.files?.[0] || null)} />
+                  </label>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-blue-100/40 ml-2">Tên thương hiệu / Sản phẩm</label>
+                  <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="VD: Nike, Adidas, Casio..."
+                    className="w-full bg-black/30 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all font-bold"
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-black uppercase tracking-widest text-blue-100/40 ml-2">Ngày</label>
+                    <input
+                      type="date"
+                      value={date}
+                      onChange={(e) => setDate(e.target.value)}
+                      className="w-full bg-black/30 border border-white/10 rounded-2xl px-4 py-4 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all font-bold text-sm"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-black uppercase tracking-widest text-blue-100/40 ml-2">Loại hình</label>
+                    <select
+                      value={type}
+                      onChange={(e) => setType(e.target.value)}
+                      className="w-full bg-black/30 border border-white/10 rounded-2xl px-4 py-4 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all font-bold text-sm"
+                    >
+                      <option>Gia hạn</option>
+                      <option>Cấp mới</option>
+                      <option>Bảo hộ</option>
+                      <option>Khác</option>
+                    </select>
+                  </div>
+                </div>
+
+                {message && (
+                  <div className={`flex items-center gap-3 p-4 rounded-2xl text-xs font-bold animate-subtle-bounce ${message.startsWith('✓') ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20' : 'bg-red-500/10 text-red-500 border border-red-500/20'}`}>
+                    {message.startsWith('✓') ? <CheckCircle2 className="w-4 h-4" /> : <AlertCircle className="w-4 h-4" />}
+                    {message}
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={uploading}
+                  className="w-full bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-black uppercase tracking-widest py-5 rounded-2xl transition-all shadow-xl shadow-blue-600/20 active:scale-95"
+                >
+                  {uploading ? 'Processing...' : 'Upload Công văn'}
+                </button>
+              </form>
+            ) : (
+              <div className="space-y-8 text-center py-4">
+                <div className="p-6 bg-blue-600/5 rounded-[2rem] border border-dashed border-blue-500/20">
+                   <div className="w-16 h-16 bg-blue-500/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                     <Files className="w-8 h-8 text-blue-400" />
+                   </div>
+                   <h3 className="text-white font-bold mb-2">Upload Thư mục</h3>
+                   <p className="text-xs text-gray-500 leading-relaxed mb-6">
+                     Hệ thống tự động phân tích Mã CV, Ngày và Tên từ định dạng file PDF.
+                   </p>
+                   <label className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-xs transition-all cursor-pointer shadow-lg shadow-blue-600/20 active:scale-95">
+                     <Upload className="w-4 h-4" />
+                     Chọn tệp tin
+                     <input type="file" multiple accept=".pdf" className="hidden" onChange={handleBulkUpload} disabled={uploading} />
+                   </label>
+                </div>
+                
+                <div className="flex items-start gap-4 p-4 bg-yellow-500/5 rounded-2xl border border-yellow-500/10 text-left">
+                  <Info className="w-5 h-5 text-yellow-500 flex-shrink-0 mt-0.5" />
+                  <p className="text-[10px] text-yellow-500/80 font-medium leading-relaxed">
+                    <strong>Ghi chú:</strong> Tên file nên có định dạng [Số CV] [Ngày] [Tên].pdf để AI nhận diện tốt nhất.
+                  </p>
+                </div>
+              </div>
+            )}
+          </section>
         </div>
 
-        {/* Single File Form */}
-        {activeTab === 'single' && (
-          <form onSubmit={handleUpload} className="space-y-4 lg:space-y-5">
-            <div>
-              <label className="block text-gray-700 font-semibold mb-2 text-sm lg:text-base">Chọn File PDF:</label>
-              <input
-                type="file"
-                accept=".pdf"
-                onChange={(e) => setFile(e.target.files?.[0] || null)}
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-900 text-sm"
-              />
-              {file && <p className="text-sm text-green-600 mt-1">✓ {file.name}</p>}
-            </div>
-
-            <div>
-              <label className="block text-gray-700 font-semibold mb-2 text-sm lg:text-base">Tên Sản phẩm / Thương hiệu:</label>
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Ví dụ: Hermes, MICRO SD HC, Nike..."
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-900 text-sm"
-              />
-            </div>
-
-            <div>
-              <label className="block text-gray-700 font-semibold mb-2 text-sm lg:text-base">Ngày (tuỳ chọn):</label>
-              <input
-                type="date"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-900 text-sm"
-              />
-            </div>
-
-            <div>
-              <label className="block text-gray-700 font-semibold mb-2 text-sm lg:text-base">Loại Công văn:</label>
-              <select
-                value={type}
-                onChange={(e) => setType(e.target.value)}
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-900 text-sm"
-              >
-                <option>Gia hạn</option>
-                <option>Cấp mới</option>
-                <option>Bảo hộ</option>
-                <option>Vi phạm</option>
-                <option>Khác</option>
-              </select>
-            </div>
-
-            {message && (
-              <div className={`p-3 rounded-lg text-sm font-semibold ${message.startsWith('✓') ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-                {message}
+        {/* Right: Table Section */}
+        <div className="xl:col-span-8">
+          <section className="bg-white/5 border border-white/10 glass-effect rounded-[2.5rem] p-8 lg:p-10 shadow-2xl overflow-hidden min-h-[600px]">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 mb-10">
+              <h2 className="text-xl font-black text-white flex items-center gap-3">
+                <span className="p-2 bg-blue-500/10 rounded-xl text-blue-400"><FileText className="w-5 h-5" /></span>
+                Dữ liệu Hiện tại
+              </h2>
+              
+              <div className="relative group w-full sm:w-auto">
+                <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 group-focus-within:text-blue-400 transition-colors" />
+                <input
+                  type="text"
+                  placeholder="Tìm kiếm mã hoặc tên..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full sm:w-72 bg-black/40 border border-white/10 rounded-2xl px-12 py-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all font-medium"
+                />
               </div>
-            )}
+            </div>
 
-            <button
-              type="submit"
-              disabled={uploading}
-              className="w-full bg-blue-900 hover:bg-blue-950 disabled:opacity-60 text-white px-6 py-3 rounded-lg font-semibold border-2 border-yellow-500 transition active:scale-95 text-sm lg:text-base"
-            >
-              {uploading ? '⏳ Đang upload...' : '📤 Upload Công văn'}
-            </button>
-          </form>
-        )}
-
-        {/* Bulk Upload Form */}
-        {activeTab === 'bulk' && (
-          <div className="space-y-4 lg:space-y-5">
-            <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-              <p className="text-sm text-blue-900">
-                💡 <strong>Cách sử dụng:</strong> Chọn thư mục hoặc nhiều file PDF. Tên file nên theo định dạng: MÃCV NGÀY TÊN.pdf Ví dụ: 24541 16092025 Hermes.pdf
+            <div className="relative rounded-[2rem] overflow-hidden border border-white/5 bg-black/20">
+              <div className="overflow-x-auto custom-scrollbar">
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="bg-white/5 border-b border-white/10">
+                      <th className="px-6 py-5 text-[10px] font-black uppercase tracking-widest text-blue-100/40">Mã CV</th>
+                      <th className="px-6 py-5 text-[10px] font-black uppercase tracking-widest text-blue-100/40">Thương hiệu / Tên</th>
+                      <th className="px-6 py-5 text-[10px] font-black uppercase tracking-widest text-blue-100/40">Dữ liệu Ngày</th>
+                      <th className="px-6 py-5 text-[10px] font-black uppercase tracking-widest text-blue-100/40 text-center">Tác vụ</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-white/5">
+                    {filteredDocs.length === 0 ? (
+                      <tr>
+                        <td colSpan={4} className="px-6 py-20 text-center">
+                          <div className="text-4xl mb-4">🏜️</div>
+                          <p className="text-gray-500 font-bold uppercase tracking-widest text-xs">Không có dữ liệu phù hợp</p>
+                        </td>
+                      </tr>
+                    ) : (
+                      filteredDocs.map((doc) => (
+                        <tr key={doc.code} className="hover:bg-white/[0.03] transition-colors group/row">
+                          <td className="px-6 py-5">
+                            <span className="font-black text-blue-400 group-hover:text-yellow-400 transition-colors tracking-tight">{doc.code}</span>
+                          </td>
+                          <td className="px-6 py-5">
+                            <div className="flex flex-col">
+                              <span className="font-bold text-white tracking-tight">{doc.name}</span>
+                              <span className="text-[10px] text-gray-500 font-medium uppercase tracking-tighter mt-1">{doc.type}</span>
+                            </div>
+                          </td>
+                          <td className="px-6 py-5">
+                            <span className="text-sm font-medium text-gray-400">{doc.date}</span>
+                          </td>
+                          <td className="px-6 py-5">
+                            <div className="flex items-center justify-center gap-3">
+                              <Link
+                                href={`/documents/${doc.filename}`}
+                                target="_blank"
+                                className="p-2 rounded-xl bg-white/5 hover:bg-emerald-500/20 text-gray-400 hover:text-emerald-400 border border-transparent hover:border-emerald-500/20 transition-all"
+                                title="Xem văn bản"
+                              >
+                                <Eye className="w-5 h-5" />
+                              </Link>
+                              <button
+                                onClick={() => handleDelete(doc.code)}
+                                className="p-2 rounded-xl bg-white/5 hover:bg-red-500/20 text-gray-400 hover:text-red-400 border border-transparent hover:border-red-500/20 transition-all"
+                                title="Xóa"
+                              >
+                                <Trash2 className="w-5 h-5" />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            
+            <div className="mt-8 flex justify-between items-center px-4">
+              <p className="text-[10px] font-bold text-gray-600 uppercase tracking-widest">
+                Đang hiển thị {filteredDocs.length} / {documents.length} bản ghi
               </p>
-            </div>
-
-            <div>
-              <label className="block text-gray-700 font-semibold mb-2 text-sm lg:text-base">Chọn nhiều file PDF:</label>
-              <input
-                type="file"
-                multiple
-                accept=".pdf"
-                onChange={handleBulkUpload}
-                disabled={uploading}
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-900 text-sm disabled:opacity-60"
-              />
-              <p className="text-xs text-gray-500 mt-2">📂 Bạn có thể chọn cả thư mục hoặc chọn nhiều file cùng lúc</p>
-            </div>
-
-            {message && (
-              <div className={`p-3 rounded-lg text-sm font-semibold ${message.startsWith('✓') ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-                {message}
+              <div className="flex gap-2">
+                 <button className="p-2 bg-white/5 border border-white/10 rounded-xl text-gray-500 hover:text-white transition-all"><Filter className="w-4 h-4" /></button>
+                 <button className="p-2 bg-white/5 border border-white/10 rounded-xl text-gray-500 hover:text-white transition-all"><SearchIcon className="w-4 h-4" /></button>
               </div>
-            )}
-          </div>
-        )}
+            </div>
+          </section>
+        </div>
       </div>
 
-      {/* Documents List */}
-      <div className="bg-white p-5 lg:p-8 rounded-xl shadow-lg">
-        <h2 className="text-lg lg:text-xl font-bold text-gray-800 mb-4 lg:mb-6">📋 Danh sách Công văn ({documents.length})</h2>
-
-        {documents.length === 0 ? (
-          <p className="text-gray-600 text-center py-8">Chưa có công văn nào. Hãy thêm công văn đầu tiên.</p>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm lg:text-base">
-              <thead>
-                <tr className="bg-gray-100 border-b-2 border-gray-300">
-                  <th className="px-3 lg:px-4 py-2 lg:py-3 text-left font-semibold">Mã CV</th>
-                  <th className="px-3 lg:px-4 py-2 lg:py-3 text-left font-semibold">Tên</th>
-                  <th className="px-3 lg:px-4 py-2 lg:py-3 text-left font-semibold">Ngày</th>
-                  <th className="px-3 lg:px-4 py-2 lg:py-3 text-left font-semibold">Loại</th>
-                  <th className="px-3 lg:px-4 py-2 lg:py-3 text-center font-semibold">Hành động</th>
-                </tr>
-              </thead>
-              <tbody>
-                {documents.map((doc) => (
-                  <tr key={doc.code} className="border-b hover:bg-gray-50">
-                    <td className="px-3 lg:px-4 py-2 lg:py-3 font-bold text-blue-900">{doc.code}</td>
-                    <td className="px-3 lg:px-4 py-2 lg:py-3">{doc.name}</td>
-                    <td className="px-3 lg:px-4 py-2 lg:py-3 text-gray-600">{doc.date}</td>
-                    <td className="px-3 lg:px-4 py-2 lg:py-3">
-                      <span className="bg-blue-100 text-blue-900 px-2 lg:px-3 py-1 rounded-full text-xs lg:text-sm font-semibold">
-                        {doc.type}
-                      </span>
-                    </td>
-                    <td className="px-3 lg:px-4 py-2 lg:py-3 text-center">
-                      <div className="flex gap-2 justify-center flex-wrap">
-                        <a
-                          href={`/documents/${doc.filename}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="bg-green-600 hover:bg-green-700 text-white px-2 lg:px-3 py-1.5 rounded text-xs lg:text-sm font-semibold transition"
-                        >
-                          👁️ Xem
-                        </a>
-                        <button
-                          onClick={() => handleDelete(doc.code)}
-                          className="bg-red-600 hover:bg-red-700 text-white px-2 lg:px-3 py-1.5 rounded text-xs lg:text-sm font-semibold transition"
-                        >
-                          🗑️ Xóa
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
+      {/* Floating Back Link */}
+      <div className="text-center pb-10">
+        <Link href="/" className="inline-flex items-center gap-2 text-blue-400/40 hover:text-blue-400 font-black uppercase tracking-widest text-[10px] transition-all hover:gap-4">
+          <span>←</span> Quay lại hệ thống chính
+        </Link>
       </div>
-
-      {/* Back Link */}
-      <Link href="/" className="text-blue-600 hover:underline text-sm lg:text-base">
-        ← Quay lại trang chính
-      </Link>
     </div>
   );
 }
