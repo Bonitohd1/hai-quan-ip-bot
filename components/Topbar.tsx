@@ -54,7 +54,7 @@ export default function Topbar() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-50 w-full h-16 bg-white/70 backdrop-blur-xl border-b border-slate-200/50 flex items-center justify-between px-6 lg:px-12 transition-all">
+    <header className="sticky top-0 z-50 w-full h-14 lg:h-16 bg-white/90 backdrop-blur-xl border-b border-slate-200/50 flex items-center justify-between pl-16 lg:pl-6 pr-4 sm:pr-6 lg:pr-12 transition-all">
       {/* Left side: Search with subtle hover lift */}
       <div className="flex-1 flex items-center">
         <motion.div 
@@ -67,7 +67,7 @@ export default function Topbar() {
       </div>
 
       {/* Right side: Actions & Profile */}
-      <div className="flex items-center gap-5 relative">
+      <div className="flex items-center gap-2 sm:gap-4 relative">
         {/* Notifications Popover */}
         <div ref={notifRef} className="relative">
           <motion.button 
@@ -104,7 +104,7 @@ export default function Topbar() {
                 animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
                 exit={{ opacity: 0, y: 15, scale: 0.95, filter: "blur(4px)" }}
                 transition={{ type: "spring", damping: 20, stiffness: 300 }}
-                className="absolute right-0 top-14 w-80 md:w-[400px] bg-white rounded-3xl shadow-2xl border border-slate-200/60 overflow-hidden z-50 ring-1 ring-black/5"
+                className="fixed sm:absolute right-0 sm:right-0 top-14 sm:top-14 w-screen sm:w-80 md:w-[400px] bg-white rounded-none sm:rounded-3xl shadow-2xl border-t sm:border border-slate-200/60 overflow-hidden z-50 ring-1 ring-black/5 max-h-[80vh] overflow-y-auto"
               >
                 <div className="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/80 backdrop-blur-md">
                    <div>
@@ -170,7 +170,7 @@ export default function Topbar() {
         <div className="h-8 w-px bg-slate-200/80 mx-1 hidden sm:block" />
 
         {/* User Profile Hook */}
-        <Link href="/tai-khoan" className="flex items-center gap-3.5 p-1.5 pl-3 pr-4 rounded-2xl hover:bg-white transition-all border border-transparent hover:border-slate-200 hover:shadow-lg group relative overflow-hidden bg-slate-50/40 translate-y-0 hover:-translate-y-0.5">
+        <Link href="/tai-khoan" className="flex items-center gap-2 sm:gap-3.5 p-1.5 sm:pl-3 sm:pr-4 rounded-2xl hover:bg-white transition-all border border-transparent hover:border-slate-200 hover:shadow-lg group relative overflow-hidden bg-slate-50/40">
           <div className="hidden sm:block text-right">
              <p className="text-[13px] font-black text-slate-900 group-hover:text-blue-600 transition-colors tracking-tight">Cán bộ Hải Quan</p>
              <p className="text-[9px] uppercase font-black tracking-[0.1em] text-emerald-600 flex items-center justify-end gap-1.5 mt-0.5">
@@ -178,8 +178,8 @@ export default function Topbar() {
                Vùng Nghiệp vụ
              </p>
           </div>
-          <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-slate-200 to-slate-100 flex items-center justify-center border-2 border-white shadow-md shrink-0 relative overflow-hidden group-hover:ring-4 group-hover:ring-blue-50 transition-all">
-             <User className="w-6 h-6 text-slate-400 group-hover:text-blue-600 transition-colors" />
+          <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-gradient-to-tr from-slate-200 to-slate-100 flex items-center justify-center border-2 border-white shadow-md shrink-0 relative overflow-hidden group-hover:ring-4 group-hover:ring-blue-50 transition-all">
+             <User className="w-5 h-5 sm:w-6 sm:h-6 text-slate-400 group-hover:text-blue-600 transition-colors" />
              <div className="absolute inset-0 bg-blue-600/5 opacity-0 group-hover:opacity-100 transition-opacity" />
           </div>
         </Link>

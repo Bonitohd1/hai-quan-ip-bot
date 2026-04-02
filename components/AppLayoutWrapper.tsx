@@ -23,7 +23,7 @@ export default function AppLayoutWrapper({ children }: { children: ReactNode }) 
       <main className="flex-1 w-full min-w-0 flex flex-col h-screen overflow-hidden relative">
         <Topbar />
         <div className="flex-1 overflow-y-auto w-full">
-          <div className="mx-auto max-w-[1400px] px-6 lg:px-12 py-8 lg:py-10">
+          <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-12 py-4 sm:py-6 lg:py-10 pb-24">
             {children}
           </div>
         </div>

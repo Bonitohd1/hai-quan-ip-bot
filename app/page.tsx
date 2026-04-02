@@ -66,10 +66,10 @@ export default function Home() {
   if (!mounted) return null;
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#f1f5f9] -m-6 lg:-m-12 p-6 lg:p-10 space-y-8 max-w-[1600px] mx-auto font-sans">
+    <div className="flex flex-col min-h-screen bg-[#f1f5f9] -mx-4 sm:-mx-6 lg:-mx-12 px-4 sm:px-6 lg:px-10 py-4 sm:py-6 lg:py-0 space-y-4 sm:space-y-6 lg:space-y-8 max-w-[1600px] mx-auto font-sans">
       
       {/* ── HEADER BANNER ── */}
-      <div className="animate-fade-in-up delay-100 relative bg-[#0a192f] rounded-3xl p-8 lg:p-10 overflow-hidden shadow-2xl flex flex-col md:flex-row items-center justify-between gap-8 border border-slate-800">
+      <div className="animate-fade-in-up delay-100 relative bg-[#0a192f] rounded-2xl sm:rounded-3xl p-5 sm:p-8 lg:p-10 overflow-hidden shadow-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-5 sm:gap-8 border border-slate-800">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-blue-900/40 to-transparent pointer-events-none" />
         
         <div className="relative z-10 w-full md:w-2/3">
@@ -83,7 +83,7 @@ export default function Home() {
             </div>
           </div>
           
-          <h1 className="text-3xl lg:text-4xl font-extrabold text-white tracking-tight mb-3">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight mb-3">
             Trợ lý Thông minh <span className="text-orange-500">Hải Quan SHTT</span>
           </h1>
           <p className="text-slate-300 text-sm lg:text-base leading-relaxed max-w-xl font-medium">
@@ -91,14 +91,14 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="relative z-10 w-full md:w-1/3 flex justify-end">
+        <div className="relative z-10 w-full md:w-1/3 flex justify-start md:justify-end">
            <div className="bg-white/10 backdrop-blur-md p-2 rounded-2xl border border-white/10 w-full max-w-sm">
              <div className="relative">
                 <Search className="w-5 h-5 text-white/50 absolute left-4 top-1/2 -translate-y-1/2" />
                 <input 
                    type="text" 
                    placeholder="Nhập mã hồ sơ / nhãn hiệu / luật..." 
-                   className="w-full pl-12 pr-4 py-3.5 bg-slate-900/50 hover:bg-slate-900/80 border border-white/10 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all text-white placeholder:text-white/40"
+                   className="w-full pl-12 pr-4 py-3 sm:py-3.5 bg-slate-900/50 hover:bg-slate-900/80 border border-white/10 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all text-white placeholder:text-white/40"
                 />
              </div>
            </div>
@@ -106,16 +106,16 @@ export default function Home() {
       </div>
 
       {/* ── KPI METRICS ── */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
         {[
           { label: 'Cần duyệt hôm nay', value: '18', icon: Clock, color: 'text-orange-500', bg: 'bg-orange-50', delay: 'delay-100' },
           { label: 'Cảnh báo rủi ro', value: '3', icon: AlertTriangle, color: 'text-red-500', bg: 'bg-red-50', delay: 'delay-200' },
           { label: 'Hồ sơ đang giám sát', value: '2,450', icon: ShieldCheck, color: 'text-blue-800', bg: 'bg-blue-50', delay: 'delay-300' },
           { label: 'Phiên hỏi đáp AI', value: '142', icon: MessageSquare, color: 'text-blue-500', bg: 'bg-blue-50', delay: 'delay-400' },
         ].map((stat, i) => (
-          <div key={i} className={`animate-fade-in-up ${stat.delay} bg-white rounded-2xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-200/60 flex items-center justify-between group hover:-translate-y-1 hover:shadow-xl transition-all duration-300 cursor-default`}>
+          <div key={i} className={`animate-fade-in-up ${stat.delay} bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-200/60 flex items-center justify-between group hover:-translate-y-1 hover:shadow-xl transition-all duration-300 cursor-default`}>
             <div>
-               <h3 className="text-3xl font-extrabold text-[#0a192f] tracking-tight">{stat.value}</h3>
+               <h3 className="text-2xl sm:text-3xl font-extrabold text-[#0a192f] tracking-tight">{stat.value}</h3>
                <p className="text-xs font-bold text-slate-500 uppercase tracking-wide mt-1">{stat.label}</p>
             </div>
             <div className={`p-4 rounded-2xl ${stat.bg} ${stat.color} group-hover:scale-110 transition-transform duration-300`}>
@@ -125,7 +125,7 @@ export default function Home() {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
          
          {/* ── MODULE CHÍNH (2/3) ── */}
          <div className="xl:col-span-2 space-y-6 animate-fade-in-up delay-300">
@@ -134,23 +134,23 @@ export default function Home() {
               <h2 className="text-lg font-bold text-[#0a192f] uppercase tracking-wide">Điều hướng nghiệp vụ</h2>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-2 gap-3 sm:gap-4 lg:gap-6">
                {MODULES.map((module, i) => (
                   <Link 
                      key={i} 
                      href={module.href}
-                     className={`bg-white rounded-2xl p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border-2 border-transparent ${module.border} hover:shadow-xl group flex flex-col justify-between min-h-[200px] transition-all duration-300 hover:-translate-y-1`}
+                     className={`bg-white rounded-xl sm:rounded-2xl p-4 sm:p-7 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border-2 border-transparent ${module.border} hover:shadow-xl group flex flex-col justify-between min-h-[150px] sm:min-h-[200px] transition-all duration-300 hover:-translate-y-1`}
                   >
-                     <div className="flex justify-between items-start mb-6">
-                        <div className={`w-14 h-14 rounded-2xl ${module.bg} flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
-                           <module.icon className={`w-7 h-7 ${module.color}`} />
+                     <div className="flex justify-between items-start mb-3 sm:mb-6">
+                        <div className={`w-10 h-10 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl ${module.bg} flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
+                           <module.icon className={`w-5 h-5 sm:w-7 sm:h-7 ${module.color}`} />
                         </div>
-                        <div className="w-10 h-10 rounded-full flex items-center justify-center bg-slate-50 text-slate-400 group-hover:bg-orange-500 group-hover:text-white transition-colors duration-300">
-                           <ArrowRight className="w-5 h-5 -rotate-45 group-hover:rotate-0 transition-transform duration-300" />
+                        <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center bg-slate-50 text-slate-400 group-hover:bg-orange-500 group-hover:text-white transition-colors duration-300">
+                           <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 -rotate-45 group-hover:rotate-0 transition-transform duration-300" />
                         </div>
                      </div>
                      <div>
-                        <h3 className="text-xl font-bold text-[#0a192f] mb-2">{module.title}</h3>
+                        <h3 className="text-sm sm:text-xl font-bold text-[#0a192f] mb-1 sm:mb-2 leading-tight">{module.title}</h3>
                         <p className="text-sm text-slate-600 font-medium leading-relaxed">{module.desc}</p>
                      </div>
                   </Link>
