@@ -1,1 +1,35 @@
-[]
+[
+  {
+    "id": "33871",
+    "title": "Công văn 33871/CHQ-GSQL về nhãn hiệu INGCO",
+    "content": "Cập nhật thông tin và gia hạn thời hạn kiểm tra, giám sát hàng hóa XNK có yêu cầu bảo hộ quyền SHTT mang nhãn hiệu INGCO của SUZHOU DAKE MACHINERY CO., LTD. Thời hạn đến ngày 19/11/2027.",
+    "type": "Công văn",
+    "category": "Sản phẩm xác thực",
+    "brand": "INGCO",
+    "documentNumber": "33871/CHQ-GSQL",
+    "date": "2025-11-05",
+    "fileUrl": "/documents/33871.pdf"
+  },
+  {
+    "id": "27317",
+    "title": "Công văn 27317/CHQ-GSQL về nhãn hiệu PIXEL",
+    "content": "Gia hạn thời hạn kiểm tra, giám sát hàng hóa XNK có yêu cầu bảo hộ quyền SHTT mang nhãn hiệu PIXEL thuộc chủ sở hữu GOOGLE LLC. Thời hạn đến ngày 13/10/2027.",
+    "type": "Công văn",
+    "category": "Sản phẩm xác thực",
+    "brand": "PIXEL",
+    "documentNumber": "27317/CHQ-GSQL",
+    "date": "2025-10-02",
+    "fileUrl": "/documents/27317.pdf"
+  },
+  {
+    "id": "29600",
+    "title": "Công văn 29600/CHQ-GSQL về nhãn hiệu HERMES",
+    "content": "Gia hạn thời hạn kiểm tra, giám sát hàng hóa XNK có yêu cầu bảo hộ quyền SHTT mang nhãn hiệu Hình theo văn bằng 800232, 805531A, 806207 thuộc Hermes International. Thời hạn đến ngày 10/11/2027.",
+    "type": "Công văn",
+    "category": "Sản phẩm xác thực",
+    "brand": "HERMES",
+    "documentNumber": "29600/CHQ-GSQL",
+    "date": "2025-10-15",
+    "fileUrl": "/documents/29600.pdf"
+  }
+]
