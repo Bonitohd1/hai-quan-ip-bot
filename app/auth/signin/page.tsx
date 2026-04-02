@@ -194,7 +194,7 @@ export default function SignIn() {
               <div className="flex flex-col items-center mb-8 text-center">
                 <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-xl shadow-slate-200 border border-slate-100 mb-6 shrink-0 relative overflow-hidden">
                    <div className="absolute inset-0 bg-blue-50/50" />
-                   <Image src="/logoHQdaxoanen.png" alt="HQ Logo" width={44} height={44} className="object-contain relative z-10" />
+                   <Image src="/logoHQdaxoanen.png" alt="HQ Logo" width={44} height={44} className="object-contain relative z-10" unoptimized />
                 </div>
                 <h2 className="text-[26px] font-black text-slate-900 tracking-tight mb-2">Hải Quan Việt Nam</h2>
                 <p className="text-sm font-bold tracking-widest uppercase text-blue-600">
