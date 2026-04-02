@@ -28,12 +28,18 @@ export async function GET(request: NextRequest) {
       where.type = { contains: type };
     }
 
-    let documents = await prisma.document.findMany({
-      where,
-      orderBy: { createdAt: 'desc' },
-    });
+    let documents: any[] = [];
+    try {
+      documents = await prisma.document.findMany({
+        where,
+        orderBy: { createdAt: 'desc' },
+      });
+    } catch (dbError) {
+      logger.error('CRITICAL: Error fetching documents from database, attempting fallback', dbError instanceof Error ? dbError : new Error(String(dbError)));
+      // allow fallback to trigger by leaving documents as empty array
+    }
     
-    // Fallback to JSON if database is empty (common on ephemeral Vercel SQLite)
+    // Fallback to JSON if database is empty or crashed (common on ephemeral Vercel SQLite)
     if (documents.length === 0 && !query && (type === 'all' || !type)) {
       try {
         const jsonPath = path.join(process.cwd(), 'lib/documents.json');
@@ -41,7 +47,9 @@ export async function GET(request: NextRequest) {
           const rawData = fs.readFileSync(jsonPath, 'utf8');
           const data = JSON.parse(rawData);
           documents = data.documents || [];
-          logger.info(`Fallback to JSON: found ${documents.length} records`);
+          if (documents.length > 0) {
+            logger.info(`Fallback to JSON successful: mapped ${documents.length} records`);
+          }
         }
       } catch (err) {
         logger.error('Failed to read fallback JSON', err as Error);
@@ -64,13 +72,25 @@ export async function GET(request: NextRequest) {
       } catch (err) {
         logger.error('Failed to search in fallback JSON', err as Error);
       }
+    } else if (documents.length === 0 && type && type !== 'all') {
+      try {
+        const jsonPath = path.join(process.cwd(), 'lib/documents.json');
+        if (fs.existsSync(jsonPath)) {
+          const rawData = fs.readFileSync(jsonPath, 'utf8');
+          const data = JSON.parse(rawData);
+          const allDocs = (data.documents || []) as any[];
+          documents = allDocs.filter(doc => doc.type === type);
+        }
+      } catch (err) {
+        logger.error('Failed to filter type in fallback JSON', err as Error);
+      }
     }
     
-    logger.info(`Fetched ${documents.length} documents for query "${query || ''}"`);
+    logger.info(`Fetched ${documents.length} documents for query "${query || ''}" (type: ${type || 'all'})`);
     return NextResponse.json({ documents });
   } catch (error) {
-    logger.error('CRITICAL: Error fetching documents from database', error instanceof Error ? error : new Error(String(error)));
-    return NextResponse.json({ documents: [], error: 'Không thể kết nối cơ sở dữ liệu' });
+    logger.error('CRITICAL: Unexpected server error', error instanceof Error ? error : new Error(String(error)));
+    return NextResponse.json({ documents: [], error: 'Lỗi máy chủ nội bộ' }, { status: 500 });
   }
 }
 
