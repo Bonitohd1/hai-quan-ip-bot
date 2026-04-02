@@ -1,4 +1,4 @@
-﻿import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { logger } from '@/lib/logger';
 
@@ -68,7 +68,7 @@ async function searchDocuments(query: string) {
     }
 
     const docList = documents
-      .map(doc => `- ${doc.code}: ${doc.name}`)
+      .map((doc: any) => `- ${doc.code}: ${doc.name}`)
       .join('\n');
 
     return `Tìm thấy ${documents.length} công văn liên quan:\n${docList}\n\nVui lòng xem chi tiết trong mục "Tài liệu".`;
