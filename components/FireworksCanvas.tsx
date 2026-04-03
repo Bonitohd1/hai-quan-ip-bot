@@ -2,51 +2,57 @@
 
 import { useEffect, useRef } from 'react';
 
-interface Particle {
+// Brand palette: Navy, Orange, White + subtle variants
+const BRAND_COLORS = [
+  '#0a192f', // Navy deep
+  '#0d2244', // Navy mid
+  '#1a3a6e', // Navy accent
+  '#f97316', // Orange primary
+  '#fb923c', // Orange light
+  '#ea6c00', // Orange dark
+  '#ffffff', // White
+  '#f1f5f9', // White warm
+];
+
+interface Confetto {
   x: number;
   y: number;
+  w: number;
+  h: number;
+  color: string;
+  rotation: number;
+  rotationSpeed: number;
   vx: number;
   vy: number;
   alpha: number;
-  color: string;
-  radius: number;
-  gravity: number;
-  decay: number;
-  trail: { x: number; y: number }[];
+  shape: 'rect' | 'circle' | 'strip';
+  swing: number;
+  swingSpeed: number;
+  swingAmp: number;
 }
 
-const COLORS = [
-  '#f59e0b', '#fbbf24', '#f97316', '#ef4444',
-  '#10b981', '#3b82f6', '#8b5cf6', '#ec4899',
-  '#facc15', '#a3e635', '#22d3ee', '#ffffff',
-];
+function createConfetto(canvas: HTMLCanvasElement, fromX?: number): Confetto {
+  const shape = Math.random() < 0.6 ? 'rect' : Math.random() < 0.5 ? 'circle' : 'strip';
+  return {
+    x: fromX ?? Math.random() * canvas.width,
+    y: -20,
+    w: shape === 'strip' ? randomBetween(2, 5) : randomBetween(8, 16),
+    h: shape === 'strip' ? randomBetween(18, 32) : randomBetween(8, 16),
+    color: BRAND_COLORS[Math.floor(Math.random() * BRAND_COLORS.length)],
+    rotation: Math.random() * Math.PI * 2,
+    rotationSpeed: randomBetween(-0.08, 0.08),
+    vx: randomBetween(-1.2, 1.2),
+    vy: randomBetween(2.5, 5.5),
+    alpha: 1,
+    shape,
+    swing: 0,
+    swingSpeed: randomBetween(0.02, 0.06),
+    swingAmp: randomBetween(0.5, 2),
+  };
+}
 
 function randomBetween(a: number, b: number) {
   return a + Math.random() * (b - a);
-}
-
-function createBurst(canvas: HTMLCanvasElement, cx: number, cy: number): Particle[] {
-  const count = Math.floor(randomBetween(60, 100));
-  const baseColor = COLORS[Math.floor(Math.random() * COLORS.length)];
-  const particles: Particle[] = [];
-
-  for (let i = 0; i < count; i++) {
-    const angle = (Math.PI * 2 * i) / count + randomBetween(-0.2, 0.2);
-    const speed = randomBetween(2, 9);
-    particles.push({
-      x: cx,
-      y: cy,
-      vx: Math.cos(angle) * speed,
-      vy: Math.sin(angle) * speed,
-      alpha: 1,
-      color: Math.random() > 0.3 ? baseColor : COLORS[Math.floor(Math.random() * COLORS.length)],
-      radius: randomBetween(2, 5),
-      gravity: randomBetween(0.05, 0.15),
-      decay: randomBetween(0.012, 0.022),
-      trail: [],
-    });
-  }
-  return particles;
 }
 
 export default function FireworksCanvas({ onDone }: { onDone?: () => void }) {
@@ -55,7 +61,6 @@ export default function FireworksCanvas({ onDone }: { onDone?: () => void }) {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
@@ -66,84 +71,107 @@ export default function FireworksCanvas({ onDone }: { onDone?: () => void }) {
     resize();
     window.addEventListener('resize', resize);
 
-    let particles: Particle[] = [];
+    let confetti: Confetto[] = [];
     let animId: number;
-    let burstCount = 0;
-    const MAX_BURSTS = 12;
+    let spawning = true;
+    let spawnCount = 0;
+    const MAX_SPAWN = 180;
 
-    const scheduleBurst = () => {
-      if (burstCount >= MAX_BURSTS) return;
-      const cx = randomBetween(canvas.width * 0.15, canvas.width * 0.85);
-      const cy = randomBetween(canvas.height * 0.1, canvas.height * 0.55);
-      particles.push(...createBurst(canvas, cx, cy));
-      burstCount++;
-      if (burstCount < MAX_BURSTS) {
-        setTimeout(scheduleBurst, randomBetween(200, 500));
+    // Spawn waves from top-left, center, top-right
+    const spawnInterval = setInterval(() => {
+      if (!spawning) { clearInterval(spawnInterval); return; }
+      const batch = 6;
+      for (let i = 0; i < batch; i++) {
+        // Spawn from 3 zones
+        const zone = Math.random();
+        const fromX = zone < 0.33
+          ? randomBetween(0, canvas.width * 0.3)
+          : zone < 0.66
+          ? randomBetween(canvas.width * 0.35, canvas.width * 0.65)
+          : randomBetween(canvas.width * 0.7, canvas.width);
+        confetti.push(createConfetto(canvas, fromX));
       }
-    };
-
-    // First burst immediately, then stagger
-    scheduleBurst();
-    setTimeout(scheduleBurst, 300);
+      spawnCount += batch;
+      if (spawnCount >= MAX_SPAWN) {
+        spawning = false;
+        clearInterval(spawnInterval);
+      }
+    }, 60);
 
     const draw = () => {
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      particles = particles.filter(p => p.alpha > 0.02);
+      confetti = confetti.filter(c => c.y < canvas.height + 50 && c.alpha > 0.01);
 
-      for (const p of particles) {
-        // Draw trail
-        if (p.trail.length > 1) {
-          ctx.beginPath();
-          ctx.moveTo(p.trail[0].x, p.trail[0].y);
-          for (let i = 1; i < p.trail.length; i++) {
-            ctx.lineTo(p.trail[i].x, p.trail[i].y);
-          }
-          ctx.strokeStyle = p.color + '40';
-          ctx.lineWidth = p.radius * 0.5;
-          ctx.stroke();
+      for (const c of confetti) {
+        ctx.save();
+        ctx.globalAlpha = c.alpha;
+        ctx.translate(c.x, c.y);
+        ctx.rotate(c.rotation);
+
+        ctx.fillStyle = c.color;
+
+        // White pieces get a navy border for visibility
+        if (c.color === '#ffffff' || c.color === '#f1f5f9') {
+          ctx.strokeStyle = 'rgba(10,25,47,0.25)';
+          ctx.lineWidth = 0.5;
         }
 
-        // Draw particle
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius * p.alpha, 0, Math.PI * 2);
-        ctx.fillStyle = p.color + Math.floor(p.alpha * 255).toString(16).padStart(2, '0');
-        ctx.fill();
+        if (c.shape === 'circle') {
+          ctx.beginPath();
+          ctx.ellipse(0, 0, c.w / 2, c.h / 2, 0, 0, Math.PI * 2);
+          ctx.fill();
+        } else {
+          ctx.fillRect(-c.w / 2, -c.h / 2, c.w, c.h);
+          if (c.color === '#ffffff' || c.color === '#f1f5f9') {
+            ctx.strokeRect(-c.w / 2, -c.h / 2, c.w, c.h);
+          }
+        }
 
-        // Draw glow
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius * p.alpha * 2.5, 0, Math.PI * 2);
-        ctx.fillStyle = p.color + '20';
-        ctx.fill();
-
-        // Update trail (keep last 6 positions)
-        p.trail.push({ x: p.x, y: p.y });
-        if (p.trail.length > 6) p.trail.shift();
+        ctx.restore();
 
         // Physics
-        p.vy += p.gravity;
-        p.vx *= 0.98;
-        p.x += p.vx;
-        p.y += p.vy;
-        p.alpha -= p.decay;
-        p.radius *= 0.995;
+        c.swing += c.swingSpeed;
+        c.x += c.vx + Math.sin(c.swing) * c.swingAmp;
+        c.y += c.vy;
+        c.rotation += c.rotationSpeed;
+        c.vy += 0.04; // gentle gravity
+
+        // Fade as they near bottom
+        if (c.y > canvas.height * 0.75) {
+          c.alpha -= 0.018;
+        }
       }
 
       animId = requestAnimationFrame(draw);
 
-      // Done when all bursts fired and particles exhausted
-      if (burstCount >= MAX_BURSTS && particles.length === 0) {
+      if (!spawning && confetti.length === 0) {
         cancelAnimationFrame(animId);
         window.removeEventListener('resize', resize);
         onDone?.();
       }
     };
 
+    // Auto stop after 5s
+    const stopTimer = setTimeout(() => {
+      spawning = false;
+      clearInterval(spawnInterval);
+      // Gracefully fade remaining
+      const fadeInterval = setInterval(() => {
+        confetti.forEach(c => { c.alpha -= 0.02; });
+        if (confetti.every(c => c.alpha <= 0)) {
+          clearInterval(fadeInterval);
+          onDone?.();
+        }
+      }, 30);
+    }, 4500);
+
     draw();
 
     return () => {
       cancelAnimationFrame(animId);
+      clearInterval(spawnInterval);
+      clearTimeout(stopTimer);
       window.removeEventListener('resize', resize);
     };
   }, [onDone]);
