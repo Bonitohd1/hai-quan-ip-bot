@@ -31,9 +31,11 @@ export default function Sidebar() {
 
   return (
     <>
+      {/* Hamburger button hidden on mobile - MobileNav handles navigation */}
       <button
         onClick={() => setMobileOpen(!mobileOpen)}
-        className="fixed top-4 left-4 z-50 lg:hidden w-11 h-11 bg-slate-900/80 backdrop-blur-md text-amber-400 rounded-xl flex items-center justify-center border border-amber-500/20 shadow-lg shadow-black/50"
+        className="hidden"
+        aria-hidden="true"
       >
         {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
       </button>
