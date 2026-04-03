@@ -1,8 +1,10 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import ChatBot from '@/components/ChatBot';
 import Link from 'next/link';
+import FireworksCanvas from '@/components/FireworksCanvas';
 import { 
   Search, FileText, History, BarChart3, 
   AlertTriangle, Clock, MessageSquare, ShieldCheck, 
@@ -56,17 +58,53 @@ const AI_INSIGHTS = [
 ];
 
 export default function Home() {
-  const router = useRouter();
+  const { data: session } = useSession();
   const [mounted, setMounted] = useState(false);
+  const [showFireworks, setShowFireworks] = useState(false);
+  const [showWelcome, setShowWelcome] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
+  useEffect(() => {
+    if (!session?.user) return;
+    // Detect first login: check sessionStorage flag
+    const key = 'hq_greeted';
+    if (!sessionStorage.getItem(key)) {
+      sessionStorage.setItem(key, '1');
+      setShowFireworks(true);
+      setShowWelcome(true);
+      setTimeout(() => setShowWelcome(false), 4000);
+    }
+  }, [session]);
+
   if (!mounted) return null;
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#f1f5f9] -mx-4 sm:-mx-6 lg:-mx-12 px-4 sm:px-6 lg:px-10 py-4 sm:py-6 lg:py-0 space-y-4 sm:space-y-6 lg:space-y-8 max-w-[1600px] mx-auto font-sans">
+    <>
+      {/* Fireworks on first login */}
+      {showFireworks && (
+        <FireworksCanvas onDone={() => setShowFireworks(false)} />
+      )}
+
+      {/* Welcome toast */}
+      {showWelcome && (
+        <div className="fixed top-20 left-1/2 -translate-x-1/2 z-[9998] animate-fade-in-up">
+          <div className="flex items-center gap-3 bg-[#0a192f] text-white px-6 py-3.5 rounded-2xl shadow-2xl border border-amber-500/30 backdrop-blur-xl">
+            <span className="text-2xl">🎉</span>
+            <div>
+              <p className="font-black text-sm tracking-wide">Chào mừng trở lại!</p>
+              <p className="text-xs text-slate-400 font-medium">
+                {session?.user?.name ?? 'Cán bộ Hải Quan'} — Hệ thống sẵn sàng
+              </p>
+            </div>
+            <span className="text-2xl">🎆</span>
+          </div>
+        </div>
+      )}
+
+      <div className="flex flex-col min-h-screen bg-[#f1f5f9] -mx-4 sm:-mx-6 lg:-mx-12 px-4 sm:px-6 lg:px-10 py-4 sm:py-6 lg:py-0 space-y-4 sm:space-y-6 lg:space-y-8 max-w-[1600px] mx-auto font-sans">
       
       {/* ── HEADER BANNER ── */}
       <div className="animate-fade-in-up delay-100 relative bg-[#0a192f] rounded-2xl sm:rounded-3xl p-5 sm:p-8 lg:p-10 overflow-hidden shadow-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-5 sm:gap-8 border border-slate-800">
@@ -205,5 +243,6 @@ export default function Home() {
 
       <ChatBot />
     </div>
+    </>
   );
 }
