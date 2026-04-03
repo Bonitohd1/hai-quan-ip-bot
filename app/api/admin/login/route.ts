@@ -13,9 +13,14 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Dữ liệu không hợp lệ' }, { status: 400 });
     }
 
-    // Check for hardcoded admin fallback (useful for empty databases on Vercel)
-    const envUser = process.env.ADMIN_USERNAME || 'admin';
-    const envPass = process.env.ADMIN_PASSWORD || 'admin123';
+    // Strict: env vars MUST be set. No hardcoded fallbacks.
+    const envUser = process.env.ADMIN_USERNAME;
+    const envPass = process.env.ADMIN_PASSWORD;
+    
+    if (!envUser || !envPass) {
+      logger.error('ADMIN_USERNAME or ADMIN_PASSWORD env var not configured');
+      return NextResponse.json({ error: 'Hệ thống chưa được cấu hình' }, { status: 503 });
+    }
     
     let adminUser: any = null;
 
@@ -24,7 +29,6 @@ export async function POST(request: NextRequest) {
       adminUser = {
         id: 'env-default',
         username: envUser,
-        password: envPass,
         isActive: true
       };
     } else {

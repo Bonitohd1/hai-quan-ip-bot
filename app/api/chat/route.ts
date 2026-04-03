@@ -82,9 +82,17 @@ export async function POST(request: NextRequest) {
   try {
     const { query } = await request.json();
 
-    if (!query) {
+    if (!query || typeof query !== 'string') {
       return NextResponse.json({ error: 'Query is required' }, { status: 400 });
     }
+    
+    // Prevent abuse: limit query length
+    if (query.length > 1000) {
+      return NextResponse.json({ error: 'Câu hỏi quá dài (tối đa 1000 ký tự)' }, { status: 400 });
+    }
+    
+    // Strip potential HTML/script injection
+    const sanitizedQuery = query.replace(/<[^>]*>/g, '').trim();
 
     const DIFY_API_KEY = process.env.DIFY_API_KEY;
     const DIFY_API_BASE = (process.env.DIFY_API_BASE || process.env.NEXT_PUBLIC_DIFY_API_BASE || '').replace(/\/+$/g, '');
