@@ -91,7 +91,7 @@ export default function Home() {
             <div>
               <p className="font-black text-sm tracking-wide">Chào mừng trở lại!</p>
               <p className="text-xs text-slate-400 font-medium">
-                {session?.user?.name ?? 'Cán bộ Hải Quan'} — Hệ thống sẵn sàng
+                {session?.user?.name ?? 'Công chức Hải quan'} — Hệ thống sẵn sàng
               </p>
             </div>
             <span className="text-2xl">🎆</span>
