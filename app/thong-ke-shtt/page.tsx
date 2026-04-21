@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import ChatBot from '@/components/ChatBot';
 import { 
   BarChart3, TrendingUp, ShieldAlert, PackageSearch, Award,
@@ -9,50 +9,15 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-// --- DATA SETS ---
+// --- DATA SETS — chờ dữ liệu thực từ hệ thống ---
 const MOCK_DATA = {
-  '2026': {
-    kpis: [
-      { label: 'Hồ sơ yêu cầu bảo vệ SHTT', value: '1,245', change: '+12.5%', trend: 'up', icon: ShieldCheck, color: 'text-blue-600', bg: 'bg-blue-100', desc: 'Doanh nghiệp đệ trình' },
-      { label: 'Số vụ xâm phạm bị bắt giữ', value: '342', change: '-5.2%', trend: 'down', icon: ShieldAlert, color: 'text-rose-600', bg: 'bg-rose-100', desc: 'Tại các cửa khẩu biên giới' },
-      { label: 'Trị giá hàng hóa vi phạm', value: '45.2 Tỷ', change: '+8.4%', trend: 'up', icon: Zap, color: 'text-amber-600', bg: 'bg-amber-100', desc: 'Ước tính (VNĐ)' },
-      { label: 'Hàng giả/nhái bị tiêu hủy', value: '280 Tấn', change: '+15.3%', trend: 'up', icon: PackageSearch, color: 'text-emerald-600', bg: 'bg-emerald-100', desc: 'Giám sát chặt chẽ' },
-    ],
-    trends: [32, 28, 45, 65, 48, 72, 54, 85, 68, 92, 80, 110]
-  },
-  '2025': {
-    kpis: [
-      { label: 'Hồ sơ yêu cầu bảo vệ SHTT', value: '1,106', change: '+8.1%', trend: 'up', icon: ShieldCheck, color: 'text-blue-600', bg: 'bg-blue-100', desc: 'Doanh nghiệp đệ trình' },
-      { label: 'Số vụ xâm phạm bị bắt giữ', value: '360', change: '+2.4%', trend: 'up', icon: ShieldAlert, color: 'text-rose-600', bg: 'bg-rose-100', desc: 'Tại các cửa khẩu biên giới' },
-      { label: 'Trị giá hàng hóa vi phạm', value: '41.7 Tỷ', change: '-4.1%', trend: 'down', icon: Zap, color: 'text-amber-600', bg: 'bg-amber-100', desc: 'Ước tính (VNĐ)' },
-      { label: 'Hàng giả/nhái bị tiêu hủy', value: '243 Tấn', change: '+11.2%', trend: 'up', icon: PackageSearch, color: 'text-emerald-600', bg: 'bg-emerald-100', desc: 'Giám sát chặt chẽ' },
-    ],
-    trends: [45, 30, 38, 55, 60, 48, 75, 62, 58, 80, 72, 84]
-  }
+  '2026': { kpis: [] as { label: string; value: string; change: string; trend: string; icon: React.ElementType; color: string; bg: string; desc: string }[], trends: [] as number[] },
+  '2025': { kpis: [] as { label: string; value: string; change: string; trend: string; icon: React.ElementType; color: string; bg: string; desc: string }[], trends: [] as number[] },
 };
 
-const CATEGORIES = [
-  { name: 'Thời trang & Giày dép', count: 18540, pct: 45, color: '#3b82f6' }, // blue-500
-  { name: 'Mỹ phẩm & Dược phẩm', count: 9890, pct: 24, color: '#f43f5e' }, // rose-500
-  { name: 'Điện tử & Phụ kiện', count: 8240, pct: 18, color: '#f59e0b' }, // amber-500
-  { name: 'Hàng tiêu dùng khác', count: 4560, pct: 13, color: '#10b981' }, // emerald-500
-];
-
-const LOCATION_DATA = [
-  { name: 'Cảng Cát Lái (HCM)', value: '14.5 Tỷ', level: 90 },
-  { name: 'Cửa khẩu Tân Thanh (Lạng Sơn)', value: '12.2 Tỷ', level: 75 },
-  { name: 'Cảng Hải Phòng', value: '8.4 Tỷ', level: 55 },
-  { name: 'Sân bay Nội Bài', value: '6.1 Tỷ', level: 40 },
-  { name: 'Sân bay Tân Sơn Nhất', value: '4.0 Tỷ', level: 25 },
-];
-
-const LOGS_DATA = [
-  { status: 'Đang kiểm hóa', badge: 'bg-amber-100 text-amber-700', dot: 'bg-amber-500 animate-pulse', title: 'Container CL-90234', loc: 'Cảng Cát Lái', brands: 'Chanel, Dior' },
-  { status: 'Bắt giữ lô hàng', badge: 'bg-rose-100 text-rose-700', dot: 'bg-rose-500', title: '15.000 Đôi giày thể thao', loc: 'Cửa khẩu Tân Thanh', brands: 'Nike, Adidas' },
-  { status: 'Hồ sơ hợp lệ', badge: 'bg-emerald-100 text-emerald-700', dot: 'bg-emerald-500', title: 'Gia hạn bảo hộ SHTT', loc: 'Hệ thống DVCTT', brands: 'Honda VN' },
-  { status: 'Tạm dừng thông quan', badge: 'bg-rose-100 text-rose-700', dot: 'bg-rose-500', title: '8 Lô linh kiện máy tính', loc: 'Sân bay Nội Bài', brands: 'Intel, Asus' },
-  { status: 'Chờ xác minh', badge: 'bg-indigo-100 text-indigo-700', dot: 'bg-indigo-500 animate-pulse', title: 'Kiện hàng quà biếu', loc: 'Chuyển phát nhanh HCM', brands: 'Rolex' },
-];
+const CATEGORIES: { name: string; count: number; pct: number; color: string }[] = [];
+const LOCATION_DATA: { name: string; value: string; level: number }[] = [];
+const LOGS_DATA: { status: string; badge: string; dot: string; title: string; loc: string; brands: string }[] = [];
 
 // --- COMPONENTS ---
 
@@ -71,7 +36,8 @@ export default function ThongKeSHTT() {
   if (!mounted) return <div className="min-h-screen bg-[#f8fafc]" />;
 
   const data = MOCK_DATA[year];
-  const maxTrend = Math.max(...data.trends);
+  const maxTrend = data.trends.length > 0 ? Math.max(...data.trends) : 1;
+  const hasData = data.kpis.length > 0 || data.trends.length > 0;
   const months = ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12'];
 
   const handleExport = () => {
@@ -156,6 +122,14 @@ export default function ThongKeSHTT() {
           </button>
         </div>
       </motion.div>
+
+      {/* Thông báo chưa có dữ liệu thực */}
+      {!hasData && (
+        <div className="mb-8 p-8 bg-white rounded-2xl border border-dashed border-slate-300 flex flex-col items-center gap-3 text-slate-400">
+          <BarChart3 className="w-10 h-10 opacity-30" />
+          <p className="text-sm font-semibold text-center">Chưa có dữ liệu thống kê.<br/>Số liệu sẽ được cập nhật khi có căn cứ chính xác từ hệ thống.</p>
+        </div>
+      )}
 
       {/* KPI METRICS ROW */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8 relative z-10">

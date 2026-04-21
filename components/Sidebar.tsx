@@ -72,11 +72,11 @@ export default function Sidebar() {
               </div>
             </div>
             <div className="relative z-10">
-               <h1 className="text-[16px] font-black tracking-tight text-white leading-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-300">
-                 Hải Quan Việt Nam
+               <h1 className="text-[13px] font-black tracking-tight text-white leading-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-300">
+                 Sổ tay tra cứu thông tin<br/>Sở hữu trí tuệ
                </h1>
-               <p className="text-[9px] font-black mt-1 tracking-[0.2em] uppercase text-amber-500/90 drop-shadow-[0_0_8px_rgba(245,158,11,0.5)]">
-                  Sở Hữu Trí Tuệ
+               <p className="text-[9px] font-black mt-1 tracking-[0.15em] uppercase text-amber-500/90 drop-shadow-[0_0_8px_rgba(245,158,11,0.5)]">
+                  trong lĩnh vực Hải quan
                </p>
             </div>
           </div>
@@ -147,10 +147,10 @@ export default function Sidebar() {
               <Shield className="w-4 h-4 text-emerald-400 drop-shadow-[0_0_5px_rgba(52,211,153,0.5)]" />
             </div>
             <div className="relative z-10">
-              <h4 className="text-[12px] font-black text-slate-200 tracking-wide uppercase">Bảo mật đa tầng</h4>
+              <h4 className="text-[12px] font-black text-slate-200 tracking-wide uppercase">Bảo vệ</h4>
               <p className="text-[10px] font-bold tracking-widest uppercase text-emerald-400 flex items-center gap-1.5 mt-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-[pulse_1.5s_ease-in-out_infinite] shadow-[0_0_5px_rgba(52,211,153,0.8)]" />
-                Mã hoá lõi E2E
+                Sản phẩm &amp; Trí tuệ
               </p>
             </div>
           </div>
