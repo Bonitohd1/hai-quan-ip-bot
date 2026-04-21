@@ -146,7 +146,7 @@ export default function Topbar() {
         {/* User Profile Hook */}
         <Link href="/tai-khoan" className="flex items-center gap-2 sm:gap-3.5 p-1.5 sm:pl-3 sm:pr-4 rounded-2xl hover:bg-white transition-all border border-transparent hover:border-slate-200 hover:shadow-lg group relative overflow-hidden bg-slate-50/40">
           <div className="hidden sm:block text-right">
-             <p className="text-[13px] font-black text-slate-900 group-hover:text-blue-600 transition-colors tracking-tight">Cán bộ Hải quan</p>
+             <p className="text-[13px] font-black text-slate-900 group-hover:text-blue-600 transition-colors tracking-tight">Công chức Hải quan</p>
           </div>
           <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-gradient-to-tr from-slate-200 to-slate-100 flex items-center justify-center border-2 border-white shadow-md shrink-0 relative overflow-hidden group-hover:ring-4 group-hover:ring-blue-50 transition-all">
              <User className="w-5 h-5 sm:w-6 sm:h-6 text-slate-400 group-hover:text-blue-600 transition-colors" />

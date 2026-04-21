@@ -128,10 +128,10 @@ const DOCUMENTS: LawDocument[] = [
 ];
 
 const STATS = [
-  { label: 'Tổng văn bản rà soát', value: '1,248', icon: Database, color: 'text-blue-600', bg: 'bg-blue-100' },
-  { label: 'Bộ luật hiện hành', value: '12', icon: Scale, color: 'text-orange-600', bg: 'bg-orange-100' },
-  { label: 'Nghị định liên quan', value: '45', icon: ShieldCheck, color: 'text-emerald-600', bg: 'bg-emerald-100' },
-  { label: 'Thông tư thi hành', value: '89', icon: BookOpen, color: 'text-purple-600', bg: 'bg-purple-100' },
+  { label: 'Tổng văn bản rà soát', value: String(DOCUMENTS.length), icon: Database, color: 'text-blue-600', bg: 'bg-blue-100' },
+  { label: 'Bộ luật hiện hành', value: String(DOCUMENTS.filter(d => d.type === 'Luật').length), icon: Scale, color: 'text-orange-600', bg: 'bg-orange-100' },
+  { label: 'Nghị định liên quan', value: String(DOCUMENTS.filter(d => d.type === 'Nghị định').length), icon: ShieldCheck, color: 'text-emerald-600', bg: 'bg-emerald-100' },
+  { label: 'Thông tư thi hành', value: String(DOCUMENTS.filter(d => d.type === 'Thông tư').length), icon: BookOpen, color: 'text-purple-600', bg: 'bg-purple-100' },
 ];
 
 const FILTER_TYPES = ['Tất cả', 'Luật', 'Nghị định', 'Thông tư'];
