@@ -132,7 +132,7 @@ export default function ThongKeSHTT() {
       )}
 
       {/* KPI METRICS ROW */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8 relative z-10">
+      {hasData && <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8 relative z-10">
         {data.kpis.map((item, i) => (
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -168,9 +168,10 @@ export default function ThongKeSHTT() {
             </div>
           </motion.div>
         ))}
-      </div>
+      </div>}
 
       {/* MAIN CHARTS GRID */}
+      {hasData && <>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8 relative z-10">
          
          {/* LARGE CHART: TRENDS (2/3 width) */}
@@ -386,6 +387,7 @@ export default function ThongKeSHTT() {
           </div>
         </motion.div>
       </div>
+      </>}
 
       {/* FULL LOGS MODAL */}
       <AnimatePresence>

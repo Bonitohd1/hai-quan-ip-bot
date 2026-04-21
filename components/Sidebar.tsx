@@ -60,25 +60,25 @@ export default function Sidebar() {
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-48 bg-amber-500/5 rounded-full blur-[80px] pointer-events-none" />
 
         {/* BRANDING */}
-        <div className="p-6 pb-2 relative z-10 flex-shrink-0">
-          <div className="flex items-center gap-3.5 mb-6 relative group cursor-pointer transition-transform duration-300 hover:scale-[1.02]">
-            <div className="relative">
-              <div className="absolute -inset-1 bg-amber-500/20 rounded-xl blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="w-12 h-12 bg-gradient-to-tr from-slate-800 to-slate-700 rounded-xl p-[1px] relative z-10 shadow-xl ring-1 ring-amber-500/20 group-hover:ring-amber-500/50 transition-colors">
-                <div className="w-full h-full bg-[#0d1421] rounded-[11px] flex flex-col items-center justify-center overflow-hidden">
+        <div className="px-6 pt-6 pb-2 relative z-10 flex-shrink-0">
+          <div className="flex flex-col items-center text-center mb-5 relative group cursor-pointer transition-transform duration-300 hover:scale-[1.02]">
+            {/* Logo */}
+            <div className="relative mb-3">
+              <div className="absolute -inset-1.5 bg-amber-500/20 rounded-2xl blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="w-16 h-16 bg-gradient-to-tr from-slate-800 to-slate-700 rounded-2xl p-[1px] relative z-10 shadow-xl ring-1 ring-amber-500/20 group-hover:ring-amber-500/50 transition-colors">
+                <div className="w-full h-full bg-[#0d1421] rounded-[15px] flex items-center justify-center overflow-hidden relative">
                   <div className="absolute inset-x-0 -top-2 h-4 bg-white/5 blur-sm" />
-                  <img src={LOGO_HQ_BASE64} alt="HQ Logo" width={32} height={32} className="object-contain" />
+                  <img src={LOGO_HQ_BASE64} alt="HQ Logo" width={40} height={40} className="object-contain relative z-10" />
                 </div>
               </div>
             </div>
-            <div className="relative z-10">
-               <h1 className="text-[13px] font-black tracking-tight text-white leading-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-300">
-                 Sổ tay tra cứu thông tin<br/>Sở hữu trí tuệ
-               </h1>
-               <p className="text-[9px] font-black mt-1 tracking-[0.15em] uppercase text-amber-500/90 drop-shadow-[0_0_8px_rgba(245,158,11,0.5)]">
-                  trong lĩnh vực Hải quan
-               </p>
-            </div>
+            {/* Text */}
+            <h1 className="text-[13px] font-black tracking-tight text-white leading-snug bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-300 px-2">
+              Sổ tay tra cứu thông tin<br/>Sở hữu trí tuệ
+            </h1>
+            <p className="text-[9px] font-black mt-1.5 tracking-[0.18em] uppercase text-amber-500/90 drop-shadow-[0_0_8px_rgba(245,158,11,0.5)]">
+              trong lĩnh vực Hải quan
+            </p>
           </div>
           <div className="w-full h-px bg-gradient-to-r from-transparent via-slate-700/50 to-transparent" />
         </div>
