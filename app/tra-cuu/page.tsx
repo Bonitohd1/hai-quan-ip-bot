@@ -487,14 +487,7 @@ function DocumentAnalysisModal({ doc, onClose }: { doc: Document, onClose: () =>
           <div className="flex flex-1 overflow-hidden">
              
              <div className="w-full lg:w-1/2 bg-[#f8fafc] border-r border-slate-200 relative">
-                {doc.filename ? (
-                   <iframe 
-                      src={`/documents/${doc.filename}`} 
-                      className="w-full h-full border-0 absolute inset-0"
-                      title="PDF Viewer"
-                   />
-                ) : (
-                   <div className="w-full h-full overflow-y-auto p-6 custom-scrollbar">
+                <div className="w-full h-full overflow-y-auto p-6 custom-scrollbar">
                       <div className="bg-white rounded-xl shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] border border-slate-200 p-10 min-h-[900px] mx-auto max-w-2xl relative">
                          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rotate-[-45deg] opacity-[0.03] pointer-events-none z-0">
                             <span className="text-9xl font-black whitespace-nowrap">BẢN LƯU TRỮ</span>
@@ -553,7 +546,6 @@ function DocumentAnalysisModal({ doc, onClose }: { doc: Document, onClose: () =>
                          </div>
                       </div>
                    </div>
-                )}
              </div>
 
              <div className="w-full lg:w-1/2 flex flex-col bg-white">
