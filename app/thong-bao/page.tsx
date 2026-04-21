@@ -1,58 +1,10 @@
 'use client';
 
+import React from 'react';
 import { motion } from 'framer-motion';
-import { 
-  Bell, AlertTriangle, CheckCircle2, Info, PackageSearch, 
-  ShieldAlert, Settings, FileText, CheckCircle, Clock
-} from 'lucide-react';
+import { Bell, CheckCircle, Clock, ShieldAlert } from 'lucide-react';
 
-const NOTIFICATIONS = [
-  {
-    id: 1,
-    type: 'critical',
-    title: 'Phát hiện rủi ro cấp độ ĐỎ',
-    desc: 'Hệ thống AI vừa khoanh vùng Container SEGU-9382103 tại Cảng Cát Lái có 94% nguy cơ chứa áo thun Adidas giả mạo.',
-    time: '5 phút trước',
-    icon: ShieldAlert,
-    read: false,
-  },
-  {
-    id: 2,
-    type: 'success',
-    title: 'Thông quan thành công',
-    desc: 'Hồ sơ Tờ khai số #104825941 đã được xác minh tính hợp pháp của Quyền SHTT (Ủy quyền hợp lệ từ Apple Inc).',
-    time: '1 giờ trước',
-    icon: CheckCircle2,
-    read: false,
-  },
-  {
-    id: 3,
-    type: 'info',
-    title: 'Cập nhật Văn bản Pháp luật mới',
-    desc: 'Nghị định 99/2013/NĐ-CP (Sửa đổi 2026) về xử phạt hành chính trong lĩnh vực Sở hữu công nghiệp đã được cập nhật vào CSDL.',
-    time: 'Hôm qua, 14:30',
-    icon: FileText,
-    read: true,
-  },
-  {
-    id: 4,
-    type: 'warning',
-    title: 'Yêu cầu phối hợp giám định',
-    desc: 'Chi cục Hải quan CK Sân bay Nội Bài phát lệnh yêu cầu chuyên gia SHTT hỗ trợ giám định 500 mẫu đồng hồ Casio.',
-    time: 'Hôm qua, 09:15',
-    icon: PackageSearch,
-    read: true,
-  },
-  {
-    id: 5,
-    type: 'system',
-    title: 'Hệ thống đã tự động sao lưu',
-    desc: 'Bản sao lưu toàn bộ nhật ký tác nghiệp tháng vừa qua đã được đồng bộ lên Cloud.',
-    time: '2 ngày trước',
-    icon: Settings,
-    read: true,
-  }
-];
+const NOTIFICATIONS: { id: number; type: string; title: string; desc: string; time: string; icon: React.ElementType; read: boolean }[] = [];
 
 export default function ThongBao() {
   return (
@@ -61,11 +13,13 @@ export default function ThongBao() {
         <div>
           <h1 className="text-3xl font-bold text-slate-900 tracking-tight flex items-center gap-3">
             Thông báo hệ thống
-            <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-md bg-rose-500 text-white text-xs font-bold shadow-sm shadow-rose-500/30">
-              2 mới
-            </span>
+            {NOTIFICATIONS.filter(n => !n.read).length > 0 && (
+              <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-md bg-rose-500 text-white text-xs font-bold shadow-sm shadow-rose-500/30">
+                {NOTIFICATIONS.filter(n => !n.read).length} mới
+              </span>
+            )}
           </h1>
-          <p className="text-slate-500 mt-2 text-sm font-medium">Trung tâm theo dõi sự kiện & tín hiệu cảnh báo AI.</p>
+          <p className="text-slate-500 mt-2 text-sm font-medium">Trung tâm theo dõi sự kiện & tín hiệu cảnh báo.</p>
         </div>
         
         <button className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 text-slate-600 text-sm font-semibold rounded-xl hover:bg-slate-50 transition-colors shadow-sm focus:ring-4 focus:ring-slate-100">
@@ -77,13 +31,19 @@ export default function ThongBao() {
         {/* Header filter tags */}
         <div className="p-4 border-b border-slate-100 bg-slate-50/50 flex flex-wrap items-center gap-3">
           <button className="px-4 py-2 bg-blue-600 text-white text-xs font-bold uppercase tracking-wider rounded-xl shadow-sm shadow-blue-500/20 whitespace-nowrap">Tất cả</button>
-          <button className="px-4 py-2 bg-white border border-slate-200 text-slate-500 text-xs font-bold uppercase tracking-wider rounded-xl hover:bg-slate-50 transition-colors whitespace-nowrap">Chưa đọc (2)</button>
+          <button className="px-4 py-2 bg-white border border-slate-200 text-slate-500 text-xs font-bold uppercase tracking-wider rounded-xl hover:bg-slate-50 transition-colors whitespace-nowrap">Chưa đọc ({NOTIFICATIONS.filter(n => !n.read).length})</button>
           <button className="px-4 py-2 bg-white border border-slate-200 text-slate-500 text-xs font-bold uppercase tracking-wider rounded-xl hover:bg-slate-50 transition-colors whitespace-nowrap flex items-center gap-2"><ShieldAlert className="w-4 h-4 text-rose-500"/> Cảnh báo đỏ</button>
           <button className="px-4 py-2 bg-white border border-slate-200 text-slate-500 text-xs font-bold uppercase tracking-wider rounded-xl hover:bg-slate-50 transition-colors whitespace-nowrap">Hành chính</button>
         </div>
 
         {/* List */}
         <div className="divide-y divide-slate-100">
+          {NOTIFICATIONS.length === 0 && (
+            <div className="py-20 flex flex-col items-center gap-3 text-slate-400">
+              <Bell className="w-10 h-10 opacity-30" />
+              <p className="text-sm font-semibold">Chưa có thông báo nào.</p>
+            </div>
+          )}
           {NOTIFICATIONS.map((notif, i) => {
             const bgBadge = notif.type === 'critical' ? 'bg-rose-100 text-rose-600' :
                             notif.type === 'success' ? 'bg-emerald-100 text-emerald-600' :

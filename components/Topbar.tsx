@@ -1,42 +1,14 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { 
-  Bell, Search, Settings, ShieldAlert, CheckCircle2, 
-  FileText, PackageSearch, Clock, User
+import React from 'react';
+import {
+  Bell, Search, Settings, User
 } from 'lucide-react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const NOTIFICATIONS = [
-  {
-    id: 1,
-    type: 'critical',
-    title: 'Phát hiện rủi ro cấp độ ĐỎ',
-    desc: 'Hệ thống AI vừa khoanh vùng Container SEGU-9382103 tại Cảng Cát Lái có 94% nguy cơ chứa áo thun Adidas giả mạo.',
-    time: '5 phút trước',
-    icon: ShieldAlert,
-    read: false,
-  },
-  {
-    id: 2,
-    type: 'success',
-    title: 'Thông quan thành công',
-    desc: 'Hồ sơ Tờ khai số #104825941 đã được xác minh tính hợp pháp của Quyền SHTT.',
-    time: '1 giờ trước',
-    icon: CheckCircle2,
-    read: false,
-  },
-  {
-    id: 3,
-    type: 'warning',
-    title: 'Yêu cầu phối hợp giám định',
-    desc: 'Chi cục Hải quan CK Sân bay Nội Bài phát lệnh yêu cầu chuyên gia hỗ trợ.',
-    time: 'Hôm qua, 09:15',
-    icon: PackageSearch,
-    read: true,
-  }
-];
+const NOTIFICATIONS: { id: number; type: string; title: string; desc: string; time: string; icon: React.ElementType; read: boolean }[] = [];
 
 export default function Topbar() {
   const [showNotifications, setShowNotifications] = useState(false);
@@ -90,11 +62,13 @@ export default function Topbar() {
               <Bell className="w-5 h-5" />
             </motion.div>
             
-            {/* Pulsing Notification Dot */}
-            <div className="absolute top-2 right-2 flex h-3 w-3">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-rose-500 border-2 border-white shadow-[0_0_10px_rgba(244,63,94,0.6)]"></span>
-            </div>
+            {/* Pulsing Notification Dot — hiển thị khi có thông báo chưa đọc */}
+            {NOTIFICATIONS.some(n => !n.read) && (
+              <div className="absolute top-2 right-2 flex h-3 w-3">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-rose-500 border-2 border-white shadow-[0_0_10px_rgba(244,63,94,0.6)]"></span>
+              </div>
+            )}
           </motion.button>
 
           <AnimatePresence>
@@ -172,11 +146,7 @@ export default function Topbar() {
         {/* User Profile Hook */}
         <Link href="/tai-khoan" className="flex items-center gap-2 sm:gap-3.5 p-1.5 sm:pl-3 sm:pr-4 rounded-2xl hover:bg-white transition-all border border-transparent hover:border-slate-200 hover:shadow-lg group relative overflow-hidden bg-slate-50/40">
           <div className="hidden sm:block text-right">
-             <p className="text-[13px] font-black text-slate-900 group-hover:text-blue-600 transition-colors tracking-tight">Cán bộ Hải Quan</p>
-             <p className="text-[9px] uppercase font-black tracking-[0.1em] text-emerald-600 flex items-center justify-end gap-1.5 mt-0.5">
-               <span className="w-1 h-1 bg-emerald-500 rounded-full animate-pulse" />
-               Vùng Nghiệp vụ
-             </p>
+             <p className="text-[13px] font-black text-slate-900 group-hover:text-blue-600 transition-colors tracking-tight">Cán bộ Hải quan</p>
           </div>
           <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-gradient-to-tr from-slate-200 to-slate-100 flex items-center justify-center border-2 border-white shadow-md shrink-0 relative overflow-hidden group-hover:ring-4 group-hover:ring-blue-50 transition-all">
              <User className="w-5 h-5 sm:w-6 sm:h-6 text-slate-400 group-hover:text-blue-600 transition-colors" />
