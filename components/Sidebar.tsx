@@ -61,23 +61,20 @@ export default function Sidebar() {
 
         {/* BRANDING */}
         <div className="px-6 pt-6 pb-2 relative z-10 flex-shrink-0">
-          <div className="flex flex-col items-center text-center mb-5 relative group cursor-pointer transition-transform duration-300 hover:scale-[1.02]">
-            {/* Logo */}
+          <div className="flex flex-col items-center text-center mb-5 relative group cursor-pointer transition-transform duration-300 hover:scale-[1.02] border border-slate-700/60 rounded-2xl px-4 py-4 hover:border-amber-500/30 transition-colors">
+            {/* Logo — no ring */}
             <div className="relative mb-3">
-              <div className="absolute -inset-1.5 bg-amber-500/20 rounded-2xl blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="w-16 h-16 bg-gradient-to-tr from-slate-800 to-slate-700 rounded-2xl p-[1px] relative z-10 shadow-xl ring-1 ring-amber-500/20 group-hover:ring-amber-500/50 transition-colors">
-                <div className="w-full h-full bg-[#0d1421] rounded-[15px] flex items-center justify-center overflow-hidden relative">
-                  <div className="absolute inset-x-0 -top-2 h-4 bg-white/5 blur-sm" />
-                  <img src={LOGO_HQ_BASE64} alt="HQ Logo" width={40} height={40} className="object-contain relative z-10" />
-                </div>
+              <div className="w-16 h-16 bg-[#0d1421] rounded-2xl flex items-center justify-center overflow-hidden relative shadow-lg">
+                <div className="absolute inset-x-0 -top-2 h-4 bg-white/5 blur-sm" />
+                <img src={LOGO_HQ_BASE64} alt="HQ Logo" width={44} height={44} className="object-contain relative z-10" />
               </div>
             </div>
-            {/* Text */}
-            <h1 className="text-[13px] font-black tracking-tight text-white leading-snug bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-300 px-2">
-              Sổ tay tra cứu thông tin<br/>Sở hữu trí tuệ
+            {/* Text — ALL CAPS */}
+            <h1 className="text-[12px] font-black tracking-wide text-white leading-snug uppercase px-1">
+              SỔ TAY TRA CỨU THÔNG TIN<br/>SỞ HỮU TRÍ TUỆ
             </h1>
             <p className="text-[9px] font-black mt-1.5 tracking-[0.18em] uppercase text-amber-500/90 drop-shadow-[0_0_8px_rgba(245,158,11,0.5)]">
-              trong lĩnh vực Hải quan
+              TRONG LĨNH VỰC HẢI QUAN
             </p>
           </div>
           <div className="w-full h-px bg-gradient-to-r from-transparent via-slate-700/50 to-transparent" />
@@ -86,7 +83,7 @@ export default function Sidebar() {
         {/* NAVIGATION */}
         <nav className="flex-1 px-4 mt-4 space-y-1 overflow-y-auto relative z-10">
           <div className="px-3 mb-3 mt-2">
-             <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500/80">Nghiệp vụ cốt lõi</span>
+             <span className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-slate-400">Nghiệp vụ cốt lõi</span>
           </div>
           
           {NAV_ITEMS.map((item) => {
@@ -121,9 +118,9 @@ export default function Sidebar() {
         </nav>
 
         {/* SYSTEM STATUS */}
-        <div className="p-4 relative z-10 mt-auto">
+        <div className="p-4 relative z-10">
           <div className="px-3 mb-3">
-             <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500/80">Hệ thống</span>
+             <span className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-slate-400">Hệ thống</span>
           </div>
 
           {USER_ITEMS.map((item) => {
@@ -141,14 +138,14 @@ export default function Sidebar() {
              )
           })}
 
-          <div className="bg-[#0f172a] border border-[#1e293b] rounded-2xl p-4 flex items-center gap-3.5 relative overflow-hidden group hover:border-[#334155] transition-colors cursor-default shadow-lg">
-            <div className="absolute left-6 top-6 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-emerald-500/20 animate-ping" />
+          <div className="bg-[#0f172a] border border-[#1e293b] rounded-2xl p-4 flex flex-col items-center relative overflow-hidden group hover:border-[#334155] transition-colors cursor-default shadow-lg gap-2">
+            <div className="absolute left-1/2 top-6 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-emerald-500/20 animate-ping" />
             <div className="w-10 h-10 rounded-full bg-emerald-500/10 flex items-center justify-center shrink-0 border border-emerald-500/30 relative z-10">
               <Shield className="w-4 h-4 text-emerald-400 drop-shadow-[0_0_5px_rgba(52,211,153,0.5)]" />
             </div>
-            <div className="relative z-10">
+            <div className="relative z-10 text-center">
               <h4 className="text-[12px] font-black text-slate-200 tracking-wide uppercase">Bảo vệ</h4>
-              <p className="text-[10px] font-bold tracking-widest uppercase text-emerald-400 flex items-center gap-1.5 mt-1">
+              <p className="text-[10px] font-bold tracking-widest uppercase text-emerald-400 flex items-center justify-center gap-1.5 mt-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-[pulse_1.5s_ease-in-out_infinite] shadow-[0_0_5px_rgba(52,211,153,0.8)]" />
                 Sản phẩm &amp; Trí tuệ
               </p>
