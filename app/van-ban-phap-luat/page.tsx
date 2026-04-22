@@ -23,7 +23,7 @@ const DOCUMENTS: LawDocument[] = [
     type: 'Luật',
     number: '07/2022/QH15',
     year: '2022',
-    desc: 'Văn bản cốt lõi định hình khung pháp lý toàn diện về quyền sở hữu công nghiệp và bảo vệ quyền SHTT tại biên giới hải quan.',
+    desc: 'Văn bản cốt lõi định hình khung pháp lý toàn diện về quyền sở hữu công nghiệp và bảo vệ quyền SHTT tại Việt Nam.',
     agency: 'Quốc hội',
     status: 'active',
     articles: [
