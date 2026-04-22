@@ -111,15 +111,15 @@ export default function TaiKhoan() {
                     <div className="p-6 rounded-2xl bg-blue-50 border border-blue-100/50 flex flex-col justify-center">
                       <p className="text-sm font-bold text-blue-600/80 mb-2 uppercase tracking-wide">Hồ sơ đã can thiệp</p>
                       <div className="flex items-end gap-2">
-                         <p className="text-5xl font-black text-slate-900 tracking-tight">124</p>
-                         <p className="text-sm font-bold text-slate-500 mb-1.5">vụ việc</p>
+                         <p className="text-5xl font-black text-slate-400 tracking-tight">—</p>
+                         <p className="text-sm font-bold text-slate-400 mb-1.5">vụ việc</p>
                       </div>
                     </div>
                     <div className="p-6 rounded-2xl bg-emerald-50 border border-emerald-100/50 flex flex-col justify-center">
                       <p className="text-sm font-bold text-emerald-600/80 mb-2 uppercase tracking-wide">Khoanh vùng chính xác</p>
                       <div className="flex items-end gap-2">
-                         <p className="text-5xl font-black text-slate-900 tracking-tight">32</p>
-                         <p className="text-sm font-bold text-slate-500 mb-1.5">rủi ro SHTT</p>
+                         <p className="text-5xl font-black text-slate-400 tracking-tight">—</p>
+                         <p className="text-sm font-bold text-slate-400 mb-1.5">rủi ro SHTT</p>
                       </div>
                     </div>
                   </div>
