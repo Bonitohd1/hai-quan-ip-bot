@@ -4,9 +4,10 @@ import Link from 'next/link';
 import { LOGO_HQ_BASE64 } from '../lib/logoBase64';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
 import {
   Home, Search, FileText, History, BarChart3,
-  Menu, X, Shield, ChevronRight, UserCircle, BookMarked, Workflow
+  Menu, X, Shield, ChevronRight, UserCircle, BookMarked, Workflow, Settings
 } from 'lucide-react';
 
 const NAV_ITEMS = [
@@ -23,9 +24,15 @@ const USER_ITEMS = [
   { label: 'Tài khoản cá nhân', icon: UserCircle, href: '/tai-khoan' },
 ];
 
+const ADMIN_ITEMS = [
+  { label: 'Quản trị hệ thống', icon: Settings, href: '/quan-tri' },
+];
+
 export default function Sidebar() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { data: session } = useSession();
+  const isAdmin = session?.user?.role === 'ADMIN';
 
   useEffect(() => {
     setMobileOpen(false);
@@ -125,16 +132,17 @@ export default function Sidebar() {
              <span className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-slate-400">Hệ thống</span>
           </div>
 
-          {USER_ITEMS.map((item) => {
+          {[...USER_ITEMS, ...(isAdmin ? ADMIN_ITEMS : [])].map((item) => {
              const Icon = item.icon;
+             const isActive = pathname === item.href;
              return (
               <Link
                 key={item.href}
                 href={item.href}
-                className="group flex items-center gap-3.5 px-3.5 py-3 rounded-xl text-[13px] font-bold tracking-wide text-slate-400 hover:text-white hover:bg-slate-800/40 transition-all duration-300 relative overflow-hidden mb-4"
+                className={`group flex items-center gap-3.5 px-3.5 py-3 rounded-xl text-[13px] font-bold tracking-wide transition-all duration-300 relative overflow-hidden mb-1 ${isActive ? 'text-amber-400 bg-slate-800/80 ring-1 ring-slate-700/50' : 'text-slate-400 hover:text-white hover:bg-slate-800/40'}`}
               >
                  <div className="absolute inset-0 bg-gradient-to-r from-slate-800/0 via-slate-800/50 to-slate-800/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-in-out" />
-                 <Icon className="w-[18px] h-[18px] text-slate-500 group-hover:text-blue-400 transition-colors relative z-10" />
+                 <Icon className={`w-[18px] h-[18px] transition-colors relative z-10 ${isActive ? 'text-amber-400' : 'text-slate-500 group-hover:text-blue-400'}`} />
                  <span className="relative z-10">{item.label}</span>
               </Link>
              )
