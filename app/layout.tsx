@@ -14,7 +14,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="vi" className={`${montserrat.variable} selection:bg-blue-200 selection:text-blue-900`}>
       <head>
-        <title>Hải Quan SHTT — Hệ thống quản lý chuyên ngành</title>
+        <title>SHTT Hải quan</title>
         <meta name="description" content="Hệ thống quản trị và tra cứu Sở hữu trí tuệ Hải quan Việt Nam" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
       </head>

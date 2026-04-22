@@ -88,7 +88,7 @@ export default function TraCuu() {
           </div>
           
           <h1 className="text-3xl lg:text-4xl font-extrabold text-white tracking-tight">
-             Thư viện <span className="text-orange-500">Phân tích Hệ thống</span>
+             Thư viện <span className="text-orange-500">phân tích hệ thống</span>
           </h1>
           <p className="text-slate-400 text-sm lg:text-base font-medium">
              Nhập mã hồ sơ hoặc chọn phân loại trực quan để rà soát dữ liệu thuộc quyền giám sát của bạn.

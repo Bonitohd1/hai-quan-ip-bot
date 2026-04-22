@@ -3,7 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  binaryTargets = ["native", "rhel-debian-pg-3.0.x"]
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
 }
 
 datasource db {
@@ -29,16 +29,44 @@ model Document {
   @@index([type])
 }
 
-// Admin user for authentication
+// Admin user for authentication (legacy)
 model AdminUser {
   id        String   @id @default(cuid())
   username  String   @unique
-  password  String   // Should be hashed in production
+  password  String
   email     String?  @unique
   isActive  Boolean  @default(true)
-  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+// Extended user profile (linked to Google OAuth by email)
+// role values: "VIEWER" | "OFFICER" | "ADMIN"
+model UserProfile {
+  id            String   @id @default(cuid())
+  email         String   @unique
+
+  // Thông tin cá nhân
+  fullName      String?
+  employeeId    String?  @unique
+  avatarUrl     String?
+
+  // Thông tin công tác
+  unit          String?   // Cục/Chi cục
+  department    String?   // Phòng ban
+  position      String?   // Chức vụ
+  phoneInternal String?   // Số nội bộ
+
+  // Phân quyền & trạng thái (VIEWER | OFFICER | ADMIN)
+  role          String   @default("VIEWER")
+  isActive      Boolean  @default(true)
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  lastLoginAt   DateTime?
+
+  @@index([email])
+  @@index([role])
 }
 
 // Activity log for tracking document uploads and operations
