@@ -4,14 +4,16 @@ import Link from 'next/link';
 import { LOGO_HQ_BASE64 } from '../lib/logoBase64';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { 
-  Home, Search, FileText, History, BarChart3, 
-  Menu, X, Shield, ChevronRight, UserCircle
+import {
+  Home, Search, FileText, History, BarChart3,
+  Menu, X, Shield, ChevronRight, UserCircle, BookMarked, Workflow
 } from 'lucide-react';
 
 const NAV_ITEMS = [
   { label: 'Tổng quan', icon: Home, href: '/' },
   { label: 'Tra cứu hồ sơ', icon: Search, href: '/tra-cuu' },
+  { label: 'Hồ sơ bảo hộ', icon: BookMarked, href: '/ho-so-bao-ho' },
+  { label: 'Quy trình xử lý', icon: Workflow, href: '/quy-trinh-xu-ly' },
   { label: 'Văn bản pháp luật', icon: FileText, href: '/van-ban-phap-luat' },
   { label: 'Lịch sử SHTT', icon: History, href: '/lich-su-shtt' },
   { label: 'Báo cáo thống kê', icon: BarChart3, href: '/thong-ke-shtt' },

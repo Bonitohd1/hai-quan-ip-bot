@@ -7,41 +7,59 @@ import Link from 'next/link';
 import FireworksCanvas from '@/components/FireworksCanvas';
 import {
   Search, FileText, History, BarChart3,
-  AlertTriangle, ArrowRight, Sparkles, ChevronRight, FileSearch
+  AlertTriangle, ArrowRight, Sparkles, ChevronRight, FileSearch, BookMarked, Workflow
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 const MODULES = [
-  { 
-    title: 'Tra cứu Thông minh', 
-    desc: 'Sử dụng AI phân tích hình ảnh, text để tìm kiếm hồ sơ nhãn hiệu, kiểu dáng.',
+  {
+    title: 'Tra cứu thông minh',
+    desc: 'AI phân tích hình ảnh, text để tìm kiếm hồ sơ nhãn hiệu, kiểu dáng công nghiệp.',
     href: '/tra-cuu',
     icon: Search,
     color: 'text-blue-900',
     bg: 'bg-blue-50',
     border: 'group-hover:border-blue-900',
   },
-  { 
-    title: 'Hệ thống Pháp lý', 
-    desc: 'Hỏi đáp AI về Luật, Nghị định và Thông tư kiểm soát biên giới.',
+  {
+    title: 'Hồ sơ bảo hộ biên giới',
+    desc: 'Danh sách chủ thể quyền đăng ký giám sát — tra cứu nhanh khi kiểm hóa.',
+    href: '/ho-so-bao-ho',
+    icon: BookMarked,
+    color: 'text-emerald-700',
+    bg: 'bg-emerald-50',
+    border: 'group-hover:border-emerald-600',
+  },
+  {
+    title: 'Quy trình xử lý vi phạm',
+    desc: 'SOP từng bước tương tác: phát hiện, tạm dừng, giám định, ra quyết định xử phạt.',
+    href: '/quy-trinh-xu-ly',
+    icon: Workflow,
+    color: 'text-purple-700',
+    bg: 'bg-purple-50',
+    border: 'group-hover:border-purple-600',
+  },
+  {
+    title: 'Hệ thống pháp lý',
+    desc: 'Tra cứu Luật, Nghị định, Thông tư và Văn bản chỉ đạo về kiểm soát biên giới.',
     href: '/van-ban-phap-luat',
     icon: FileText,
     color: 'text-orange-600',
     bg: 'bg-orange-50',
     border: 'group-hover:border-orange-500',
   },
-  { 
-    title: 'Lịch sử & Thay đổi', 
-    desc: 'Truy xuất dòng thời gian bảo hộ của một thương hiệu cụ thể.',
+  {
+    title: 'Lịch sử SHTT',
+    desc: 'Dòng thời gian hình thành và phát triển pháp luật SHTT trong lĩnh vực Hải quan.',
     href: '/lich-su-shtt',
     icon: History,
     color: 'text-blue-900',
     bg: 'bg-blue-50',
     border: 'group-hover:border-blue-900',
   },
-  { 
-    title: 'Báo cáo Chi tiết', 
-    desc: 'Kết xuất báo cáo lượng hàng giả, vi phạm SHTT theo thời gian thực.',
+  {
+    title: 'Báo cáo thống kê',
+    desc: 'Tổng hợp số liệu hàng giả, vi phạm SHTT theo thời gian và khu vực.',
     href: '/thong-ke-shtt',
     icon: BarChart3,
     color: 'text-orange-600',
@@ -140,7 +158,7 @@ export default function Home() {
               <h2 className="text-lg font-bold text-[#0a192f] uppercase tracking-wide">Điều hướng nghiệp vụ</h2>
             </div>
             
-            <div className="grid grid-cols-2 md:grid-cols-2 gap-3 sm:gap-4 lg:gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
                {MODULES.map((module, i) => (
                   <Link 
                      key={i} 
