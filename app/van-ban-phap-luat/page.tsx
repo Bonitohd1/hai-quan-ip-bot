@@ -185,7 +185,7 @@ export default function VanBanPhapLuat() {
           </div>
           
           <h1 className="text-3xl lg:text-5xl font-extrabold text-white tracking-tight leading-tight">
-             Thư viện <span className="text-orange-500">Chuẩn Mực Pháp Lý</span>
+             Thư viện <span className="text-orange-500">chuẩn mực pháp lý</span>
           </h1>
           <p className="text-slate-400 text-base font-medium max-w-2xl mx-auto leading-relaxed">
              Truy xuất bộ khung pháp luật về Sở hữu Trí tuệ được liên kết trực tiếp với hoạt động giám sát thông quan của Tổng Cục Hải Quan.
@@ -683,7 +683,7 @@ function LegalDocumentAnalysisModal({ doc, onClose }: { doc: LawDocument, onClos
                          
                          <div className="flex-1 bg-white border border-slate-200 rounded-xl p-8 shadow-sm">
                             <h4 className="text-sm font-bold text-slate-400 mb-4 uppercase tracking-wider flex items-center gap-2">
-                               <BookOpen className="w-4 h-4 text-indigo-500" /> Báo cáo Phân Tích Thực Tiễn
+                               <BookOpen className="w-4 h-4 text-indigo-500" /> Báo cáo phân tích thực tiễn
                             </h4>
                             <div className="text-slate-700 text-[15px] leading-loose text-justify font-sans p-6 bg-slate-50 rounded-xl border border-slate-100 italic">
                                "{doc.expertSummary}"

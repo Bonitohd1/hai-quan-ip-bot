@@ -91,14 +91,15 @@ export default function LichSuSHTT() {
          </motion.div>
          
          <h1 className="text-4xl lg:text-6xl font-black text-slate-900 tracking-tight leading-[1.1] mb-6">
-            Lịch Sử Hình Thành & <br className="hidden md:block"/> 
+            Lịch sử hình thành & <br className="hidden md:block"/>
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0070c0] via-[#00b050] to-[#0070c0] bg-[length:200%_auto] animate-gradient">
-              Phát Triển Sở Hữu Trí Tuệ
+              phát triển sở hữu trí tuệ
             </span>
          </h1>
-         
+
          <p className="text-slate-600 text-lg md:text-xl font-medium max-w-3xl mx-auto leading-relaxed">
-            Hành trình sáng tạo và bảo vệ: Nền tảng hội nhập quốc tế – Khởi nguồn một tương lai vững mạnh và vươn xa 
+            Hành trình sáng tạo và bảo vệ: Nền tảng hội nhập quốc tế<br className="hidden md:block"/>
+            Khởi nguồn một tương lai vững mạnh và vươn xa
          </p>
        </motion.div>
 

@@ -86,7 +86,7 @@ export default function Sidebar() {
         {/* NAVIGATION */}
         <nav className="flex-1 px-4 mt-4 space-y-1 overflow-y-auto relative z-10">
           <div className="px-3 mb-3 mt-2">
-             <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500/80">Nghiệp vụ cốt lõi</span>
+             <span className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-slate-400">Nghiệp vụ cốt lõi</span>
           </div>
           
           {NAV_ITEMS.map((item) => {
@@ -121,9 +121,9 @@ export default function Sidebar() {
         </nav>
 
         {/* SYSTEM STATUS */}
-        <div className="p-4 relative z-10 mt-auto">
+        <div className="p-4 relative z-10">
           <div className="px-3 mb-3">
-             <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500/80">Hệ thống</span>
+             <span className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-slate-400">Hệ thống</span>
           </div>
 
           {USER_ITEMS.map((item) => {
@@ -141,14 +141,14 @@ export default function Sidebar() {
              )
           })}
 
-          <div className="bg-[#0f172a] border border-[#1e293b] rounded-2xl p-4 flex items-center gap-3.5 relative overflow-hidden group hover:border-[#334155] transition-colors cursor-default shadow-lg">
-            <div className="absolute left-6 top-6 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-emerald-500/20 animate-ping" />
+          <div className="bg-[#0f172a] border border-[#1e293b] rounded-2xl p-4 flex flex-col items-center relative overflow-hidden group hover:border-[#334155] transition-colors cursor-default shadow-lg gap-2">
+            <div className="absolute left-1/2 top-6 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-emerald-500/20 animate-ping" />
             <div className="w-10 h-10 rounded-full bg-emerald-500/10 flex items-center justify-center shrink-0 border border-emerald-500/30 relative z-10">
               <Shield className="w-4 h-4 text-emerald-400 drop-shadow-[0_0_5px_rgba(52,211,153,0.5)]" />
             </div>
-            <div className="relative z-10">
+            <div className="relative z-10 text-center">
               <h4 className="text-[12px] font-black text-slate-200 tracking-wide uppercase">Bảo vệ</h4>
-              <p className="text-[10px] font-bold tracking-widest uppercase text-emerald-400 flex items-center gap-1.5 mt-1">
+              <p className="text-[10px] font-bold tracking-widest uppercase text-emerald-400 flex items-center justify-center gap-1.5 mt-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-[pulse_1.5s_ease-in-out_infinite] shadow-[0_0_5px_rgba(52,211,153,0.8)]" />
                 Sản phẩm &amp; Trí tuệ
               </p>
