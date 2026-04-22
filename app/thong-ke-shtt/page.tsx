@@ -81,7 +81,7 @@ export default function ThongKeSHTT() {
             Executive Dashboard
           </div>
           <h1 className="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight">
-            Báo Cáo Toàn Cảnh SHTT
+            Báo cáo toàn cảnh SHTT
           </h1>
           <p className="text-slate-500 mt-2 font-medium">
             Thông tin tác nghiệp & phân tích chuyên sâu dữ liệu thực thi quyền SHTT tại biên giới.
@@ -118,7 +118,7 @@ export default function ThongKeSHTT() {
             className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl shadow-md shadow-blue-600/20 transition-all active:scale-95"
           >
             <Download className="w-4 h-4" />
-            Xuất Báo Cáo
+            Xuất báo cáo
           </button>
         </div>
       </motion.div>

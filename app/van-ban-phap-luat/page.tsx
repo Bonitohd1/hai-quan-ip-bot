@@ -17,13 +17,14 @@ interface LawDocument {
 }
 
 const DOCUMENTS: LawDocument[] = [
+  /* ── LUẬT ── */
   {
     id: '1',
     title: 'Luật Sở hữu trí tuệ 2005 (sửa đổi, bổ sung 2009, 2019, 2022)',
     type: 'Luật',
     number: '07/2022/QH15',
     year: '2022',
-    desc: 'Văn bản cốt lõi định hình khung pháp lý toàn diện về quyền sở hữu công nghiệp và bảo vệ quyền SHTT tại biên giới hải quan.',
+    desc: 'Văn bản cốt lõi định hình khung pháp lý toàn diện về quyền sở hữu công nghiệp và bảo vệ quyền SHTT tại Việt Nam.',
     agency: 'Quốc hội',
     status: 'active',
     articles: [
@@ -124,17 +125,209 @@ const DOCUMENTS: LawDocument[] = [
       { title: 'Điều 4. Yếu tố xâm phạm', content: 'Định hình khái niệm tương tự đến mức gây nhầm lẫn trên bao bì thương phẩm.' }
     ],
     expertSummary: 'Văn bản đã hết hiệu lực. Khuyến nghị không sử dụng Thông tư 11/2015 làm căn cứ bắt giữ tại thời điểm hiện tại.'
+  },
+
+  /* ── LUẬT MỚI ── */
+  {
+    id: '7',
+    title: 'Luật sửa đổi, bổ sung một số điều của Luật Sở hữu trí tuệ năm 2019',
+    type: 'Luật',
+    number: '42/2019/QH14',
+    year: '2019',
+    desc: 'Sửa đổi, bổ sung quy định về quyền tác giả, quyền liên quan và một số điều khoản về sở hữu công nghiệp cho phù hợp với cam kết CPTPP.',
+    agency: 'Quốc hội',
+    status: 'expired',
+    articles: [
+      { title: 'Điều 1. Các điều khoản sửa đổi', content: 'Sửa đổi Điều 28, 35, 74, 75, 76 Luật SHTT 2005 để đáp ứng tiêu chuẩn bảo hộ theo Hiệp định CPTPP.' },
+      { title: 'Điều 4. Điều khoản chuyển tiếp', content: 'Các đơn đăng ký đã nộp trước ngày Luật có hiệu lực được xem xét theo quy định của pháp luật tại thời điểm nộp đơn.' }
+    ],
+    expertSummary: 'Luật 42/2019 là bản lề chuyển đổi sang tiêu chuẩn CPTPP. Đã được thay thế một phần bởi Luật 07/2022. Tham chiếu cho các hồ sơ nộp trong giai đoạn 2019–2022.'
+  },
+  {
+    id: '8',
+    title: 'Luật sửa đổi, bổ sung một số điều của Luật Sở hữu trí tuệ năm 2025',
+    type: 'Luật',
+    number: '131/2025/QH15',
+    year: '2025',
+    desc: 'Cập nhật mới nhất về bảo hộ quyền SHTT trong môi trường số, thương mại điện tử xuyên biên giới và nền kinh tế sáng tạo.',
+    agency: 'Quốc hội',
+    status: 'active',
+    articles: [
+      { title: 'Điều 1. Phạm vi sửa đổi', content: 'Bổ sung quy định về bảo hộ nhãn hiệu, kiểu dáng công nghiệp trong môi trường số và các nền tảng thương mại điện tử xuyên biên giới.' },
+      { title: 'Điều 3. Kiểm soát SHTT trong TMĐT', content: 'Cơ quan Hải quan có thẩm quyền phối hợp với cơ quan quản lý nền tảng số để xác minh và ngăn chặn hàng vi phạm SHTT qua đường bưu điện, chuyển phát nhanh.' },
+      { title: 'Điều 5. Hiệu lực thi hành', content: 'Luật này có hiệu lực từ ngày 01/01/2026.' }
+    ],
+    expertSummary: 'Luật 131/2025 là văn bản quan trọng nhất hiện hành. Đặc biệt lưu ý Điều 3 về kiểm soát TMĐT – mở rộng đáng kể quyền hạn Hải quan trong xử lý bưu kiện nhỏ lẻ qua sàn thương mại điện tử.'
+  },
+
+  /* ── NGHỊ ĐỊNH MỚI ── */
+  {
+    id: '9',
+    title: 'Nghị định 126/2021/NĐ-CP sửa đổi các nghị định xử phạt vi phạm hành chính lĩnh vực SHTT',
+    type: 'Nghị định',
+    number: '126/2021/NĐ-CP',
+    year: '2021',
+    desc: 'Sửa đổi, bổ sung Nghị định 99/2013 về xử phạt vi phạm hành chính trong lĩnh vực sở hữu công nghiệp, bổ sung mức phạt phù hợp thực tiễn.',
+    agency: 'Chính phủ',
+    status: 'partial',
+    articles: [
+      { title: 'Điều 1. Sửa đổi Nghị định 99/2013', content: 'Điều chỉnh mức phạt tiền tối đa từ 250 triệu đồng lên 500 triệu đồng đối với tổ chức vi phạm. Cá nhân vi phạm phạt tối đa 250 triệu đồng.' },
+      { title: 'Điều 2. Bổ sung biện pháp khắc phục', content: 'Bổ sung biện pháp buộc tiêu hủy hàng hóa, phương tiện vi phạm không có khả năng khắc phục; buộc loại bỏ yếu tố vi phạm.' }
+    ],
+    expertSummary: 'Nghị định 126/2021 tăng mức phạt đáng kể. Một số điều đã được tiếp tục sửa đổi bởi NĐ 46/2024. Cần dùng song song với NĐ 46/2024 để áp dụng đúng mức phạt hiện hành.'
+  },
+  {
+    id: '10',
+    title: 'Nghị định 46/2024/NĐ-CP sửa đổi Nghị định xử phạt vi phạm hành chính lĩnh vực SHCN',
+    type: 'Nghị định',
+    number: '46/2024/NĐ-CP',
+    year: '2024',
+    desc: 'Cập nhật mức xử phạt vi phạm hành chính trong lĩnh vực sở hữu công nghiệp, bổ sung hành vi vi phạm liên quan đến nền tảng số và TMĐT.',
+    agency: 'Chính phủ',
+    status: 'active',
+    articles: [
+      { title: 'Điều 1. Sửa đổi, bổ sung Nghị định 99/2013 (đã sửa đổi)', content: 'Bổ sung hành vi vi phạm quyền SHCN trên nền tảng thương mại điện tử; nâng mức phạt tiền lên đến 1 tỷ đồng đối với hành vi sản xuất, kinh doanh hàng hóa giả mạo nhãn hiệu quy mô lớn.' },
+      { title: 'Điều 3. Thẩm quyền xử phạt tại biên giới', content: 'Chi cục trưởng Chi cục Hải quan có thẩm quyền xử phạt đến 50 triệu đồng. Cục trưởng Cục Hải quan tỉnh xử phạt đến 500 triệu đồng.' }
+    ],
+    expertSummary: 'Nghị định 46/2024 là văn bản xử phạt hiện hành nhất. Đặc biệt lưu ý điều khoản về TMĐT và nâng mức thẩm quyền xử phạt tại chỗ của Chi cục trưởng.'
+  },
+  {
+    id: '11',
+    title: 'Nghị định 100/2026/NĐ-CP quy định chi tiết Luật SHTT về sở hữu công nghiệp',
+    type: 'Nghị định',
+    number: '100/2026/NĐ-CP',
+    year: '2026',
+    desc: 'Hướng dẫn thi hành Luật SHTT 2025 về xác lập quyền, bảo hộ nhãn hiệu, kiểu dáng công nghiệp và kiểm soát biên giới.',
+    agency: 'Chính phủ',
+    status: 'active',
+    articles: [
+      { title: 'Chương I. Xác lập quyền sở hữu công nghiệp', content: '' },
+      { title: 'Điều 5. Thủ tục đăng ký bảo hộ', content: 'Quy định rõ hồ sơ, trình tự nộp đơn đăng ký nhãn hiệu, kiểu dáng công nghiệp tại Cục SHTT; thời hạn thẩm định nội dung không quá 9 tháng.' },
+      { title: 'Điều 22. Biện pháp kiểm soát biên giới', content: 'Cơ quan Hải quan chủ động áp dụng biện pháp tạm dừng thông quan khi phát hiện dấu hiệu vi phạm, không cần đơn yêu cầu từ chủ sở hữu trong trường hợp vi phạm rõ ràng.' }
+    ],
+    expertSummary: 'Nghị định 100/2026 có hiệu lực song song với Luật 131/2025. Điểm đột phá là Hải quan được chủ động tạm dừng thông quan mà không cần chờ đơn yêu cầu — rút ngắn đáng kể thời gian xử lý.'
+  },
+  {
+    id: '12',
+    title: 'Nghị định 134/2026/NĐ-CP quy định chi tiết Luật SHTT về quyền tác giả và quyền liên quan',
+    type: 'Nghị định',
+    number: '134/2026/NĐ-CP',
+    year: '2026',
+    desc: 'Hướng dẫn thi hành Luật SHTT 2025 về quyền tác giả, quyền liên quan và quản lý tập thể quyền tác giả.',
+    agency: 'Chính phủ',
+    status: 'active',
+    articles: [
+      { title: 'Điều 3. Đăng ký quyền tác giả', content: 'Giấy chứng nhận đăng ký quyền tác giả cấp bởi Cục Bản quyền tác giả là bằng chứng pháp lý quan trọng trong quá trình Hải quan xử lý hàng vi phạm bản quyền.' },
+      { title: 'Điều 18. Kiểm soát hàng văn hóa phẩm nhập khẩu', content: 'Ấn phẩm, băng đĩa, phần mềm nhập khẩu không có hợp đồng chuyển nhượng quyền tác giả hợp lệ bị coi là hàng vi phạm bản quyền và có thể bị tạm dừng thông quan.' }
+    ],
+    expertSummary: 'Nghị định 134/2026 chuẩn hóa thủ tục kiểm soát văn hóa phẩm nhập khẩu. Cán bộ Hải quan cần yêu cầu xuất trình hợp đồng chuyển quyền tác giả đối với lô hàng sách, băng đĩa, phần mềm có số lượng lớn.'
+  },
+  {
+    id: '13',
+    title: 'Văn bản hợp nhất 01/VBHN-BKHCN xử phạt vi phạm hành chính SHTT',
+    type: 'Nghị định',
+    number: '01/VBHN-BKHCN',
+    year: '2026',
+    desc: 'Văn bản hợp nhất toàn bộ các Nghị định xử phạt vi phạm hành chính lĩnh vực SHTT (99/2013, 126/2021, 46/2024) để tiện tra cứu và áp dụng.',
+    agency: 'Bộ KH&CN',
+    status: 'active',
+    articles: [
+      { title: 'Hướng dẫn sử dụng', content: 'Văn bản hợp nhất không thay thế các Nghị định gốc nhưng phản ánh đúng nội dung hiện hành sau các lần sửa đổi. Dùng làm tài liệu tra cứu nhanh tại hiện trường.' },
+      { title: 'Mức phạt tổng hợp', content: 'Tổng hợp toàn bộ mức phạt tiền theo loại hành vi vi phạm, cập nhật theo NĐ 46/2024 là văn bản sửa đổi mới nhất.' }
+    ],
+    expertSummary: 'Đây là tài liệu tra cứu nhanh được khuyến nghị sử dụng tại bãi kiểm hóa. Thay vì tra 3 nghị định riêng, cán bộ có thể dùng VBHN này để xác định mức phạt áp dụng.'
+  },
+
+  /* ── VĂN BẢN CHỈ ĐẠO ── */
+  {
+    id: '14',
+    title: 'Kế hoạch kiểm soát biên giới hàng giả, hàng vi phạm SHTT năm 2026 của Cục Hải quan',
+    type: 'Văn bản chỉ đạo',
+    number: 'KH KSCBL SHTT/2026',
+    year: '2026',
+    desc: 'Kế hoạch hành động cụ thể của Cục Hải quan về kiểm soát biên giới đối với hàng giả, hàng vi phạm quyền SHTT trong năm 2026.',
+    agency: 'Cục Hải quan',
+    status: 'active',
+    articles: [
+      { title: 'I. Mục tiêu', content: 'Giảm tỷ lệ hàng giả, hàng vi phạm SHTT qua biên giới xuống dưới 5% tổng lượng hàng kiểm tra; tăng tỷ lệ phát hiện vi phạm tại cửa khẩu hàng không và đường biển lên 15%.' },
+      { title: 'II. Nhiệm vụ trọng tâm', content: '1. Tăng cường kiểm tra hàng TMĐT nhập khẩu tại các trung tâm phân loại bưu chính.\n2. Xây dựng danh mục hàng hóa rủi ro cao về SHTT cập nhật hàng quý.\n3. Phối hợp với chủ thể quyền trong đào tạo nhận diện hàng giả cho cán bộ hải quan.' },
+      { title: 'III. Tổ chức thực hiện', content: 'Các Chi cục Hải quan chịu trách nhiệm báo cáo kết quả kiểm soát SHTT theo tháng về Cục. Kết quả được tổng hợp vào hệ thống dữ liệu SHTT toàn quốc.' }
+    ],
+    expertSummary: 'Tài liệu định hướng công tác năm 2026. Cán bộ cần nắm rõ danh mục hàng hóa rủi ro cao và kế hoạch phối hợp với chủ thể quyền để lên lịch kiểm tra định kỳ.'
+  },
+  {
+    id: '15',
+    title: 'Chỉ thị 02/CT-TTg về tăng cường thực thi quyền sở hữu trí tuệ',
+    type: 'Văn bản chỉ đạo',
+    number: '2/CT-TTg',
+    year: '2026',
+    desc: 'Chỉ thị của Thủ tướng Chính phủ về tăng cường thực thi quyền SHTT, nâng cao hiệu quả phòng chống hàng giả tại biên giới và thị trường nội địa.',
+    agency: 'Thủ tướng Chính phủ',
+    status: 'active',
+    articles: [
+      { title: 'I. Yêu cầu chung', content: 'Các Bộ, ngành, địa phương tăng cường phối hợp liên ngành trong phòng chống hàng giả, hàng vi phạm SHTT; chú trọng ứng dụng công nghệ số trong truy xuất nguồn gốc và nhận diện hàng vi phạm.' },
+      { title: 'II. Nhiệm vụ Bộ Tài chính (Tổng cục Hải quan)', content: 'Chủ trì xây dựng cơ sở dữ liệu SHTT tích hợp với hệ thống thông quan VNACCS/VCIS; triển khai kiểm tra SHTT dựa trên phân tích rủi ro trên toàn quốc trước 31/12/2026.' },
+      { title: 'III. Chế độ báo cáo', content: 'Hàng quý báo cáo kết quả về Ban Chỉ đạo 389 Quốc gia. Xử lý nghiêm các tập thể, cá nhân thiếu trách nhiệm trong công tác phòng chống hàng giả.' }
+    ],
+    expertSummary: 'Đây là chỉ đạo cấp cao nhất về thực thi SHTT năm 2026. Cần bám sát các chỉ tiêu được giao và đảm bảo có số liệu báo cáo định kỳ đầy đủ.'
+  },
+  {
+    id: '16',
+    title: 'Chỉ thị 7988/CT-TCHQ về tăng cường chống gian lận, giả mạo xuất xứ hàng hóa',
+    type: 'Văn bản chỉ đạo',
+    number: '7988/CT-TCHQ',
+    year: '2019',
+    desc: 'Chỉ thị của Tổng cục Hải quan tăng cường thực hiện đồng bộ các giải pháp chống gian lận, giả mạo xuất xứ, ghi nhãn hàng hóa không đúng quy định.',
+    agency: 'Tổng cục Hải quan',
+    status: 'active',
+    articles: [
+      { title: 'I. Bối cảnh và yêu cầu', content: 'Trong bối cảnh căng thẳng thương mại quốc tế, tình trạng gian lận xuất xứ, chuyển tải bất hợp pháp nhằm né tránh thuế và biện pháp phòng vệ thương mại gia tăng mạnh.' },
+      { title: 'II. Nhiệm vụ cụ thể', content: '1. Tăng cường kiểm tra thực tế hàng hóa xuất khẩu, nhập khẩu nghi ngờ gian lận xuất xứ.\n2. Phối hợp với Bộ Công Thương trong xác minh C/O.\n3. Xây dựng danh sách doanh nghiệp có rủi ro cao về gian lận xuất xứ để theo dõi trọng điểm.' },
+      { title: 'III. Xử lý vi phạm', content: 'Hàng hóa bị phát hiện gian lận xuất xứ liên quan SHTT bị xử lý đồng thời theo pháp luật hải quan và pháp luật SHTT.' }
+    ],
+    expertSummary: 'Văn bản này đặc biệt liên quan khi xử lý hàng hóa "made in China" gắn nhãn xuất xứ Việt Nam để né tránh thuế. Kết hợp với quy định SHTT khi hàng giả đồng thời gian lận xuất xứ.'
+  },
+  {
+    id: '17',
+    title: 'Công văn CHQ.15405 về triển khai kiểm soát SHTT tại các Chi cục',
+    type: 'Văn bản chỉ đạo',
+    number: 'CHQ.15405/2025',
+    year: '2025',
+    desc: 'Công văn chỉ đạo triển khai công tác kiểm soát quyền SHTT tại các Chi cục Hải quan trực thuộc, hướng dẫn quy trình xử lý hồ sơ vi phạm.',
+    agency: 'Cục Hải quan',
+    status: 'active',
+    articles: [
+      { title: 'I. Quy trình tiếp nhận đơn yêu cầu', content: 'Chi cục Hải quan tiếp nhận đơn yêu cầu kiểm tra, giám sát từ chủ thể quyền và ghi nhận vào hệ thống quản lý SHTT trong vòng 24 giờ làm việc.' },
+      { title: 'II. Phối hợp xử lý', content: 'Khi phát hiện lô hàng nghi ngờ, Chi cục thông báo ngay cho Phòng Kiểm soát Hải quan – Cục để phối hợp xử lý kịp thời.' }
+    ],
+    expertSummary: 'Tài liệu hướng dẫn quy trình nội bộ. Cần phổ biến đến toàn bộ cán bộ kiểm hóa tại Chi cục để đảm bảo thống nhất trong tiếp nhận và xử lý hồ sơ SHTT.'
+  },
+  {
+    id: '18',
+    title: 'Kế hoạch triển khai Chỉ thị 02/CT-TTg về tăng cường thực thi quyền SHTT',
+    type: 'Văn bản chỉ đạo',
+    number: 'QUB26.07',
+    year: '2026',
+    desc: 'Kế hoạch hành động cụ thể của Cục Hải quan triển khai Chỉ thị 02/CT-TTg, phân công nhiệm vụ và lộ trình thực hiện đến từng đơn vị.',
+    agency: 'Cục Hải quan',
+    status: 'active',
+    articles: [
+      { title: 'I. Phân công nhiệm vụ', content: 'Phòng Kiểm soát Hải quan chủ trì, Phòng CNTT phối hợp xây dựng module SHTT trên cổng thông tin hải quan. Các Chi cục thực hiện báo cáo số liệu hàng tháng.' },
+      { title: 'II. Lộ trình triển khai', content: 'Quý 3/2026: hoàn thiện cơ sở dữ liệu SHTT. Quý 4/2026: vận hành thử nghiệm hệ thống tra cứu SHTT tích hợp với VNACCS.' }
+    ],
+    expertSummary: 'Đây là kế hoạch gốc triển khai CT 02. Các mốc thời gian trong văn bản này là cơ sở để theo dõi tiến độ và báo cáo cấp trên.'
   }
 ];
 
 const STATS = [
-  { label: 'Tổng văn bản rà soát', value: String(DOCUMENTS.length), icon: Database, color: 'text-blue-600', bg: 'bg-blue-100' },
-  { label: 'Bộ luật hiện hành', value: String(DOCUMENTS.filter(d => d.type === 'Luật').length), icon: Scale, color: 'text-orange-600', bg: 'bg-orange-100' },
-  { label: 'Nghị định liên quan', value: String(DOCUMENTS.filter(d => d.type === 'Nghị định').length), icon: ShieldCheck, color: 'text-emerald-600', bg: 'bg-emerald-100' },
-  { label: 'Thông tư thi hành', value: String(DOCUMENTS.filter(d => d.type === 'Thông tư').length), icon: BookOpen, color: 'text-purple-600', bg: 'bg-purple-100' },
+  { label: 'Tổng văn bản', value: String(DOCUMENTS.length), icon: Database, color: 'text-blue-600', bg: 'bg-blue-100' },
+  { label: 'Bộ luật', value: String(DOCUMENTS.filter(d => d.type === 'Luật').length), icon: Scale, color: 'text-orange-600', bg: 'bg-orange-100' },
+  { label: 'Nghị định', value: String(DOCUMENTS.filter(d => d.type === 'Nghị định').length), icon: ShieldCheck, color: 'text-emerald-600', bg: 'bg-emerald-100' },
+  { label: 'Thông tư', value: String(DOCUMENTS.filter(d => d.type === 'Thông tư').length), icon: BookOpen, color: 'text-purple-600', bg: 'bg-purple-100' },
+  { label: 'Văn bản chỉ đạo', value: String(DOCUMENTS.filter(d => d.type === 'Văn bản chỉ đạo').length), icon: AlertOctagon, color: 'text-rose-600', bg: 'bg-rose-100' },
 ];
 
-const FILTER_TYPES = ['Tất cả', 'Luật', 'Nghị định', 'Thông tư'];
+const FILTER_TYPES = ['Tất cả', 'Luật', 'Nghị định', 'Thông tư', 'Văn bản chỉ đạo'];
 
 function getStatusProps(status: 'active' | 'partial' | 'expired') {
    switch (status) {
@@ -185,7 +378,7 @@ export default function VanBanPhapLuat() {
           </div>
           
           <h1 className="text-3xl lg:text-5xl font-extrabold text-white tracking-tight leading-tight">
-             Thư viện <span className="text-orange-500">Chuẩn Mực Pháp Lý</span>
+             Thư viện <span className="text-orange-500">chuẩn mực pháp lý</span>
           </h1>
           <p className="text-slate-400 text-base font-medium max-w-2xl mx-auto leading-relaxed">
              Truy xuất bộ khung pháp luật về Sở hữu Trí tuệ được liên kết trực tiếp với hoạt động giám sát thông quan của Tổng Cục Hải Quan.
@@ -215,7 +408,7 @@ export default function VanBanPhapLuat() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 animate-fade-in-up delay-100">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 animate-fade-in-up delay-100">
         {STATS.map((stat, i) => (
           <div key={i} className="bg-white rounded-3xl p-6 border border-slate-200/60 shadow-[0_8px_30px_rgb(0,0,0,0.04)] flex items-center gap-5 hover:-translate-y-1 hover:shadow-xl transition-all duration-300 group">
              <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 ${stat.bg} ${stat.color} group-hover:scale-110 transition-transform duration-300`}>
@@ -312,6 +505,7 @@ export default function VanBanPhapLuat() {
                                    <span className={`px-2.5 py-1 rounded-md text-[10px] font-extrabold uppercase tracking-wider ${
                                       isLaw ? 'bg-red-50 text-red-600 border border-red-100' :
                                       isDecree ? 'bg-blue-50 text-blue-600 border border-blue-100' :
+                                      doc.type === 'Văn bản chỉ đạo' ? 'bg-rose-50 text-rose-600 border border-rose-100' :
                                       'bg-purple-50 text-purple-600 border border-purple-100'
                                    }`}>
                                       {doc.type}
@@ -683,7 +877,7 @@ function LegalDocumentAnalysisModal({ doc, onClose }: { doc: LawDocument, onClos
                          
                          <div className="flex-1 bg-white border border-slate-200 rounded-xl p-8 shadow-sm">
                             <h4 className="text-sm font-bold text-slate-400 mb-4 uppercase tracking-wider flex items-center gap-2">
-                               <BookOpen className="w-4 h-4 text-indigo-500" /> Báo cáo Phân Tích Thực Tiễn
+                               <BookOpen className="w-4 h-4 text-indigo-500" /> Báo cáo phân tích thực tiễn
                             </h4>
                             <div className="text-slate-700 text-[15px] leading-loose text-justify font-sans p-6 bg-slate-50 rounded-xl border border-slate-100 italic">
                                "{doc.expertSummary}"
