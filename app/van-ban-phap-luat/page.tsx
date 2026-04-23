@@ -55,11 +55,11 @@ const DOCUMENTS: LawDocument[] = [
   },
   {
     id: '3',
-    title: 'Luật sửa đổi, bổ sung Luật SHTT năm 2022 (Luật số 07/2022/QH15)',
+    title: 'Luật Sở hữu trí tuệ 2005 (sửa đổi, bổ sung 2009, 2019, 2022)',
     type: 'Luật',
     number: '07/2022/QH15',
     year: '2022',
-    desc: 'Sửa đổi toàn diện Luật SHTT, mở rộng đáng kể phạm vi bảo hộ nhãn hiệu, kiểu dáng công nghiệp và tăng thẩm quyền kiểm soát biên giới của Hải quan.',
+    desc: 'Văn bản cốt lõi định hình khung pháp lý toàn diện về quyền sở hữu công nghiệp và bảo vệ quyền SHTT tại Việt Nam.',
     agency: 'Quốc hội',
     status: 'partial',
     pdfFile: '/van-ban/07_2022_QH15.pdf',

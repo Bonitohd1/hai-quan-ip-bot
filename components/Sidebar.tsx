@@ -4,14 +4,15 @@ import Link from 'next/link';
 import { LOGO_HQ_BASE64 } from '../lib/logoBase64';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { 
-  Home, Search, FileText, History, BarChart3, 
-  Menu, X, Shield, ChevronRight, UserCircle
+import {
+  Home, Search, FileText, History, BarChart3,
+  Menu, X, Shield, ChevronRight, UserCircle, ShieldCheck
 } from 'lucide-react';
 
 const NAV_ITEMS = [
   { label: 'Tổng quan', icon: Home, href: '/' },
   { label: 'Tra cứu hồ sơ', icon: Search, href: '/tra-cuu' },
+  { label: 'Hồ sơ bảo hộ', icon: ShieldCheck, href: '/ho-so-bao-ho' },
   { label: 'Văn bản pháp luật', icon: FileText, href: '/van-ban-phap-luat' },
   { label: 'Lịch sử SHTT', icon: History, href: '/lich-su-shtt' },
   { label: 'Báo cáo thống kê', icon: BarChart3, href: '/thong-ke-shtt' },
@@ -85,8 +86,10 @@ export default function Sidebar() {
 
         {/* NAVIGATION */}
         <nav className="flex-1 px-4 mt-4 space-y-1 overflow-y-auto relative z-10">
-          <div className="px-3 mb-3 mt-2">
-            <span className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-300">Nghiệp vụ cốt lõi</span>
+          <div className="px-3 mb-3 mt-2 flex items-center gap-2">
+            <div className="w-3 h-px bg-amber-500/70" />
+            <span className="text-[11px] font-black uppercase tracking-[0.2em] text-amber-400/90">Nghiệp vụ cốt lõi</span>
+            <div className="flex-1 h-px bg-slate-700/60" />
           </div>
 
           {NAV_ITEMS.map((item) => {
@@ -120,8 +123,10 @@ export default function Sidebar() {
           })}
 
           {/* HỆ THỐNG — ngay sau Báo cáo thống kê */}
-          <div className="px-3 mb-2 mt-5">
-            <span className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-300">Hệ thống</span>
+          <div className="px-3 mb-2 mt-5 flex items-center gap-2">
+            <div className="w-3 h-px bg-slate-500/70" />
+            <span className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-300/90">Hệ thống</span>
+            <div className="flex-1 h-px bg-slate-700/60" />
           </div>
           {USER_ITEMS.map((item) => {
             const Icon = item.icon;
@@ -141,14 +146,14 @@ export default function Sidebar() {
 
         {/* BẢO VỆ card */}
         <div className="p-4 relative z-10">
-          <div className="bg-[#0f172a] border border-[#1e293b] rounded-2xl p-4 flex items-center gap-3.5 relative overflow-hidden group hover:border-[#334155] transition-colors cursor-default shadow-lg">
-            <div className="absolute left-6 top-6 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-emerald-500/20 animate-ping" />
-            <div className="w-10 h-10 rounded-full bg-emerald-500/10 flex items-center justify-center shrink-0 border border-emerald-500/30 relative z-10">
+          <div className="bg-[#0f172a] border border-[#1e293b] rounded-2xl p-4 flex items-center justify-center gap-3 relative overflow-hidden group hover:border-[#334155] transition-colors cursor-default shadow-lg">
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-emerald-500/20 animate-ping" />
+            <div className="w-9 h-9 rounded-full bg-emerald-500/10 flex items-center justify-center shrink-0 border border-emerald-500/30 relative z-10">
               <Shield className="w-4 h-4 text-emerald-400 drop-shadow-[0_0_5px_rgba(52,211,153,0.5)]" />
             </div>
-            <div className="relative z-10">
-              <h4 className="text-[12px] font-black text-slate-200 tracking-wide uppercase">Bảo vệ</h4>
-              <p className="text-[11px] font-black tracking-widest uppercase text-emerald-400 mt-1">
+            <div className="relative z-10 flex flex-col items-center text-center">
+              <h4 className="text-[12px] font-black text-slate-200 tracking-widest uppercase">Bảo vệ</h4>
+              <p className="text-[11px] font-black tracking-widest uppercase text-emerald-400 mt-0.5">
                 Sản phẩm &amp; Trí tuệ
               </p>
             </div>
