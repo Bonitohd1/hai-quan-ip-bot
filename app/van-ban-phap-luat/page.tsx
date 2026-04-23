@@ -587,6 +587,11 @@ function LegalDocumentAnalysisModal({ doc, onClose }: { doc: LawDocument, onClos
   const chatEndRef = useRef<HTMLDivElement>(null);
 
   const handleExportPDF = () => {
+    if (doc.pdfFile) {
+      window.open(doc.pdfFile, '_blank');
+      return;
+    }
+    // Fallback: print generated summary if no real PDF
     const printWindow = window.open('', '_blank');
     if (!printWindow) return;
 
@@ -596,7 +601,9 @@ function LegalDocumentAnalysisModal({ doc, onClose }: { doc: LawDocument, onClos
     `).join('') || '';
 
     printWindow.document.write(`
-      <html><head><title>VanBan_${doc.number}</title><style>
+      <html><head><title>VanBan_${doc.number}</title>
+      <meta charset="utf-8"/>
+      <style>
          @page { margin: 2.5cm; }
          body { font-family: "Times New Roman", Times, serif; line-height: 1.6; font-size: 14pt; color: #000; }
          .header { text-align: center; font-weight: bold; margin-bottom: 2rem; }
@@ -717,9 +724,16 @@ function LegalDocumentAnalysisModal({ doc, onClose }: { doc: LawDocument, onClos
                 </div>
              </div>
              <div className="flex items-center gap-3">
-                <button onClick={handleExportPDF} className="px-4 py-2 bg-orange-100 text-orange-700 hover:bg-orange-600 hover:text-white rounded-lg text-sm font-bold transition-colors flex items-center gap-2 group">
-                   <Download className="w-4 h-4 group-hover:-translate-y-0.5 transition-transform" /> Xuất PDF
-                </button>
+                {doc.pdfFile ? (
+                  <a href={doc.pdfFile} download target="_blank" rel="noopener noreferrer"
+                     className="px-4 py-2 bg-orange-100 text-orange-700 hover:bg-orange-600 hover:text-white rounded-lg text-sm font-bold transition-colors flex items-center gap-2">
+                    <Download className="w-4 h-4" /> Tải PDF gốc
+                  </a>
+                ) : (
+                  <button onClick={handleExportPDF} className="px-4 py-2 bg-slate-100 text-slate-500 hover:bg-slate-200 rounded-lg text-sm font-bold transition-colors flex items-center gap-2">
+                    <Download className="w-4 h-4" /> Xuất PDF
+                  </button>
+                )}
                 <button onClick={onClose} className="p-2 bg-white hover:bg-red-50 text-slate-400 hover:text-red-500 rounded-full transition-colors border border-slate-200">
                    <X className="w-5 h-5" />
                 </button>
@@ -728,121 +742,127 @@ function LegalDocumentAnalysisModal({ doc, onClose }: { doc: LawDocument, onClos
 
           <div className="flex flex-1 overflow-hidden">
              
-             {/* LEFT SIDE: DOCUMENT VIEWER */}
-             <div className="w-full lg:w-1/2 bg-[#f8fafc] border-r border-slate-200 relative p-6 overflow-y-auto custom-scrollbar">
-                
+             {/* LEFT SIDE: PDF VIEWER */}
+             <div className="w-full lg:w-1/2 bg-[#f0f2f5] border-r border-slate-200 relative flex flex-col overflow-hidden">
+
+                {/* Status banner */}
                 {doc.status !== 'active' && (
-                   <div className="absolute top-8 right-8 z-10 flex flex-col items-end">
-                      <div className={`px-4 py-1.5 rounded-lg border-2 shadow-lg flex items-center gap-2 text-sm font-bold bg-white ${doc.status === 'expired' ? 'text-slate-500 border-slate-300' : 'text-amber-600 border-amber-300'}`}>
-                         <AlertTriangle className="w-5 h-5" />
-                         CẢNH BÁO HIỆU LỰC: {docStatus.label.toUpperCase()}
-                      </div>
-                      <p className="text-[11px] font-bold text-slate-400 mt-2 bg-white px-3 py-1 rounded shadow-sm">
-                         Cần ưu tiên áp dụng văn bản thay thế (nếu có).
-                      </p>
+                   <div className="shrink-0 mx-4 mt-4 px-4 py-2 rounded-xl border flex items-center gap-2 text-sm font-bold bg-white shadow-sm
+                      ${doc.status === 'expired' ? 'text-slate-500 border-slate-300' : 'text-amber-600 border-amber-300'}">
+                      <AlertTriangle className="w-4 h-4 shrink-0" />
+                      Cảnh báo hiệu lực: {docStatus.label} — Cần ưu tiên áp dụng văn bản thay thế.
                    </div>
                 )}
 
-                <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-10 min-h-[900px] mx-auto max-w-2xl relative font-serif">
-                   <div className="border-b-[1.5px] border-slate-800 pb-5 mb-8 text-center space-y-1">
-                      <h1 className="text-xl font-bold uppercase tracking-widest text-[#0a192f]">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</h1>
-                      <h2 className="text-sm font-bold mt-1.5">Độc lập - Tự do - Hạnh phúc</h2>
-                      <div className="w-32 h-[1px] bg-slate-800 mx-auto mt-4"></div>
-                   </div>
-                   <div className="flex justify-between text-sm italic mb-10 text-slate-700">
-                      <div>Hà Nội, ngày ... tháng ... năm {doc.year}</div>
-                      <div>Số: {doc.number}</div>
-                   </div>
-                   <div className="text-center mb-8">
-                      <h3 className="text-2xl font-bold text-[#0a192f] uppercase leading-tight">{doc.title}</h3>
-                   </div>
-                   <div className="space-y-6 text-justify text-slate-800 leading-loose text-[15px]">
-                      <p className="font-bold underline">TRÍCH YẾU NỘI DUNG:</p>
-                      <p className="bg-orange-50 p-4 border-l-4 border-orange-500 rounded-r-lg italic">{doc.desc}</p>
-                      <p>
-                         Căn cứ các quy định hiện hành và thủ tục hải quan điện tử, hệ thống tự động ghi nhận văn bản pháp luật số <strong>{doc.number}</strong> do <strong>{doc.agency}</strong> ban hành nhằm tạo căn cứ xử lý nghiệp vụ sở hữu trí tuệ tại biên giới.
-                      </p>
-                      
-                      <div className="mt-8 space-y-4">
-                         {doc.articles?.map((article, idx) => (
-                           <div key={idx}>
-                              <p className="font-bold cursor-pointer hover:text-orange-600 transition-colors">{article.title}</p>
-                              <p>
-                                 {article.content.split('hải quan').length > 1 ? (
-                                     <>
-                                        {article.content.split('hải quan')[0]}
-                                        <TooltipWrapper content="Trực thuộc Tổng Cục Hải Quan và các cơ quan thi hành biên mậu cấp 1">hải quan</TooltipWrapper>
-                                        {article.content.split('hải quan').slice(1).join('hải quan')}
-                                     </>
-                                 ) : article.content}
-                              </p>
-                           </div>
-                         ))}
-                         <div>
-                            <p className="font-bold cursor-pointer hover:text-orange-600 transition-colors">Điều 15. Hiệu lực ứng dụng</p>
-                            <p>
-                               Toàn bộ văn bản trên đã được mã hóa vào <TooltipWrapper content="Liên thông Cổng TTĐT Dịch Covid và Cổng Dịch vụ công Quốc gia">hệ thống điện tử</TooltipWrapper> và áp dụng ngay từ thời điểm có hiệu lực. Mọi bản bổ sung sẽ được đính kèm ở Tab Đối Chiếu.
-                            </p>
-                         </div>
-                      </div>
-
-                      <div className="mt-16 flex justify-end">
-                         <div className="text-center">
-                            <p className="font-bold uppercase">{doc.agency}</p>
-                            <div className="h-24 w-24 mx-auto rounded-full border-4 border-red-500/60 opacity-50 flex items-center justify-center rotate-[-15deg] mt-4 shadow-sm relative overflow-hidden">
-                               <p className="text-[11px] font-bold text-red-600 tracking-wider">CHỨNG THỰC</p>
+                {doc.pdfFile ? (
+                  /* ── Embed real PDF ── */
+                  <iframe
+                    src={`${doc.pdfFile}#toolbar=1&navpanes=0&scrollbar=1&view=FitH`}
+                    className="flex-1 w-full border-0"
+                    title={doc.title}
+                    style={{ minHeight: 0 }}
+                  />
+                ) : (
+                  /* ── Fallback text viewer when no PDF ── */
+                  <div className="flex-1 overflow-y-auto p-6 custom-scrollbar">
+                    <div className="bg-white rounded-xl shadow border border-slate-200 p-8 max-w-2xl mx-auto"
+                         style={{ fontFamily: '"Times New Roman", Times, serif', fontSize: '15px', lineHeight: '1.9', color: '#1a1a1a' }}>
+                       <div className="border-b border-slate-800 pb-4 mb-6 text-center">
+                          <p className="font-bold text-sm uppercase tracking-widest">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</p>
+                          <p className="text-sm font-bold mt-1">Độc lập - Tự do - Hạnh phúc</p>
+                          <div className="w-28 h-px bg-slate-800 mx-auto mt-3" />
+                       </div>
+                       <div className="flex justify-between text-sm italic mb-8 text-slate-600">
+                          <span>Hà Nội, năm {doc.year}</span>
+                          <span>Số: {doc.number}</span>
+                       </div>
+                       <h3 className="text-center text-base font-bold uppercase leading-snug mb-8">{doc.title}</h3>
+                       <div className="space-y-5 text-justify">
+                          <p className="bg-amber-50 px-4 py-3 border-l-4 border-amber-400 rounded-r italic text-sm">{doc.desc}</p>
+                          {doc.articles?.map((article, idx) => (
+                            <div key={idx}>
+                               <p className="font-bold text-[#0a192f] mb-1">{article.title}</p>
+                               <p className="text-slate-700">{article.content}</p>
                             </div>
-                         </div>
-                      </div>
-                   </div>
+                          ))}
+                       </div>
+                       <p className="mt-10 text-center text-sm italic text-slate-400">(Đây là trích yếu — chưa có file PDF gốc)</p>
+                    </div>
+                  </div>
+                )}
+
+                {/* Toolbar below PDF */}
+                <div className="shrink-0 border-t border-slate-200 bg-white px-4 py-2 flex items-center gap-3">
+                   {doc.pdfFile ? (
+                     <>
+                       <a href={doc.pdfFile} target="_blank" rel="noopener noreferrer"
+                          className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-lg transition-colors">
+                          <ExternalLink className="w-3.5 h-3.5" /> Mở tab mới
+                       </a>
+                       <a href={doc.pdfFile} download
+                          className="flex items-center gap-1.5 px-3 py-1.5 bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold rounded-lg transition-colors">
+                          <Download className="w-3.5 h-3.5" /> Tải PDF gốc
+                       </a>
+                     </>
+                   ) : (
+                     <span className="text-xs text-slate-400 italic">Chưa có file PDF gốc cho văn bản này.</span>
+                   )}
+                   <span className="ml-auto text-[11px] text-slate-400 font-medium">{doc.number} · {doc.agency}</span>
                 </div>
              </div>
 
              {/* RIGHT SIDE: AI WORKSPACE */}
              <div className="w-full lg:w-1/2 flex flex-col bg-white">
                 <div className="flex border-b border-slate-100 overflow-x-auto shrink-0 custom-scrollbar">
-                   <button onClick={() => setActiveTab('read')} className={`px-6 py-4 text-xs font-bold uppercase tracking-wide border-b-2 transition-colors flex items-center gap-2 whitespace-nowrap ${activeTab === 'read' ? 'border-purple-500 text-purple-600' : 'border-transparent text-slate-400 hover:text-slate-600 hover:bg-slate-50'}`}>
-                     <AlignLeft className="w-4 h-4" /> Bản Gốc
+                   <button onClick={() => setActiveTab('read')} className={`px-5 py-3.5 text-[11px] font-bold uppercase tracking-wide border-b-2 transition-colors flex items-center gap-1.5 whitespace-nowrap ${activeTab === 'read' ? 'border-purple-500 text-purple-600' : 'border-transparent text-slate-400 hover:text-slate-600 hover:bg-slate-50'}`}>
+                     <AlignLeft className="w-3.5 h-3.5" /> Điều khoản
                    </button>
-                   <button onClick={() => setActiveTab('expert')} className={`px-6 py-4 text-xs font-bold uppercase tracking-wide border-b-2 transition-colors flex items-center gap-2 whitespace-nowrap ${activeTab === 'expert' ? 'border-indigo-600 text-indigo-700' : 'border-transparent text-slate-400 hover:text-slate-600 hover:bg-slate-50'}`}>
-                     <Sparkles className="w-4 h-4" /> Góc Chuyên Gia
+                   <button onClick={() => setActiveTab('expert')} className={`px-5 py-3.5 text-[11px] font-bold uppercase tracking-wide border-b-2 transition-colors flex items-center gap-1.5 whitespace-nowrap ${activeTab === 'expert' ? 'border-indigo-600 text-indigo-700' : 'border-transparent text-slate-400 hover:text-slate-600 hover:bg-slate-50'}`}>
+                     <Sparkles className="w-3.5 h-3.5" /> Góc chuyên gia
                    </button>
-                   <button onClick={() => setActiveTab('summary')} className={`px-6 py-4 text-xs font-bold uppercase tracking-wide border-b-2 transition-colors flex items-center gap-2 whitespace-nowrap ${activeTab === 'summary' ? 'border-orange-500 text-orange-600' : 'border-transparent text-slate-400 hover:text-slate-600 hover:bg-slate-50'}`}>
-                     <Network className="w-4 h-4" /> Sơ đồ AI
+                   <button onClick={() => setActiveTab('summary')} className={`px-5 py-3.5 text-[11px] font-bold uppercase tracking-wide border-b-2 transition-colors flex items-center gap-1.5 whitespace-nowrap ${activeTab === 'summary' ? 'border-orange-500 text-orange-600' : 'border-transparent text-slate-400 hover:text-slate-600 hover:bg-slate-50'}`}>
+                     <Network className="w-3.5 h-3.5" /> Sơ đồ AI
                    </button>
-                   <button onClick={() => setActiveTab('diff')} className={`px-6 py-4 text-xs font-bold uppercase tracking-wide border-b-2 transition-colors flex items-center gap-2 whitespace-nowrap ${activeTab === 'diff' ? 'border-amber-500 text-amber-600' : 'border-transparent text-slate-400 hover:text-slate-600 hover:bg-slate-50'}`}>
-                     <History className="w-4 h-4" /> Đối chiếu Luật
+                   <button onClick={() => setActiveTab('diff')} className={`px-5 py-3.5 text-[11px] font-bold uppercase tracking-wide border-b-2 transition-colors flex items-center gap-1.5 whitespace-nowrap ${activeTab === 'diff' ? 'border-amber-500 text-amber-600' : 'border-transparent text-slate-400 hover:text-slate-600 hover:bg-slate-50'}`}>
+                     <History className="w-3.5 h-3.5" /> Đối chiếu
                    </button>
-                   <button onClick={() => setActiveTab('chat')} className={`px-6 py-4 text-xs font-bold uppercase tracking-wide border-b-2 transition-colors flex items-center gap-2 whitespace-nowrap ${activeTab === 'chat' ? 'border-blue-600 text-blue-700' : 'border-transparent text-slate-400 hover:text-slate-600 hover:bg-slate-50'}`}>
-                     <Bot className="w-4 h-4" /> Trợ lý
+                   <button onClick={() => setActiveTab('chat')} className={`px-5 py-3.5 text-[11px] font-bold uppercase tracking-wide border-b-2 transition-colors flex items-center gap-1.5 whitespace-nowrap ${activeTab === 'chat' ? 'border-blue-600 text-blue-700' : 'border-transparent text-slate-400 hover:text-slate-600 hover:bg-slate-50'}`}>
+                     <Bot className="w-3.5 h-3.5" /> Trợ lý AI
                    </button>
                 </div>
 
                 <div className="flex-1 overflow-y-auto p-6 bg-white custom-scrollbar">
                    {activeTab === 'read' && (
-                      <div className="bg-slate-50 p-6 rounded-xl border border-slate-200 h-full overflow-y-auto animate-fade-in-up">
+                      <div className="h-full flex flex-col animate-fade-in-up">
                          <div className="flex items-center justify-between mb-4">
-                            <h3 className="font-bold text-[#0a192f] flex items-center gap-2"><Database className="w-5 h-5 text-orange-500" /> BẢN SỐ HÓA TOÀN VĂN</h3>
-                            <span className="px-3 py-1 bg-green-100 text-green-700 text-[10px] font-bold rounded uppercase flex items-center gap-1">
-                               <CheckCircle className="w-3 h-3" /> Đã Trích Xuất Gốc
-                            </span>
+                            <h3 className="font-bold text-[#0a192f] text-sm flex items-center gap-2">
+                               <FileText className="w-4 h-4 text-orange-500" /> Trích yếu điều khoản
+                            </h3>
+                            {doc.pdfFile && (
+                              <a href={doc.pdfFile} target="_blank" rel="noopener noreferrer"
+                                 className="flex items-center gap-1.5 px-3 py-1.5 bg-orange-50 text-orange-600 hover:bg-orange-100 text-[11px] font-bold rounded-lg transition-colors border border-orange-200">
+                                 <ExternalLink className="w-3 h-3" /> Xem toàn văn PDF
+                              </a>
+                            )}
                          </div>
-                         <div className="space-y-4 font-sans text-sm text-slate-700 leading-loose text-justify pb-10">
-                            <p>ĐÂY LÀ PHIÊN BẢN CÔNG CHỨNG ĐIỆN TỬ, đồng bộ hóa trực tiếp từ cơ sở dữ liệu Quốc Gia (vbdqg.gov.vn).</p>
-                            <p className="font-bold text-black uppercase mt-4">VĂN BẢN TRÍCH XUẤT: {doc.number}</p>
-                            
+                         <div className="flex-1 overflow-y-auto space-y-4 pb-6 custom-scrollbar"
+                              style={{ fontFamily: '"Segoe UI", "Noto Sans", system-ui, sans-serif', fontSize: '14px', lineHeight: '1.85' }}>
+                            <p className="bg-orange-50 px-4 py-3 rounded-xl border border-orange-100 text-slate-700 italic text-[13px]">
+                              {doc.desc}
+                            </p>
                             {doc.articles?.map((article, idx) => (
-                               <div key={idx}>
-                                  <strong className="text-black inline-block mt-4">{article.title}</strong>
-                                  {article.content && (
-                                     <p className="mt-1">
-                                        {article.content.split('\n').map((line, i) => <span key={i}>{line}<br/></span>)}
-                                     </p>
-                                  )}
+                               <div key={idx} className="border border-slate-100 rounded-xl p-4 bg-white hover:border-slate-300 transition-colors">
+                                  <p className="font-bold text-[#0a192f] text-[13px] mb-2">{article.title}</p>
+                                  <p className="text-slate-600 text-[13px] leading-relaxed">{article.content}</p>
                                </div>
                             ))}
-                            
-                            <p className="italic text-slate-500 mt-8">(... Để xem đầy đủ các Chương, Mục khác, vui lòng Tải Bản Gốc hoặc [Xuất PDF])</p>
+                            {doc.pdfFile ? (
+                              <p className="text-center text-[12px] text-slate-400 italic pt-2">
+                                 Đây là trích yếu. <a href={doc.pdfFile} target="_blank" rel="noopener noreferrer" className="text-orange-500 underline">Xem toàn văn PDF gốc</a> để tra cứu đầy đủ.
+                              </p>
+                            ) : (
+                              <p className="text-center text-[12px] text-slate-400 italic pt-2">Chưa có file PDF gốc cho văn bản này.</p>
+                            )}
                          </div>
                       </div>
                    )}
@@ -865,7 +885,8 @@ function LegalDocumentAnalysisModal({ doc, onClose }: { doc: LawDocument, onClos
                             <h4 className="text-sm font-bold text-slate-400 mb-4 uppercase tracking-wider flex items-center gap-2">
                                <BookOpen className="w-4 h-4 text-indigo-500" /> Báo cáo Phân Tích Thực Tiễn
                             </h4>
-                            <div className="text-slate-700 text-[15px] leading-loose text-justify font-sans p-6 bg-slate-50 rounded-xl border border-slate-100 italic">
+                            <div className="text-slate-700 text-[14px] leading-loose text-justify p-5 bg-slate-50 rounded-xl border border-slate-100 italic"
+                                 style={{ fontFamily: '"Segoe UI", "Noto Sans", system-ui, sans-serif' }}>
                                "{doc.expertSummary}"
                             </div>
                             
