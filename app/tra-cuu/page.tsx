@@ -88,7 +88,7 @@ export default function TraCuu() {
           </div>
           
           <h1 className="text-3xl lg:text-4xl font-extrabold text-white tracking-tight">
-             Thư viện <span className="text-orange-500">Phân tích Hệ thống</span>
+             Thư viện <span className="text-orange-500">Phân tích hệ thống</span>
           </h1>
           <p className="text-slate-400 text-sm lg:text-base font-medium">
              Nhập mã hồ sơ hoặc chọn phân loại trực quan để rà soát dữ liệu thuộc quyền giám sát của bạn.
@@ -199,7 +199,7 @@ export default function TraCuu() {
                          <div className="w-2 h-6 bg-red-500 rounded-full" />
                          <div>
                             <h2 className="text-lg font-bold text-red-700 uppercase tracking-wide">
-                              Hồ sơ Vi phạm Cần xử lý kíp thời
+                              Hồ sơ vi phạm cần xử lý kịp thời
                             </h2>
                             <p className="text-xs text-red-500/80 font-semibold mt-0.5">Top danh sách nghi ngờ phát hiện mới nhất</p>
                          </div>
@@ -223,7 +223,7 @@ export default function TraCuu() {
                          <div className="w-2 h-6 bg-blue-600 rounded-full" />
                          <div>
                             <h2 className="text-lg font-bold text-[#0a192f] uppercase tracking-wide">
-                              Hồ sơ Cấp Mới / Thông tư
+                              Hồ sơ cấp mới
                             </h2>
                             <p className="text-xs text-slate-500 font-semibold mt-0.5">Dữ liệu sở hữu trí tuệ vừa cập nhật vào kho</p>
                          </div>
@@ -247,7 +247,7 @@ export default function TraCuu() {
                          <div className="w-2 h-6 bg-emerald-500 rounded-full" />
                          <div>
                             <h2 className="text-lg font-bold text-[#0a192f] uppercase tracking-wide">
-                              Quy trình Gia hạn Thương hiệu
+                              Quy trình gia hạn thương hiệu
                             </h2>
                             <p className="text-xs text-slate-500 font-semibold mt-0.5">Các nhãn hiệu vừa được gia hạn tại điểm hải quan</p>
                          </div>

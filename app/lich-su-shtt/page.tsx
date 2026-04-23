@@ -8,8 +8,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 const TIMELINE = [
   {
     year: 'Trước 2005 - 2014',
-    phase: 'Giai đoạn Hình thành & Luật hóa',
-    title: 'Đặt Nền Móng Pháp Lý Đầu Tiên',
+    phase: 'Giai đoạn hình thành & luật hóa',
+    title: 'Đặt nền móng pháp lý đầu tiên',
     desc: 'Đây là giai đoạn đặt những viên gạch đầu tiên cho khung pháp lý và bộ máy tổ chức.',
     icon: Landmark,
     image: 'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=2112&auto=format&fit=crop',
@@ -25,8 +25,8 @@ const TIMELINE = [
   },
   {
     year: '2015 - 2022',
-    phase: 'Giai đoạn Hiện đại hóa & Hội nhập',
-    title: 'Hội Nhập Quốc Tế & Quản Lý Rủi Ro',
+    phase: 'Giai đoạn hiện đại hóa & hội nhập',
+    title: 'Hội nhập quốc tế & quản lý rủi ro',
     desc: 'Giai đoạn này đánh dấu bước tiến về công nghệ và sự gắn kết chặt chẽ với các cam kết quốc tế.',
     icon: Globe,
     image: 'https://images.unsplash.com/photo-1578575437130-527eed3abbec?q=80&w=2070&auto=format&fit=crop',
@@ -44,8 +44,8 @@ const TIMELINE = [
   },
   {
     year: '2023 - 2030',
-    phase: 'Giai đoạn Chuyển đổi số & Tương lai',
-    title: 'Hải Quan Số, Hải Quan Thông Minh',
+    phase: 'Giai đoạn chuyển đổi số & tương lai',
+    title: 'Hải quan số, hải quan thông minh',
     desc: 'Đây là giai đoạn thực hiện chiến lược phát triển Hải quan đến năm 2030 với mục tiêu "Hải quan số, Hải quan thông minh".',
     icon: Cpu,
     image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop',
@@ -91,9 +91,9 @@ export default function LichSuSHTT() {
          </motion.div>
          
          <h1 className="text-4xl lg:text-6xl font-black text-slate-900 tracking-tight leading-[1.1] mb-6">
-            Lịch Sử Hình Thành & <br className="hidden md:block"/> 
+            Lịch sử hình thành & <br className="hidden md:block"/>
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0070c0] via-[#00b050] to-[#0070c0] bg-[length:200%_auto] animate-gradient">
-              Phát Triển Sở Hữu Trí Tuệ
+              phát triển sở hữu trí tuệ
             </span>
          </h1>
          

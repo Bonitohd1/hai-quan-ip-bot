@@ -12,8 +12,8 @@ import {
 import { useEffect, useState } from 'react';
 
 const MODULES = [
-  { 
-    title: 'Tra cứu Thông minh', 
+  {
+    title: 'Tra cứu thông minh',
     desc: 'Sử dụng AI phân tích hình ảnh, text để tìm kiếm hồ sơ nhãn hiệu, kiểu dáng.',
     href: '/tra-cuu',
     icon: Search,
@@ -22,7 +22,7 @@ const MODULES = [
     border: 'group-hover:border-blue-900',
   },
   { 
-    title: 'Hệ thống Pháp lý', 
+    title: 'Hệ thống pháp lý',
     desc: 'Hỏi đáp AI về Luật, Nghị định và Thông tư kiểm soát biên giới.',
     href: '/van-ban-phap-luat',
     icon: FileText,
@@ -31,7 +31,7 @@ const MODULES = [
     border: 'group-hover:border-orange-500',
   },
   { 
-    title: 'Lịch sử & Thay đổi', 
+    title: 'Lịch sử & thay đổi',
     desc: 'Truy xuất dòng thời gian bảo hộ của một thương hiệu cụ thể.',
     href: '/lich-su-shtt',
     icon: History,
@@ -40,7 +40,7 @@ const MODULES = [
     border: 'group-hover:border-blue-900',
   },
   { 
-    title: 'Báo cáo Chi tiết', 
+    title: 'Báo cáo chi tiết',
     desc: 'Kết xuất báo cáo lượng hàng giả, vi phạm SHTT theo thời gian thực.',
     href: '/thong-ke-shtt',
     icon: BarChart3,
