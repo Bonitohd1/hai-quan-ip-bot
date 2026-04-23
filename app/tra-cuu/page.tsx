@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Search, FileText, Download, Info, AlertTriangle, Loader2, Filter, Sparkles, ChevronRight, X, Bot, FileSearch, Zap, Send, User } from 'lucide-react';
+import { Search, FileText, Download, AlertTriangle, Loader2, Filter, Sparkles, ChevronRight, X, Bot, FileSearch, Zap, Send, User, ExternalLink, FolderOpen } from 'lucide-react';
 
 interface Document {
   id: string;
@@ -505,85 +505,112 @@ function DocumentAnalysisModal({ doc, onClose }: { doc: Document, onClose: () =>
 
           <div className="flex flex-1 overflow-hidden">
              
-             <div className="w-full lg:w-1/2 bg-[#f8fafc] border-r border-slate-200 relative flex flex-col">
-                {doc.filename ? (
-                  <div className="flex flex-col h-full">
-                    {/* PDF toolbar */}
-                    <div className="flex items-center gap-3 px-4 py-2.5 bg-[#0a192f] border-b border-slate-700 flex-shrink-0">
-                      <FileText className="w-4 h-4 text-orange-400" />
-                      <span className="text-xs font-bold text-slate-300 truncate flex-1">{doc.filename}</span>
-                      <a
-                        href={`/documents/${doc.filename}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-[11px] font-bold text-slate-400 hover:text-white transition-colors px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 flex-shrink-0"
-                      >
-                        Mở tab mới ↗
-                      </a>
-                    </div>
-                    <iframe
-                      src={`/documents/${doc.filename}#toolbar=1&navpanes=0&scrollbar=1&view=FitH`}
-                      className="flex-1 w-full border-0"
-                      title={doc.name}
-                    />
-                    {/* Related files row */}
-                    {doc.relatedFiles && doc.relatedFiles.length > 0 && (
-                      <div className="flex-shrink-0 px-4 py-2.5 bg-amber-50 border-t border-amber-200 flex items-center gap-2 flex-wrap">
-                        <span className="text-[11px] font-bold text-amber-700 uppercase tracking-wide">Tài liệu đính kèm:</span>
-                        {doc.relatedFiles.map((f) => (
-                          <a
-                            key={f}
-                            href={`/documents/${f}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-[11px] font-bold text-blue-600 hover:text-blue-800 underline underline-offset-2 transition-colors"
-                          >
-                            {f}
-                          </a>
+             <div className="w-full lg:w-1/2 border-r border-slate-200 relative flex flex-col bg-gradient-to-b from-[#0c1829] to-[#0a192f]">
+                {/* Top bar */}
+                <div className="flex items-center gap-2 px-5 py-3 border-b border-white/10 flex-shrink-0">
+                  <span className="w-2.5 h-2.5 rounded-full bg-red-400/80"/>
+                  <span className="w-2.5 h-2.5 rounded-full bg-yellow-400/80"/>
+                  <span className="w-2.5 h-2.5 rounded-full bg-green-400/80"/>
+                  <span className="text-[11px] font-bold text-slate-400 ml-3 truncate flex-1">
+                    {doc.filename || 'Tài liệu hồ sơ SHTT'}
+                  </span>
+                  {doc.filename && (
+                    <a href={`/documents/${doc.filename}`} target="_blank" rel="noopener noreferrer"
+                      className="text-[11px] font-bold text-slate-400 hover:text-white px-2 py-0.5 rounded bg-white/10 hover:bg-white/20 transition-colors flex-shrink-0 flex items-center gap-1">
+                      <ExternalLink className="w-3 h-3"/> Mở
+                    </a>
+                  )}
+                </div>
+
+                {/* Main content area */}
+                <div className="flex-1 flex flex-col items-center justify-center p-6 gap-5 overflow-y-auto">
+
+                  {/* PDF thumbnail visual */}
+                  <div className="relative">
+                    <div className="w-32 h-40 bg-white rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.4)] flex flex-col overflow-hidden border border-white/20">
+                      <div className="h-9 bg-red-500 flex items-center justify-center gap-1.5">
+                        <FileText className="w-4 h-4 text-white"/>
+                        <span className="text-white font-black text-xs tracking-widest">PDF</span>
+                      </div>
+                      <div className="flex-1 p-3 space-y-2">
+                        {[75, 90, 65, 80, 55, 85, 50].map((w, i) => (
+                          <div key={i} className="h-1.5 bg-slate-200 rounded-full" style={{ width: `${w}%` }}/>
                         ))}
                       </div>
-                    )}
-                  </div>
-                ) : (
-                  <div className="w-full h-full overflow-y-auto p-6">
-                    <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-8 space-y-6">
-                      <div className="flex items-center gap-3 pb-4 border-b border-slate-100">
-                        <div className="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center">
-                          <FileText className="w-5 h-5 text-orange-600" />
-                        </div>
-                        <div>
-                          <p className="text-xs font-bold uppercase tracking-wider text-slate-400">Hồ sơ SHTT</p>
-                          <h3 className="text-base font-extrabold text-[#0a192f]">{doc.name}</h3>
-                        </div>
-                      </div>
-                      <div className="space-y-4 text-sm text-slate-700 leading-relaxed">
-                        <div className="p-4 bg-slate-50 rounded-lg border border-slate-100">
-                          <p className="font-semibold text-slate-500 text-xs uppercase tracking-wider mb-1">Mô tả</p>
-                          <p>{doc.description}</p>
-                        </div>
-                        <div className="grid grid-cols-2 gap-3">
-                          <div className="p-3 bg-blue-50 rounded-lg border border-blue-100">
-                            <p className="text-[10px] font-bold text-blue-500 uppercase tracking-wider mb-1">Mã số</p>
-                            <p className="font-extrabold text-[#0a192f]">{doc.code}</p>
-                          </div>
-                          <div className="p-3 bg-emerald-50 rounded-lg border border-emerald-100">
-                            <p className="text-[10px] font-bold text-emerald-500 uppercase tracking-wider mb-1">Loại</p>
-                            <p className="font-extrabold text-[#0a192f]">{doc.type}</p>
-                          </div>
-                          <div className="p-3 bg-orange-50 rounded-lg border border-orange-100">
-                            <p className="text-[10px] font-bold text-orange-500 uppercase tracking-wider mb-1">Ngày hiệu lực</p>
-                            <p className="font-extrabold text-[#0a192f]">{formatDate(doc.date)}</p>
-                          </div>
-                          <div className="p-3 bg-purple-50 rounded-lg border border-purple-100">
-                            <p className="text-[10px] font-bold text-purple-500 uppercase tracking-wider mb-1">Thời hạn</p>
-                            <p className="font-extrabold text-[#0a192f]">{expiryDate(doc.date)}</p>
-                          </div>
-                        </div>
-                      </div>
-                      <p className="text-xs text-slate-400 italic text-center pt-2">File PDF chưa được đính kèm trong hệ thống.</p>
+                    </div>
+                    <div className={`absolute -bottom-2 -right-2 w-9 h-9 rounded-full flex items-center justify-center shadow-xl ${doc.type === 'Cấp mới' ? 'bg-blue-500' : 'bg-emerald-500'}`}>
+                      {doc.type === 'Cấp mới'
+                        ? <Sparkles className="w-4 h-4 text-white"/>
+                        : <FileSearch className="w-4 h-4 text-white"/>}
                     </div>
                   </div>
+
+                  {/* Doc info */}
+                  <div className="text-center space-y-1 max-w-xs">
+                    <p className="text-white font-black text-lg leading-snug">{doc.name}</p>
+                    <p className="text-slate-400 text-[11px] font-mono leading-relaxed break-all">
+                      {doc.filename || `${doc.code}_SHTT.pdf`}
+                    </p>
+                  </div>
+
+                  {/* Key metadata chips */}
+                  <div className="flex flex-wrap justify-center gap-2">
+                    <span className={`px-3 py-1 rounded-full text-[11px] font-bold border ${doc.type === 'Cấp mới' ? 'bg-blue-500/20 text-blue-300 border-blue-500/40' : 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'}`}>
+                      {doc.type}
+                    </span>
+                    <span className="px-3 py-1 rounded-full text-[11px] font-bold bg-orange-500/20 text-orange-300 border border-orange-500/40">
+                      Hiệu lực: {formatDate(doc.date)}
+                    </span>
+                    <span className="px-3 py-1 rounded-full text-[11px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/40">
+                      Hết hạn: {expiryDate(doc.date)}
+                    </span>
+                  </div>
+
+                  {/* Description */}
+                  <div className="w-full max-w-sm bg-white/5 border border-white/10 rounded-xl p-4">
+                    <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Mô tả hồ sơ</p>
+                    <p className="text-[13px] text-slate-300 leading-relaxed">{doc.description}</p>
+                  </div>
+
+                  {/* Open button */}
+                  {doc.filename ? (
+                    <a
+                      href={`/documents/${doc.filename}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2.5 px-7 py-3.5 bg-orange-500 hover:bg-orange-400 text-white font-black rounded-2xl transition-all hover:-translate-y-0.5 active:translate-y-0 shadow-xl shadow-orange-500/30 text-sm"
+                    >
+                      <ExternalLink className="w-5 h-5"/> Mở tài liệu PDF
+                    </a>
+                  ) : (
+                    <div className="flex items-center gap-2 px-6 py-3 bg-white/10 text-slate-400 rounded-2xl text-sm font-bold cursor-default">
+                      <FolderOpen className="w-5 h-5"/> Chưa có file đính kèm
+                    </div>
+                  )}
+
+                  <p className="text-slate-500 text-[11px] text-center">Mở trong tab mới để xem toàn bộ nội dung</p>
+                </div>
+
+                {/* Related files strip */}
+                {doc.relatedFiles && doc.relatedFiles.length > 0 && (
+                  <div className="flex-shrink-0 px-5 py-3 bg-amber-500/10 border-t border-amber-500/20 flex items-center gap-2 flex-wrap">
+                    <span className="text-[10px] font-black text-amber-400 uppercase tracking-wider">Tài liệu kèm:</span>
+                    {doc.relatedFiles.map((f) => (
+                      <a key={f} href={`/documents/${f}`} target="_blank" rel="noopener noreferrer"
+                        className="text-[11px] font-bold text-blue-400 hover:text-white underline underline-offset-2 transition-colors">
+                        {f}
+                      </a>
+                    ))}
+                  </div>
                 )}
+
+                {/* Bottom download bar */}
+                <div className="flex-shrink-0 px-5 py-3 border-t border-white/10">
+                  <button onClick={handleExportPDF}
+                    className="w-full flex items-center justify-center gap-2 py-2.5 bg-white/10 hover:bg-white/20 text-white font-bold text-sm rounded-xl transition-colors">
+                    <Download className="w-4 h-4"/> Tải xuống {doc.relatedFiles?.length ? 'tất cả tài liệu' : 'PDF'}
+                  </button>
+                </div>
              </div>
 
              <div className="w-full lg:w-1/2 flex flex-col bg-white">

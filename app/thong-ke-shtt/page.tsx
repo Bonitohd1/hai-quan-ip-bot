@@ -287,85 +287,164 @@ export default function ThongKeSHTT() {
               <div className="w-2 h-2 rounded-full bg-emerald-500"/>
               <span className="text-[11px] font-bold text-emerald-700">Gia hạn: {d.giaHan.length} hồ sơ ({Math.round((d.giaHan.length/(d.docs.length||1))*100)}%)</span>
             </div>
+            {yearKey === 'all' && (
+              <span className="text-[11px] text-slate-400 font-medium flex items-center gap-1">
+                ⚠ Dữ liệu trải 2 năm — xem theo từng năm để so sánh chính xác
+              </span>
+            )}
           </div>
-          <div className="p-6 flex-1 relative" style={{ minHeight: 260 }}>
-            {/* Y-axis labels */}
-            <div className="absolute left-2 inset-y-4 flex flex-col justify-between pointer-events-none pb-8">
-              {[maxMonthly, Math.ceil(maxMonthly*0.5), 0].map(v=>(
-                <span key={v} className="text-[10px] text-slate-300 font-bold leading-none">{v}</span>
-              ))}
-            </div>
-            {/* Grid lines */}
-            <div className="absolute inset-x-8 inset-y-4 flex flex-col justify-between pb-8 pointer-events-none">
-              {[0,1,2].map(i=>(
-                <div key={i} className="w-full border-t border-dashed border-slate-100"/>
-              ))}
-            </div>
-            {/* Grouped bars — blue (cap moi) LEFT, green (gia han) RIGHT per month */}
-            <div className="relative flex items-end justify-between h-full pb-8 pl-8 gap-0.5">
-              {d.monthly.map((val, i) => {
-                const month = i + 1;
-                const cmCount = d.capMoi.filter(doc => parseDMY(doc.date).m === month).length;
-                const ghCount = d.giaHan.filter(doc => parseDMY(doc.date).m === month).length;
-                const cmPct = (cmCount / maxMonthly) * 100;
-                const ghPct = (ghCount / maxMonthly) * 100;
-                const hasData = val > 0;
+
+          {yearKey === 'all' ? (
+            /* ─── ALL MODE: split into two year panels side by side ─── */
+            <div className="flex flex-1 divide-x divide-slate-100" style={{ minHeight: 260 }}>
+              {(['2025','2026'] as const).map((yr, yi) => {
+                const yd = DATA[yr];
+                const yMax = Math.max(...yd.monthly, 1);
+                const activeMonths = yd.monthly
+                  .map((val, i) => ({ val, i, month: i+1,
+                    cm: yd.capMoi.filter(doc => parseDMY(doc.date).m === i+1).length,
+                    gh: yd.giaHan.filter(doc => parseDMY(doc.date).m === i+1).length,
+                  }))
+                  .filter(m => m.val > 0);
+                const yearColor = yr === '2026' ? 'text-blue-600' : 'text-emerald-600';
+                const yearBg   = yr === '2026' ? 'bg-blue-50 border-blue-200 text-blue-700' : 'bg-emerald-50 border-emerald-200 text-emerald-700';
                 return (
-                  <div key={i} className="flex-1 flex flex-col items-center justify-end h-full group relative">
-                    {/* Tooltip on hover */}
-                    {hasData && (
-                      <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-[10px] font-bold px-2.5 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap z-20 shadow-xl">
-                        <div className="flex gap-3">
-                          {cmCount > 0 && <span className="text-blue-300">↑ Cấp mới: {cmCount}</span>}
-                          {ghCount > 0 && <span className="text-emerald-300">✓ Gia hạn: {ghCount}</span>}
-                        </div>
-                        <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-slate-900"/>
+                  <div key={yr} className="flex-1 flex flex-col p-5">
+                    {/* Year header */}
+                    <div className="flex items-center justify-between mb-4">
+                      <div>
+                        <span className={`text-xl font-black ${yearColor}`}>{yr}</span>
+                        <span className="text-slate-400 text-sm font-medium ml-2">{yd.docs.length} hồ sơ</span>
                       </div>
-                    )}
-                    {/* Two bars side by side */}
-                    <div className="w-full flex items-end justify-center gap-[2px] h-full">
-                      {/* Blue — Cấp mới */}
-                      <div className="flex-1 flex flex-col justify-end h-full">
-                        {cmCount > 0 ? (
-                          <motion.div
-                            initial={{ height: 0 }} animate={{ height: `${cmPct}%` }}
-                            transition={{ duration: 0.7, delay: 0.1 + i * 0.04, type: 'spring', bounce: 0.2 }}
-                            className="w-full min-h-[4px] rounded-t-md bg-blue-500 group-hover:bg-blue-600 transition-colors flex items-start justify-center pt-0.5"
-                          >
-                            {cmCount >= 2 && (
-                              <span className="text-[9px] font-black text-white leading-none">{cmCount}</span>
-                            )}
-                          </motion.div>
-                        ) : (
-                          <div className="w-full h-[2px] rounded-t bg-slate-100"/>
+                      <div className="flex gap-1.5 flex-wrap justify-end">
+                        {yd.capMoi.length > 0 && (
+                          <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-blue-50 text-blue-700 border border-blue-200">
+                            {yd.capMoi.length} cấp mới
+                          </span>
                         )}
-                      </div>
-                      {/* Green — Gia hạn */}
-                      <div className="flex-1 flex flex-col justify-end h-full">
-                        {ghCount > 0 ? (
-                          <motion.div
-                            initial={{ height: 0 }} animate={{ height: `${ghPct}%` }}
-                            transition={{ duration: 0.7, delay: 0.12 + i * 0.04, type: 'spring', bounce: 0.2 }}
-                            className="w-full min-h-[4px] rounded-t-md bg-emerald-500 group-hover:bg-emerald-600 transition-colors flex items-start justify-center pt-0.5"
-                          >
-                            {ghCount >= 2 && (
-                              <span className="text-[9px] font-black text-white leading-none">{ghCount}</span>
-                            )}
-                          </motion.div>
-                        ) : (
-                          <div className="w-full h-[2px] rounded-t bg-slate-100"/>
+                        {yd.giaHan.length > 0 && (
+                          <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-50 text-emerald-700 border border-emerald-200">
+                            {yd.giaHan.length} gia hạn
+                          </span>
                         )}
                       </div>
                     </div>
-                    {/* Month label */}
-                    <span className={`absolute -bottom-6 text-[10px] font-bold transition-colors ${hasData ? 'text-slate-600 group-hover:text-blue-600' : 'text-slate-300'}`}>
-                      {MONTHS[i]}
-                    </span>
+                    {/* Bars — only months with data */}
+                    {activeMonths.length === 0 ? (
+                      <div className="flex-1 flex items-center justify-center">
+                        <span className="text-slate-300 text-sm font-bold">Không có dữ liệu</span>
+                      </div>
+                    ) : (
+                      <div className="flex-1 flex items-end gap-3 pb-6 relative">
+                        {/* Y-axis hint */}
+                        <div className="absolute left-0 top-0 bottom-6 flex flex-col justify-between pointer-events-none">
+                          {[yMax, 0].map(v => (
+                            <span key={v} className="text-[9px] text-slate-300 font-bold">{v}</span>
+                          ))}
+                        </div>
+                        {activeMonths.map((m, bi) => (
+                          <div key={m.i} className="flex-1 flex flex-col items-center justify-end h-full group relative" style={{ maxWidth: 80 }}>
+                            {/* Tooltip */}
+                            <div className="absolute bottom-full mb-1.5 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-[10px] font-bold px-2 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap z-20 shadow-xl">
+                              <div className="font-black text-slate-300 mb-0.5">{MONTHS[m.i]} {yr}</div>
+                              {m.cm > 0 && <div className="text-blue-300">↑ Cấp mới: {m.cm}</div>}
+                              {m.gh > 0 && <div className="text-emerald-300">✓ Gia hạn: {m.gh}</div>}
+                              <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-slate-900"/>
+                            </div>
+                            {/* Two sub-bars */}
+                            <div className="w-full flex items-end gap-[2px] h-full pl-3">
+                              <div className="flex-1 flex flex-col justify-end h-full">
+                                {m.cm > 0 ? (
+                                  <motion.div
+                                    initial={{ height: 0 }} animate={{ height: `${(m.cm/yMax)*100}%` }}
+                                    transition={{ duration: 0.7, delay: yi*0.15 + bi*0.06, type:'spring', bounce:0.2 }}
+                                    className="w-full min-h-[6px] rounded-t-md bg-blue-500 group-hover:bg-blue-600 transition-colors flex items-start justify-center pt-0.5"
+                                  >
+                                    <span className="text-[9px] font-black text-white leading-none">{m.cm > 1 ? m.cm : ''}</span>
+                                  </motion.div>
+                                ) : <div className="w-full h-[2px] bg-slate-100 rounded-t"/>}
+                              </div>
+                              <div className="flex-1 flex flex-col justify-end h-full">
+                                {m.gh > 0 ? (
+                                  <motion.div
+                                    initial={{ height: 0 }} animate={{ height: `${(m.gh/yMax)*100}%` }}
+                                    transition={{ duration: 0.7, delay: yi*0.15 + bi*0.06 + 0.04, type:'spring', bounce:0.2 }}
+                                    className="w-full min-h-[6px] rounded-t-md bg-emerald-500 group-hover:bg-emerald-600 transition-colors flex items-start justify-center pt-0.5"
+                                  >
+                                    <span className="text-[9px] font-black text-white leading-none">{m.gh > 1 ? m.gh : ''}</span>
+                                  </motion.div>
+                                ) : <div className="w-full h-[2px] bg-slate-100 rounded-t"/>}
+                              </div>
+                            </div>
+                            <span className="absolute -bottom-5 text-[11px] font-black text-slate-500 group-hover:text-blue-600 transition-colors">{MONTHS[m.i]}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 );
               })}
             </div>
-          </div>
+          ) : (
+            /* ─── SINGLE YEAR MODE: full 12-month chart ─── */
+            <div className="p-6 flex-1 relative" style={{ minHeight: 260 }}>
+              {/* Y-axis labels */}
+              <div className="absolute left-2 inset-y-4 flex flex-col justify-between pointer-events-none pb-8">
+                {[maxMonthly, Math.ceil(maxMonthly*0.5), 0].map(v=>(
+                  <span key={v} className="text-[10px] text-slate-300 font-bold leading-none">{v}</span>
+                ))}
+              </div>
+              {/* Grid lines */}
+              <div className="absolute inset-x-8 inset-y-4 flex flex-col justify-between pb-8 pointer-events-none">
+                {[0,1,2].map(i=>(<div key={i} className="w-full border-t border-dashed border-slate-100"/>))}
+              </div>
+              {/* Grouped bars */}
+              <div className="relative flex items-end justify-between h-full pb-8 pl-8 gap-0.5">
+                {d.monthly.map((val, i) => {
+                  const month = i + 1;
+                  const cmCount = d.capMoi.filter(doc => parseDMY(doc.date).m === month).length;
+                  const ghCount = d.giaHan.filter(doc => parseDMY(doc.date).m === month).length;
+                  const cmPct = (cmCount / maxMonthly) * 100;
+                  const ghPct = (ghCount / maxMonthly) * 100;
+                  const hasData = val > 0;
+                  return (
+                    <div key={i} className="flex-1 flex flex-col items-center justify-end h-full group relative">
+                      {hasData && (
+                        <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-[10px] font-bold px-2.5 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap z-20 shadow-xl">
+                          <div className="flex gap-3">
+                            {cmCount > 0 && <span className="text-blue-300">↑ Cấp mới: {cmCount}</span>}
+                            {ghCount > 0 && <span className="text-emerald-300">✓ Gia hạn: {ghCount}</span>}
+                          </div>
+                          <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-slate-900"/>
+                        </div>
+                      )}
+                      <div className="w-full flex items-end justify-center gap-[2px] h-full">
+                        <div className="flex-1 flex flex-col justify-end h-full">
+                          {cmCount > 0 ? (
+                            <motion.div initial={{ height:0 }} animate={{ height:`${cmPct}%` }}
+                              transition={{ duration:0.7, delay:0.1+i*0.04, type:'spring', bounce:0.2 }}
+                              className="w-full min-h-[4px] rounded-t-md bg-blue-500 group-hover:bg-blue-600 transition-colors flex items-start justify-center pt-0.5">
+                              {cmCount >= 2 && <span className="text-[9px] font-black text-white leading-none">{cmCount}</span>}
+                            </motion.div>
+                          ) : <div className="w-full h-[2px] rounded-t bg-slate-100"/>}
+                        </div>
+                        <div className="flex-1 flex flex-col justify-end h-full">
+                          {ghCount > 0 ? (
+                            <motion.div initial={{ height:0 }} animate={{ height:`${ghPct}%` }}
+                              transition={{ duration:0.7, delay:0.12+i*0.04, type:'spring', bounce:0.2 }}
+                              className="w-full min-h-[4px] rounded-t-md bg-emerald-500 group-hover:bg-emerald-600 transition-colors flex items-start justify-center pt-0.5">
+                              {ghCount >= 2 && <span className="text-[9px] font-black text-white leading-none">{ghCount}</span>}
+                            </motion.div>
+                          ) : <div className="w-full h-[2px] rounded-t bg-slate-100"/>}
+                        </div>
+                      </div>
+                      <span className={`absolute -bottom-6 text-[10px] font-bold transition-colors ${hasData ? 'text-slate-600 group-hover:text-blue-600' : 'text-slate-300'}`}>{MONTHS[i]}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </motion.div>
 
         {/* DONUT CHART — category (1/3) */}
