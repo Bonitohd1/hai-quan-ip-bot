@@ -179,6 +179,33 @@
       "filename": "284731_20032026_PEEL_San_pham.pdf",
       "type": "Cấp mới",
       "description": "Hồ sơ sở hữu trí tuệ nhãn hiệu PEEL gồm 4 dòng sản phẩm tút thuốc lá: Peel Butterfly, Peel Scorpion, Peel Sky Deer, Peel Bee. Văn bằng bảo hộ số 284731 - HERIDA GROUP HOLDING LIMITED (VG)."
+    },
+    {
+      "id": "40091",
+      "code": "40091",
+      "date": "01042026",
+      "name": "Chunghwa",
+      "filename": "40091_01042026_Chunghwa.pdf",
+      "type": "Cấp mới",
+      "description": "Công văn bảo hộ sở hữu trí tuệ nhãn hiệu Chunghwa (thuốc lá tút). Hàng hóa xuất nhập khẩu có yêu cầu kiểm tra, giám sát SHTT tại cửa khẩu hải quan."
+    },
+    {
+      "id": "23369",
+      "code": "23369",
+      "date": "01042026",
+      "name": "Marlboro",
+      "filename": "23369_01042026_Marlboro.pdf",
+      "type": "Cấp mới",
+      "description": "Công văn bảo hộ sở hữu trí tuệ nhãn hiệu Marlboro (thuốc lá tút). Hàng hóa xuất nhập khẩu có yêu cầu kiểm tra, giám sát SHTT tại cửa khẩu hải quan."
+    },
+    {
+      "id": "40090",
+      "code": "40090",
+      "date": "01042026",
+      "name": "Peony",
+      "filename": "40090_01042026_Peony.pdf",
+      "type": "Cấp mới",
+      "description": "Công văn bảo hộ sở hữu trí tuệ nhãn hiệu Peony (thuốc lá tút). Hàng hóa xuất nhập khẩu có yêu cầu kiểm tra, giám sát SHTT tại cửa khẩu hải quan."
     }
   ]
 }

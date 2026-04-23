@@ -86,21 +86,21 @@ export default function Sidebar() {
         {/* NAVIGATION */}
         <nav className="flex-1 px-4 mt-4 space-y-1 overflow-y-auto relative z-10">
           <div className="px-3 mb-3 mt-2">
-             <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500/80">Nghiệp vụ cốt lõi</span>
+            <span className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-300">Nghiệp vụ cốt lõi</span>
           </div>
-          
+
           {NAV_ITEMS.map((item) => {
             const isActive = pathname === item.href;
             const Icon = item.icon;
-            
+
             return (
               <Link
                 key={item.href}
                 href={item.href}
                 className={`
                   group flex items-center justify-between px-3.5 py-3.5 rounded-xl text-[13px] font-bold tracking-wide transition-all duration-300 relative overflow-hidden mb-1
-                  ${isActive 
-                    ? 'text-amber-400 bg-slate-800/80 shadow-[0_0_20px_rgba(0,0,0,0.2)] ring-1 ring-slate-700/50' 
+                  ${isActive
+                    ? 'text-amber-400 bg-slate-800/80 shadow-[0_0_20px_rgba(0,0,0,0.2)] ring-1 ring-slate-700/50'
                     : 'text-slate-400 hover:text-slate-100 hover:bg-slate-800/40'
                   }
                 `}
@@ -109,7 +109,7 @@ export default function Sidebar() {
                   <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-gradient-to-b from-amber-400 to-amber-600 rounded-r-lg shadow-[0_0_12px_rgba(245,158,11,0.8)]" />
                 )}
                 <div className="absolute inset-0 bg-gradient-to-r from-slate-800/0 via-slate-800/60 to-slate-800/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-in-out" />
-                
+
                 <div className="flex items-center gap-3.5 relative z-10">
                   <Icon className={`w-[18px] h-[18px] transition-all duration-300 ${isActive ? 'text-amber-400 drop-shadow-[0_0_5px_rgba(245,158,11,0.5)]' : 'text-slate-500 group-hover:text-amber-200'}`} />
                   {item.label}
@@ -118,29 +118,29 @@ export default function Sidebar() {
               </Link>
             );
           })}
-        </nav>
 
-        {/* SYSTEM STATUS */}
-        <div className="p-4 relative z-10 mt-auto">
-          <div className="px-3 mb-3">
-             <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500/80">Hệ thống</span>
+          {/* HỆ THỐNG — ngay sau Báo cáo thống kê */}
+          <div className="px-3 mb-2 mt-5">
+            <span className="text-[11px] font-black uppercase tracking-[0.2em] text-slate-300">Hệ thống</span>
           </div>
-
           {USER_ITEMS.map((item) => {
-             const Icon = item.icon;
-             return (
+            const Icon = item.icon;
+            return (
               <Link
                 key={item.href}
                 href={item.href}
-                className="group flex items-center gap-3.5 px-3.5 py-3 rounded-xl text-[13px] font-bold tracking-wide text-slate-400 hover:text-white hover:bg-slate-800/40 transition-all duration-300 relative overflow-hidden mb-4"
+                className="group flex items-center gap-3.5 px-3.5 py-3 rounded-xl text-[13px] font-bold tracking-wide text-slate-400 hover:text-white hover:bg-slate-800/40 transition-all duration-300 relative overflow-hidden mb-1"
               >
-                 <div className="absolute inset-0 bg-gradient-to-r from-slate-800/0 via-slate-800/50 to-slate-800/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-in-out" />
-                 <Icon className="w-[18px] h-[18px] text-slate-500 group-hover:text-blue-400 transition-colors relative z-10" />
-                 <span className="relative z-10">{item.label}</span>
+                <div className="absolute inset-0 bg-gradient-to-r from-slate-800/0 via-slate-800/50 to-slate-800/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-in-out" />
+                <Icon className="w-[18px] h-[18px] text-slate-500 group-hover:text-blue-400 transition-colors relative z-10" />
+                <span className="relative z-10">{item.label}</span>
               </Link>
-             )
+            );
           })}
+        </nav>
 
+        {/* BẢO VỆ card */}
+        <div className="p-4 relative z-10">
           <div className="bg-[#0f172a] border border-[#1e293b] rounded-2xl p-4 flex items-center gap-3.5 relative overflow-hidden group hover:border-[#334155] transition-colors cursor-default shadow-lg">
             <div className="absolute left-6 top-6 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-emerald-500/20 animate-ping" />
             <div className="w-10 h-10 rounded-full bg-emerald-500/10 flex items-center justify-center shrink-0 border border-emerald-500/30 relative z-10">
@@ -148,8 +148,7 @@ export default function Sidebar() {
             </div>
             <div className="relative z-10">
               <h4 className="text-[12px] font-black text-slate-200 tracking-wide uppercase">Bảo vệ</h4>
-              <p className="text-[10px] font-bold tracking-widest uppercase text-emerald-400 flex items-center gap-1.5 mt-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-[pulse_1.5s_ease-in-out_infinite] shadow-[0_0_5px_rgba(52,211,153,0.8)]" />
+              <p className="text-[11px] font-black tracking-widest uppercase text-emerald-400 mt-1">
                 Sản phẩm &amp; Trí tuệ
               </p>
             </div>

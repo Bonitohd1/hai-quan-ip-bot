@@ -188,7 +188,7 @@ export default function VanBanPhapLuat() {
              Thư viện <span className="text-orange-500">Chuẩn Mực Pháp Lý</span>
           </h1>
           <p className="text-slate-400 text-base font-medium max-w-2xl mx-auto leading-relaxed">
-             Truy xuất bộ khung pháp luật về Sở hữu Trí tuệ được liên kết trực tiếp với hoạt động giám sát thông quan của Tổng Cục Hải Quan.
+             Truy xuất bộ khung pháp luật về Sở hữu Trí tuệ được liên kết trực tiếp với hoạt động giám sát thông quan của Cục Hải Quan.
           </p>
 
           <div className="flex flex-col md:flex-row gap-3 pt-6 max-w-3xl mx-auto relative">
