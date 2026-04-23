@@ -755,50 +755,13 @@ function LegalDocumentAnalysisModal({ doc, onClose }: { doc: LawDocument, onClos
                 )}
 
                 {doc.pdfFile ? (
-                  /* ── Document preview card (iframe blocked by Vercel) ── */
-                  <div className="flex-1 flex flex-col items-center justify-center p-6 gap-5 overflow-y-auto bg-gradient-to-b from-[#0c1829] to-[#0a192f]">
-                    {/* PDF thumbnail */}
-                    <div className="relative">
-                      <div className="w-28 h-36 bg-white rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.5)] flex flex-col overflow-hidden border border-white/10">
-                        <div className="h-8 bg-red-500 flex items-center justify-center gap-1.5">
-                          <Scale className="w-3.5 h-3.5 text-white"/>
-                          <span className="text-white font-black text-[10px] tracking-widest">PDF</span>
-                        </div>
-                        <div className="flex-1 p-2.5 space-y-1.5">
-                          {[80,65,90,55,75,85,50].map((w,i)=>(
-                            <div key={i} className="h-1 bg-slate-200 rounded-full" style={{width:`${w}%`}}/>
-                          ))}
-                        </div>
-                      </div>
-                      <div className="absolute -bottom-2 -right-2 w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center shadow-lg">
-                        <BookOpen className="w-4 h-4 text-white"/>
-                      </div>
-                    </div>
-                    {/* Doc info */}
-                    <div className="text-center space-y-1 max-w-xs">
-                      <p className="text-white font-black text-sm leading-snug">{doc.title}</p>
-                      <p className="text-slate-400 text-[11px] font-mono">{doc.number} · {doc.agency} · {doc.year}</p>
-                    </div>
-                    {/* Status chip */}
-                    <div className={`px-3 py-1 rounded-full text-[11px] font-bold border ${
-                      doc.status === 'active' ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40' :
-                      doc.status === 'partial' ? 'bg-amber-500/20 text-amber-300 border-amber-500/40' :
-                      'bg-slate-500/20 text-slate-400 border-slate-500/40'
-                    }`}>
-                      {doc.status === 'active' ? '✓ Đang hiệu lực' : doc.status === 'partial' ? '⚠ Một phần hiệu lực' : '✕ Hết hiệu lực'}
-                    </div>
-                    {/* Desc */}
-                    <div className="w-full max-w-sm bg-white/5 border border-white/10 rounded-xl p-4">
-                      <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Mô tả văn bản</p>
-                      <p className="text-[12px] text-slate-300 leading-relaxed line-clamp-4">{doc.desc}</p>
-                    </div>
-                    {/* Open button */}
-                    <a href={doc.pdfFile} target="_blank" rel="noopener noreferrer"
-                      className="flex items-center gap-2.5 px-7 py-3.5 bg-orange-500 hover:bg-orange-400 text-white font-black rounded-2xl transition-all hover:-translate-y-0.5 shadow-xl shadow-orange-500/30 text-sm">
-                      <ExternalLink className="w-5 h-5"/> Mở văn bản PDF
-                    </a>
-                    <p className="text-slate-500 text-[11px]">Mở trong tab mới để đọc toàn bộ nội dung</p>
-                  </div>
+                  /* ── PDF via proxy — no X-Frame-Options blocking ── */
+                  <iframe
+                    src={`/api/pdf?file=${encodeURIComponent(doc.pdfFile.split('/').pop() || '')}&folder=van-ban`}
+                    className="flex-1 w-full border-0 bg-white"
+                    title={doc.title}
+                    style={{ minHeight: 0 }}
+                  />
                 ) : (
                   /* ── Fallback text viewer when no PDF ── */
                   <div className="flex-1 overflow-y-auto p-6 custom-scrollbar">
