@@ -11,6 +11,18 @@ interface Document {
   date: string;
   description: string;
   filename?: string;
+  relatedFiles?: string[];
+}
+
+function formatDate(d: string) {
+  if (d.length >= 8) return `${d.slice(0,2)}/${d.slice(2,4)}/${d.slice(4)}`;
+  return d;
+}
+
+function expiryDate(d: string) {
+  if (d.length < 8) return 'N/A';
+  const dd = d.slice(0,2), mm = d.slice(2,4), yyyy = parseInt(d.slice(4));
+  return `${dd}/${mm}/${yyyy + 2} (02 năm)`;
 }
 
 const FILTER_TYPES = [
@@ -277,11 +289,6 @@ export default function TraCuu() {
 }
 
 function DocCard({ doc, index, onClick, customBorder }: { doc: Document, index: number, onClick: () => void, customBorder?: string }) {
-  const formatDate = (d: string) => {
-    if (d.length >= 8) return `${d.slice(0,2)}/${d.slice(2,4)}/${d.slice(4)}`;
-    return d;
-  };
-  
   const delayClass = index % 3 === 0 ? 'delay-100' : index % 3 === 1 ? 'delay-200' : 'delay-300';
   const isWarning = doc.type === 'Vi phạm';
 
@@ -333,10 +340,22 @@ function DocumentAnalysisModal({ doc, onClose }: { doc: Document, onClose: () =>
   // KÍCH HOẠT XUẤT PDF
   const handleExportPDF = () => {
     if (doc.filename) {
+       // Download primary file
        const link = document.createElement('a');
        link.href = `/documents/${doc.filename}`;
        link.download = doc.filename;
        link.click();
+       // Download related files (e.g. công văn + hình ảnh sản phẩm)
+       if (doc.relatedFiles?.length) {
+         doc.relatedFiles.forEach((f, i) => {
+           setTimeout(() => {
+             const a = document.createElement('a');
+             a.href = `/documents/${f}`;
+             a.download = f;
+             a.click();
+           }, (i + 1) * 600);
+         });
+       }
        return;
     }
 
@@ -486,66 +505,85 @@ function DocumentAnalysisModal({ doc, onClose }: { doc: Document, onClose: () =>
 
           <div className="flex flex-1 overflow-hidden">
              
-             <div className="w-full lg:w-1/2 bg-[#f8fafc] border-r border-slate-200 relative">
-                <div className="w-full h-full overflow-y-auto p-6 custom-scrollbar">
-                      <div className="bg-white rounded-xl shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] border border-slate-200 p-10 min-h-[900px] mx-auto max-w-2xl relative">
-                         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rotate-[-45deg] opacity-[0.03] pointer-events-none z-0">
-                            <span className="text-9xl font-black whitespace-nowrap">BẢN LƯU TRỮ</span>
-                         </div>
-                         <div className="relative z-10">
-                            <div className="border-b-[1.5px] border-slate-800 pb-5 mb-8">
-                               <h1 className="text-xl font-bold text-center uppercase tracking-widest text-[#0a192f] font-serif">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</h1>
-                               <h2 className="text-sm font-bold text-center mt-1.5 font-serif">Độc lập - Tự do - Hạnh phúc</h2>
-                            </div>
-                            <div className="mt-8">
-                               <h3 className="text-2xl font-bold text-[#0a192f] text-center mb-4 uppercase leading-snug font-serif">
-                                  {doc.type === 'Vi phạm' ? 'QUYẾT ĐỊNH XỬ PHẠT VI PHẠM SỞ HỮU TRÍ TUỆ' : 
-                                   doc.type === 'Gia hạn' ? 'CHỨNG NHẬN GIA HẠN BẢO HỘ TẠI HẢI QUAN' : 
-                                   'THÔNG BÁO TIẾP NHẬN BẢO HỘ SỞ HỮU TRÍ TUỆ'}
-                               </h3>
-                               <p className="text-center font-bold text-slate-800 mb-10 text-lg">{doc.name}</p>
-                               <div className="space-y-5 text-justify text-slate-800 leading-relaxed font-serif text-[15px]">
-                                  <p><strong>Kính gửi:</strong> Các đơn vị hải quan trực thuộc và các cơ quan chức năng có thẩm quyền.</p>
-                                  <p className="italic">
-                                    Căn cứ Luật Hải quan số 54/2014/QH13 ngày 23 tháng 6 năm 2014;<br/>
-                                    Căn cứ Luật Sở hữu trí tuệ số 50/2005/QH11 (sửa đổi, bổ sung);<br/>
-                                    Căn cứ Nghị định số 99/2013/NĐ-CP của Chính phủ quy định xử phạt vi phạm hành chính trong lĩnh vực sở hữu công nghiệp.
-                                  </p>
-                                  <p>Hệ thống giám sát điện tử của Tổng cục Hải Quan chính thức ghi nhận và lưu trữ toàn bộ văn bản gốc liên quan. Chi tiết nội dung như sau:</p>
-                                  <div className="pl-4 border-l-4 border-orange-500 bg-orange-50/50 p-4 my-6 italic text-slate-700">
-                                     "{doc.description}"
-                                  </div>
-                                  <p>Các cơ quan, tổ chức, cá nhân có liên quan chịu trách nhiệm thi hành văn bản này. Mọi phát sinh trong quá trình rà soát cửa khẩu cần được đối chiếu trực tiếp vào mã định danh của hệ thống.</p>
-                                  <div className="mt-12 py-6 border-t border-slate-200">
-                                     <table className="w-full text-left">
-                                        <tbody>
-                                           <tr>
-                                              <td className="w-1/2 align-top">
-                                                <p className="font-bold mb-1">NƠI NHẬN:</p>
-                                                <ul className="list-disc pl-5 text-sm text-slate-600 space-y-1">
-                                                   <li>Như trên;</li>
-                                                   <li>Lưu đồ DB Hải quan;</li>
-                                                   <li>Kho lưu trữ điện tử ({doc.code}).</li>
-                                                </ul>
-                                              </td>
-                                              <td className="w-1/2 align-top text-center">
-                                                <p className="font-bold mb-16">CHẤP THUẬN KÝ CHỮ KÝ SỐ</p>
-                                                <div className="w-24 h-24 rounded-full border-[3px] border-red-500/80 mx-auto flex items-center justify-center rotate-[-15deg] opacity-80 mt-[-10px]">
-                                                   <div className="text-center">
-                                                      <p className="text-[10px] font-bold text-red-600 uppercase">ĐÃ DUYỆT</p>
-                                                      <p className="text-[8px] text-red-500">{doc.date}</p>
-                                                   </div>
-                                                </div>
-                                              </td>
-                                           </tr>
-                                        </tbody>
-                                     </table>
-                                  </div>
-                               </div>
-                            </div>
-                         </div>
+             <div className="w-full lg:w-1/2 bg-[#f8fafc] border-r border-slate-200 relative flex flex-col">
+                {doc.filename ? (
+                  <div className="flex flex-col h-full">
+                    {/* PDF toolbar */}
+                    <div className="flex items-center gap-3 px-4 py-2.5 bg-[#0a192f] border-b border-slate-700 flex-shrink-0">
+                      <FileText className="w-4 h-4 text-orange-400" />
+                      <span className="text-xs font-bold text-slate-300 truncate flex-1">{doc.filename}</span>
+                      <a
+                        href={`/documents/${doc.filename}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[11px] font-bold text-slate-400 hover:text-white transition-colors px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 flex-shrink-0"
+                      >
+                        Mở tab mới ↗
+                      </a>
+                    </div>
+                    <iframe
+                      src={`/documents/${doc.filename}#toolbar=1&navpanes=0&scrollbar=1&view=FitH`}
+                      className="flex-1 w-full border-0"
+                      title={doc.name}
+                    />
+                    {/* Related files row */}
+                    {doc.relatedFiles && doc.relatedFiles.length > 0 && (
+                      <div className="flex-shrink-0 px-4 py-2.5 bg-amber-50 border-t border-amber-200 flex items-center gap-2 flex-wrap">
+                        <span className="text-[11px] font-bold text-amber-700 uppercase tracking-wide">Tài liệu đính kèm:</span>
+                        {doc.relatedFiles.map((f) => (
+                          <a
+                            key={f}
+                            href={`/documents/${f}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-[11px] font-bold text-blue-600 hover:text-blue-800 underline underline-offset-2 transition-colors"
+                          >
+                            {f}
+                          </a>
+                        ))}
                       </div>
-                   </div>
+                    )}
+                  </div>
+                ) : (
+                  <div className="w-full h-full overflow-y-auto p-6">
+                    <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-8 space-y-6">
+                      <div className="flex items-center gap-3 pb-4 border-b border-slate-100">
+                        <div className="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center">
+                          <FileText className="w-5 h-5 text-orange-600" />
+                        </div>
+                        <div>
+                          <p className="text-xs font-bold uppercase tracking-wider text-slate-400">Hồ sơ SHTT</p>
+                          <h3 className="text-base font-extrabold text-[#0a192f]">{doc.name}</h3>
+                        </div>
+                      </div>
+                      <div className="space-y-4 text-sm text-slate-700 leading-relaxed">
+                        <div className="p-4 bg-slate-50 rounded-lg border border-slate-100">
+                          <p className="font-semibold text-slate-500 text-xs uppercase tracking-wider mb-1">Mô tả</p>
+                          <p>{doc.description}</p>
+                        </div>
+                        <div className="grid grid-cols-2 gap-3">
+                          <div className="p-3 bg-blue-50 rounded-lg border border-blue-100">
+                            <p className="text-[10px] font-bold text-blue-500 uppercase tracking-wider mb-1">Mã số</p>
+                            <p className="font-extrabold text-[#0a192f]">{doc.code}</p>
+                          </div>
+                          <div className="p-3 bg-emerald-50 rounded-lg border border-emerald-100">
+                            <p className="text-[10px] font-bold text-emerald-500 uppercase tracking-wider mb-1">Loại</p>
+                            <p className="font-extrabold text-[#0a192f]">{doc.type}</p>
+                          </div>
+                          <div className="p-3 bg-orange-50 rounded-lg border border-orange-100">
+                            <p className="text-[10px] font-bold text-orange-500 uppercase tracking-wider mb-1">Ngày hiệu lực</p>
+                            <p className="font-extrabold text-[#0a192f]">{formatDate(doc.date)}</p>
+                          </div>
+                          <div className="p-3 bg-purple-50 rounded-lg border border-purple-100">
+                            <p className="text-[10px] font-bold text-purple-500 uppercase tracking-wider mb-1">Thời hạn</p>
+                            <p className="font-extrabold text-[#0a192f]">{expiryDate(doc.date)}</p>
+                          </div>
+                        </div>
+                      </div>
+                      <p className="text-xs text-slate-400 italic text-center pt-2">File PDF chưa được đính kèm trong hệ thống.</p>
+                    </div>
+                  </div>
+                )}
              </div>
 
              <div className="w-full lg:w-1/2 flex flex-col bg-white">
@@ -603,12 +641,12 @@ function DocumentAnalysisModal({ doc, onClose }: { doc: Document, onClose: () =>
                                         <td className="px-4 py-3 font-bold text-[#0a192f]">{doc.type}</td>
                                      </tr>
                                      <tr>
-                                        <td className="px-4 py-3 font-medium text-slate-500">Khung Pháp Lý</td>
-                                        <td className="px-4 py-3 font-bold text-blue-600">Nghị định 99/2013/NĐ-CP</td>
+                                        <td className="px-4 py-3 font-medium text-slate-500">Ngày Hiệu lực</td>
+                                        <td className="px-4 py-3 font-bold text-[#0a192f]">{formatDate(doc.date)}</td>
                                      </tr>
                                      <tr>
-                                        <td className="px-4 py-3 font-medium text-slate-500">Ngày Hiệu lực</td>
-                                        <td className="px-4 py-3 font-bold text-[#0a192f]">{doc.date}</td>
+                                        <td className="px-4 py-3 font-medium text-slate-500">Thời hạn hiệu lực</td>
+                                        <td className="px-4 py-3 font-bold text-emerald-600">{expiryDate(doc.date)}</td>
                                      </tr>
                                   </tbody>
                                </table>

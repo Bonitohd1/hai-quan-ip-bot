@@ -163,22 +163,14 @@
       "description": "Công văn Gia hạn bảo hộ cho PREVATHON, FMC"
     },
     {
-      "id": "14722",
-      "code": "14722",
-      "date": "01042026",
-      "name": "PEEL",
-      "filename": "14722_01042026_PEEL.pdf",
-      "type": "Cấp mới",
-      "description": "Công văn 14722/CHQ-GSQL V/v kiểm tra, giám sát hàng hóa XNK có yêu cầu bảo hộ SHTT nhãn hiệu PEEL (thuốc lá tút). Chủ sở hữu: HERIDA GROUP HOLDING LIMITED (VG). Văn bằng bảo hộ số 284731."
-    },
-    {
       "id": "284731",
       "code": "284731",
-      "date": "20032026",
+      "date": "01042026",
       "name": "PEEL - Sản phẩm tút thuốc lá",
       "filename": "284731_20032026_PEEL_San_pham.pdf",
+      "relatedFiles": ["14722_01042026_PEEL.pdf"],
       "type": "Cấp mới",
-      "description": "Hồ sơ sở hữu trí tuệ nhãn hiệu PEEL gồm 4 dòng sản phẩm tút thuốc lá: Peel Butterfly, Peel Scorpion, Peel Sky Deer, Peel Bee. Văn bằng bảo hộ số 284731 - HERIDA GROUP HOLDING LIMITED (VG)."
+      "description": "Hồ sơ sở hữu trí tuệ nhãn hiệu PEEL gồm 4 dòng sản phẩm tút thuốc lá: Peel Butterfly, Peel Scorpion, Peel Sky Deer, Peel Bee. Văn bằng bảo hộ số 284731 - HERIDA GROUP HOLDING LIMITED (VG). Kèm Công văn 14722/CHQ-GSQL V/v kiểm tra, giám sát hàng hóa XNK."
     },
     {
       "id": "40091",
