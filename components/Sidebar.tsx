@@ -73,8 +73,8 @@ export default function Sidebar() {
               </div>
             </div>
             {/* Text */}
-            <h1 className="text-[13px] font-black tracking-tight text-white leading-snug bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-300 px-2">
-              Sổ tay tra cứu thông tin<br/>Sở hữu trí tuệ
+            <h1 className="text-[13px] font-black uppercase tracking-tight text-white leading-snug bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-300 px-2">
+              SỔ TAY TRA CỨU THÔNG TIN<br/>SỞ HỮU TRÍ TUỆ
             </h1>
             <p className="text-[9px] font-black mt-1.5 tracking-[0.18em] uppercase text-amber-500/90 drop-shadow-[0_0_8px_rgba(245,158,11,0.5)]">
               trong lĩnh vực Hải quan
