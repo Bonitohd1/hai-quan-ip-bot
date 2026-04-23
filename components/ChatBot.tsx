@@ -18,7 +18,7 @@ type Message = {
 };
 
 /** Avatar SVG — robot AI chibi 3D, trắng xanh, mắt neon cyan */
-function NaviAvatar({ size = 44 }: { size?: number }) {
+function NaviAvatar({ size = 44, bare = false }: { size?: number; bare?: boolean }) {
   const uid = React.useId().replace(/:/g, '');
   return (
     <svg
@@ -64,8 +64,8 @@ function NaviAvatar({ size = 44 }: { size?: number }) {
         </filter>
       </defs>
 
-      {/* nền tím pastel như ảnh mẫu */}
-      <circle cx="50" cy="50" r="50" fill={`url(#bg-${uid})`} />
+      {/* nền tím pastel — ẩn khi bare */}
+      {!bare && <circle cx="50" cy="50" r="50" fill={`url(#bg-${uid})`} />}
 
       {/* thân dưới (bầu nhỏ) */}
       <ellipse cx="50" cy="82" rx="20" ry="14" fill={`url(#body-${uid})`} />
@@ -453,79 +453,73 @@ export default function ChatBot() {
         )}
       </AnimatePresence>
 
-      {/* Toggle Button — cô gái Navi với hào quang xoay + sparkle + float */}
-      <div className="relative pointer-events-auto group">
-        {!open && (
+      {/* Toggle Button — robot Navi phát sáng, KHÔNG khung KHÔNG viền */}
+      <div className="relative pointer-events-auto group w-20 h-20 flex items-center justify-center">
+        {open ? (
+          <motion.button
+            whileHover={{ scale: 1.08 }}
+            whileTap={{ scale: 0.92 }}
+            onClick={() => setOpen(false)}
+            className="w-12 h-12 rounded-full bg-gradient-to-br from-slate-700 to-slate-900 shadow-xl flex items-center justify-center"
+            aria-label="Đóng chat"
+          >
+            <ChevronDown className="w-6 h-6 text-white" />
+          </motion.button>
+        ) : (
           <>
-            {/* vòng hào quang xoay (ngoài cùng) */}
+            {/* hào quang cyan-xanh xoay phía sau robot */}
             <motion.span
               aria-hidden
-              className="absolute -inset-2 rounded-[28px]"
+              className="absolute inset-0 rounded-full"
               style={{
                 background:
-                  'conic-gradient(from 0deg, #fde68a, #fb923c, #f43f5e, #a855f7, #fde68a)',
-                filter: 'blur(10px)',
+                  'conic-gradient(from 0deg, #67e8f9, #3b82f6, #a855f7, #f0abfc, #67e8f9)',
+                filter: 'blur(14px)',
                 opacity: 0.75,
               }}
               animate={{ rotate: 360 }}
               transition={{ duration: 7, repeat: Infinity, ease: 'linear' }}
             />
+            {/* glow tĩnh lan toả */}
+            <span
+              aria-hidden
+              className="absolute inset-2 rounded-full"
+              style={{
+                background: 'radial-gradient(circle, rgba(34,211,238,0.55) 0%, transparent 70%)',
+                filter: 'blur(10px)',
+              }}
+            />
             {/* pulse ring */}
             <motion.span
               aria-hidden
-              className="absolute inset-0 rounded-2xl border-2 border-amber-300"
-              animate={{ scale: [1, 1.35, 1], opacity: [0.75, 0, 0.75] }}
+              className="absolute inset-1 rounded-full border-2 border-cyan-300"
+              animate={{ scale: [1, 1.4, 1], opacity: [0.7, 0, 0.7] }}
               transition={{ duration: 2.2, repeat: Infinity, ease: 'easeOut' }}
             />
-          </>
-        )}
-        <motion.button
-          whileHover={{ scale: 1.08, y: -3 }}
-          whileTap={{ scale: 0.94 }}
-          animate={open ? {} : { y: [0, -5, 0] }}
-          transition={open ? {} : { duration: 3.2, repeat: Infinity, ease: 'easeInOut' }}
-          onClick={() => setOpen(!open)}
-          className="relative w-16 h-16 rounded-2xl flex items-center justify-center shadow-2xl border-4 border-white overflow-hidden"
-          style={{ boxShadow: '0 20px 40px rgba(234,88,12,0.45)' }}
-        >
-          {open ? (
-            <div className="w-full h-full bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center">
-              <ChevronDown className="w-7 h-7 text-white" />
+            {/* robot nổi bồng bềnh — không khung không viền */}
+            <motion.button
+              whileHover={{ scale: 1.12 }}
+              whileTap={{ scale: 0.92 }}
+              animate={{ y: [0, -6, 0] }}
+              transition={{ duration: 3.2, repeat: Infinity, ease: 'easeInOut' }}
+              onClick={() => setOpen(true)}
+              className="relative z-10 bg-transparent border-0 outline-none focus:outline-none"
+              style={{ filter: 'drop-shadow(0 8px 20px rgba(34,211,238,0.6)) drop-shadow(0 0 14px rgba(59,130,246,0.45))' }}
+              aria-label="Mở Navi"
+            >
+              <NaviAvatar size={72} bare />
+            </motion.button>
+            {/* sparkles */}
+            <div className="absolute inset-0 pointer-events-none">
+              <AvatarSparkles />
             </div>
-          ) : (
-            <>
-              {/* nền gradient động */}
-              <motion.div
-                className="absolute inset-0"
-                style={{
-                  backgroundImage:
-                    'linear-gradient(135deg, #fde68a 0%, #fb923c 45%, #e11d48 100%)',
-                  backgroundSize: '200% 200%',
-                }}
-                animate={{ backgroundPosition: ['0% 0%', '100% 100%', '0% 0%'] }}
-                transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-              />
-              <div className="relative z-10 w-full h-full flex items-center justify-center">
-                <NaviAvatar size={56} />
-              </div>
-              {/* online dot */}
-              <div className="absolute top-1 right-1 w-3.5 h-3.5 bg-emerald-400 border-2 border-white rounded-full shadow-[0_0_10px_rgba(52,211,153,0.9)] animate-pulse z-20" />
-            </>
-          )}
-        </motion.button>
-
-        {/* sparkles ngoài nút */}
-        {!open && (
-          <div className="absolute inset-0 pointer-events-none">
-            <AvatarSparkles />
-          </div>
-        )}
-
-        {/* tooltip */}
-        {!open && (
-          <span className="absolute right-full mr-3 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-[#0a192f] text-white text-xs font-bold rounded-lg shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0 transition-all pointer-events-none">
-            Hỏi Navi <MessageCircle className="inline w-3 h-3 ml-1" />
-          </span>
+            {/* online dot */}
+            <span className="absolute top-1 right-2 w-3 h-3 bg-emerald-400 rounded-full shadow-[0_0_10px_rgba(52,211,153,0.95)] animate-pulse z-20" />
+            {/* tooltip */}
+            <span className="absolute right-full mr-3 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-[#0a192f] text-white text-xs font-bold rounded-lg shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0 transition-all pointer-events-none">
+              Hỏi Navi <MessageCircle className="inline w-3 h-3 ml-1" />
+            </span>
+          </>
         )}
       </div>
     </div>
