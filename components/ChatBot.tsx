@@ -17,9 +17,8 @@ type Message = {
   ts: number;
 };
 
-/** Avatar SVG — chibi 3D cô gái Hải quan, mắt to long lanh, tóc dài gợn sóng */
+/** Avatar SVG — robot AI chibi 3D, trắng xanh, mắt neon cyan */
 function NaviAvatar({ size = 44 }: { size?: number }) {
-  // random-ish id để tránh conflict nhiều instance cùng defs
   const uid = React.useId().replace(/:/g, '');
   return (
     <svg
@@ -27,121 +26,99 @@ function NaviAvatar({ size = 44 }: { size?: number }) {
       height={size}
       viewBox="0 0 100 100"
       xmlns="http://www.w3.org/2000/svg"
-      aria-label="Navi — cô gái Hải quan"
+      aria-label="Navi — AI Assistant"
     >
       <defs>
-        <radialGradient id={`bg-${uid}`} cx="50%" cy="45%" r="65%">
-          <stop offset="0%" stopColor="#fef3c7" />
-          <stop offset="55%" stopColor="#fb923c" />
-          <stop offset="100%" stopColor="#be123c" />
+        <radialGradient id={`bg-${uid}`} cx="50%" cy="40%" r="70%">
+          <stop offset="0%" stopColor="#e0e7ff" />
+          <stop offset="100%" stopColor="#c7d2fe" />
         </radialGradient>
-        <radialGradient id={`face-${uid}`} cx="50%" cy="40%" r="65%">
-          <stop offset="0%" stopColor="#fff6ea" />
-          <stop offset="70%" stopColor="#fde4cf" />
-          <stop offset="100%" stopColor="#e8b891" />
+        <linearGradient id={`body-${uid}`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#ffffff" />
+          <stop offset="60%" stopColor="#f1f5f9" />
+          <stop offset="100%" stopColor="#cbd5e1" />
+        </linearGradient>
+        <linearGradient id={`blue-${uid}`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#3b82f6" />
+          <stop offset="100%" stopColor="#1e3a8a" />
+        </linearGradient>
+        <radialGradient id={`screen-${uid}`} cx="50%" cy="50%" r="60%">
+          <stop offset="0%" stopColor="#0f172a" />
+          <stop offset="100%" stopColor="#020617" />
         </radialGradient>
-        <linearGradient id={`hair-${uid}`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#6b3f24" />
-          <stop offset="100%" stopColor="#2a1610" />
-        </linearGradient>
-        <linearGradient id={`hat-${uid}`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#2a4a9f" />
-          <stop offset="50%" stopColor="#1e3a8a" />
-          <stop offset="100%" stopColor="#0a192f" />
-        </linearGradient>
-        <radialGradient id={`hatShine-${uid}`} cx="32%" cy="25%" r="45%">
-          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.55" />
+        <radialGradient id={`eye-${uid}`} cx="50%" cy="50%" r="55%">
+          <stop offset="0%" stopColor="#a5f3fc" />
+          <stop offset="55%" stopColor="#22d3ee" />
+          <stop offset="100%" stopColor="#0891b2" />
+        </radialGradient>
+        <radialGradient id={`shine-${uid}`} cx="30%" cy="25%" r="40%">
+          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.9" />
           <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
         </radialGradient>
-        <linearGradient id={`uniform-${uid}`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#1e3a8a" />
-          <stop offset="100%" stopColor="#0a192f" />
-        </linearGradient>
-        <radialGradient id={`cheek-${uid}`} cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#fb7185" stopOpacity="0.7" />
-          <stop offset="100%" stopColor="#fb7185" stopOpacity="0" />
-        </radialGradient>
-        <radialGradient id={`iris-${uid}`} cx="50%" cy="40%" r="60%">
-          <stop offset="0%" stopColor="#7c4a28" />
-          <stop offset="100%" stopColor="#1a0a04" />
-        </radialGradient>
+        <filter id={`glow-${uid}`} x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="1.4" result="blur" />
+          <feMerge>
+            <feMergeNode in="blur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
       </defs>
 
-      {/* nền gradient ấm */}
+      {/* nền tím pastel như ảnh mẫu */}
       <circle cx="50" cy="50" r="50" fill={`url(#bg-${uid})`} />
 
-      {/* vai đồng phục + cổ áo trắng + cà vạt vàng */}
-      <path d="M12 100 C 15 80, 28 74, 50 74 C 72 74, 85 80, 88 100 Z" fill={`url(#uniform-${uid})`} />
-      <path d="M38 76 L50 86 L62 76 L58 96 L42 96 Z" fill="#f8fafc" />
-      <path d="M48 86 L52 86 L53.5 96 L46.5 96 Z" fill="#fbbf24" />
-      <circle cx="50" cy="90" r="1" fill="#b45309" />
+      {/* thân dưới (bầu nhỏ) */}
+      <ellipse cx="50" cy="82" rx="20" ry="14" fill={`url(#body-${uid})`} />
+      {/* vòng tròn xanh đế thân */}
+      <circle cx="50" cy="86" r="4" fill={`url(#blue-${uid})`} />
+      <circle cx="50" cy="86" r="2" fill="#67e8f9" />
 
-      {/* tóc dài phía sau (gợn sóng) */}
-      <path d="M26 44 Q 20 66 28 84 L 38 78 L 36 50 Z" fill={`url(#hair-${uid})`} />
-      <path d="M74 44 Q 80 66 72 84 L 62 78 L 64 50 Z" fill={`url(#hair-${uid})`} />
+      {/* cổ / khớp nối */}
+      <rect x="44" y="66" width="12" height="6" rx="2" fill={`url(#blue-${uid})`} />
 
-      {/* khuôn mặt chibi */}
-      <ellipse cx="50" cy="52" rx="17" ry="19" fill={`url(#face-${uid})`} />
+      {/* đầu - khung bo tròn to */}
+      <rect x="20" y="24" width="60" height="48" rx="18" fill={`url(#body-${uid})`} stroke="#cbd5e1" strokeWidth="0.6" />
+      {/* viền đầu xanh (trang trí) */}
+      <rect x="22" y="26" width="56" height="3" rx="1.5" fill={`url(#blue-${uid})`} opacity="0.85" />
+      {/* highlight đầu */}
+      <path d="M28 30 Q 35 26 50 26 Q 60 26 66 30 L 66 34 Q 50 30 34 34 Z" fill="url(#shine-${uid})" opacity="0.55" />
+      <ellipse cx="35" cy="32" rx="8" ry="3" fill="#ffffff" opacity="0.55" />
 
-      {/* tóc mái & fringe bên */}
-      <path
-        d="M32 38 Q 40 28 50 30 Q 60 28 68 38 Q 66 47 60 44 Q 54 38 50 42 Q 46 38 40 44 Q 34 47 32 38 Z"
-        fill={`url(#hair-${uid})`}
-      />
-      <path d="M33 40 Q 30 56 36 66 L 38 52 Z" fill={`url(#hair-${uid})`} />
-      <path d="M67 40 Q 70 56 64 66 L 62 52 Z" fill={`url(#hair-${uid})`} />
+      {/* ăng ten trái */}
+      <path d="M30 24 L 24 12 L 32 16 Z" fill={`url(#blue-${uid})`} />
+      <circle cx="26" cy="13" r="1.6" fill="#67e8f9" />
 
-      {/* vành mũ */}
-      <ellipse cx="50" cy="34" rx="23" ry="3.2" fill="#0a192f" />
-      {/* đế mũ vàng */}
-      <rect x="27" y="28.5" width="46" height="3.2" fill="#fbbf24" />
-      <rect x="27" y="28.5" width="46" height="1" fill="#fde68a" />
-      {/* thân mũ */}
-      <path d="M30 28.5 Q 30 13 50 11 Q 70 13 70 28.5 Z" fill={`url(#hat-${uid})`} />
-      {/* highlight bóng mũ */}
-      <path d="M30 28.5 Q 30 13 50 11 Q 70 13 70 28.5 Z" fill={`url(#hatShine-${uid})`} />
-      {/* sao vàng trên mũ */}
-      <g transform="translate(50 20)">
-        <polygon
-          points="0,-5.5 1.6,-1.6 5.6,-1.6 2.4,1.1 3.6,5 0,2.7 -3.6,5 -2.4,1.1 -5.6,-1.6 -1.6,-1.6"
-          fill="#fbbf24"
-          stroke="#b45309"
-          strokeWidth="0.35"
+      {/* tai nghe 2 bên */}
+      <ellipse cx="18" cy="48" rx="5" ry="9" fill={`url(#blue-${uid})`} />
+      <ellipse cx="18" cy="48" rx="2.5" ry="5" fill="#0a192f" />
+      <ellipse cx="82" cy="48" rx="5" ry="9" fill={`url(#blue-${uid})`} />
+      <ellipse cx="82" cy="48" rx="2.5" ry="5" fill="#0a192f" />
+
+      {/* màn hình mặt */}
+      <rect x="28" y="34" width="44" height="30" rx="10" fill={`url(#screen-${uid})`} />
+      {/* glow viền màn hình */}
+      <rect x="28" y="34" width="44" height="30" rx="10" fill="none" stroke="#22d3ee" strokeWidth="0.6" opacity="0.4" />
+
+      {/* mắt neon cyan + miệng (có filter glow + blink) */}
+      <g className="navi-eyes" filter={`url(#glow-${uid})`}>
+        <circle cx="40" cy="47" r="4.2" fill={`url(#eye-${uid})`} />
+        <circle cx="60" cy="47" r="4.2" fill={`url(#eye-${uid})`} />
+        {/* highlight mắt */}
+        <circle cx="38.6" cy="45.5" r="1.1" fill="#ffffff" />
+        <circle cx="58.6" cy="45.5" r="1.1" fill="#ffffff" />
+        {/* miệng cười */}
+        <path
+          d="M44 55 Q 50 60 56 55"
+          stroke="#22d3ee"
+          strokeWidth="1.8"
+          fill="none"
+          strokeLinecap="round"
         />
       </g>
 
-      {/* lông mày */}
-      <path d="M39 46 Q 43 44.2 46.5 46" stroke="#3b2418" strokeWidth="1" fill="none" strokeLinecap="round" />
-      <path d="M53.5 46 Q 57 44.2 61 46" stroke="#3b2418" strokeWidth="1" fill="none" strokeLinecap="round" />
-
-      {/* mắt anime to — tròng trắng */}
-      <g className="navi-eyes">
-        <ellipse cx="42.5" cy="53" rx="3.2" ry="4.2" fill="#ffffff" />
-        <ellipse cx="57.5" cy="53" rx="3.2" ry="4.2" fill="#ffffff" />
-        {/* tròng đen (iris gradient) */}
-        <circle cx="42.5" cy="53.5" r="2.6" fill={`url(#iris-${uid})`} />
-        <circle cx="57.5" cy="53.5" r="2.6" fill={`url(#iris-${uid})`} />
-        {/* điểm sáng to */}
-        <circle cx="43.6" cy="52.3" r="1.1" fill="#ffffff" />
-        <circle cx="58.6" cy="52.3" r="1.1" fill="#ffffff" />
-        {/* điểm sáng nhỏ */}
-        <circle cx="41.5" cy="54.5" r="0.45" fill="#ffffff" />
-        <circle cx="56.5" cy="54.5" r="0.45" fill="#ffffff" />
-        {/* mí mắt trên (lông mi) */}
-        <path d="M39.5 50.5 Q 42.5 48.8 45.5 50.5" stroke="#0a192f" strokeWidth="1.1" fill="none" strokeLinecap="round" />
-        <path d="M54.5 50.5 Q 57.5 48.8 60.5 50.5" stroke="#0a192f" strokeWidth="1.1" fill="none" strokeLinecap="round" />
-      </g>
-
-      {/* má hồng */}
-      <ellipse cx="39" cy="61" rx="3" ry="2" fill={`url(#cheek-${uid})`} />
-      <ellipse cx="61" cy="61" rx="3" ry="2" fill={`url(#cheek-${uid})`} />
-
-      {/* mũi nhỏ */}
-      <path d="M50 57 Q 50.2 60 48.8 61" stroke="#d9a57a" strokeWidth="0.7" fill="none" strokeLinecap="round" />
-
-      {/* miệng cười bóng */}
-      <path d="M46 65 Q 50 68.5 54 65" fill="#f43f5e" stroke="#be123c" strokeWidth="0.9" strokeLinejoin="round" />
-      <path d="M46.8 65.2 Q 50 66.3 53.2 65.2" fill="#fecdd3" opacity="0.75" />
+      {/* tay nhỏ hai bên thân */}
+      <circle cx="28" cy="78" r="4" fill={`url(#body-${uid})`} stroke={`url(#blue-${uid})`} strokeWidth="0.8" />
+      <circle cx="72" cy="78" r="4" fill={`url(#body-${uid})`} stroke={`url(#blue-${uid})`} strokeWidth="0.8" />
     </svg>
   );
 }
