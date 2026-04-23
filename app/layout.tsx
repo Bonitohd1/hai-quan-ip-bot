@@ -16,7 +16,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <head>
         <title>Hải Quan SHTT — Hệ thống quản lý chuyên ngành</title>
         <meta name="description" content="Hệ thống quản trị và tra cứu Sở hữu trí tuệ Hải quan Việt Nam" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
       </head>
       <body className="antialiased min-h-screen flex bg-slate-50 text-slate-900 font-sans">
         <AuthProvider>

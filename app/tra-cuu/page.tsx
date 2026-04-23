@@ -87,10 +87,10 @@ export default function TraCuu() {
   if (!mounted) return null;
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#f1f5f9] -m-6 lg:-m-12 p-6 lg:p-10 space-y-8 max-w-[1600px] mx-auto font-sans">
+    <div className="flex flex-col min-h-screen bg-[#f1f5f9] -m-4 sm:-m-6 lg:-m-12 p-4 sm:p-6 lg:p-10 space-y-6 sm:space-y-8 max-w-[1600px] mx-auto font-sans">
       
       {/* ── TIÊU ĐỀ & THANH TÌM KIẾM ── */}
-      <div className="animate-fade-in-up bg-[#0a192f] rounded-3xl p-8 lg:p-12 shadow-2xl relative overflow-hidden border border-slate-800">
+      <div className="animate-fade-in-up bg-[#0a192f] rounded-2xl sm:rounded-3xl p-5 sm:p-8 lg:p-12 shadow-2xl relative overflow-hidden border border-slate-800">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-orange-500/10 to-transparent pointer-events-none" />
         
         <div className="relative z-10 max-w-4xl mx-auto text-center space-y-6">
@@ -99,7 +99,7 @@ export default function TraCuu() {
             Trợ lý Tìm kiếm cốt lõi
           </div>
           
-          <h1 className="text-3xl lg:text-4xl font-extrabold text-white tracking-tight">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight">
              Thư viện <span className="text-orange-500">Phân tích hệ thống</span>
           </h1>
           <p className="text-slate-400 text-sm lg:text-base font-medium">
@@ -475,27 +475,27 @@ function DocumentAnalysisModal({ doc, onClose }: { doc: Document, onClose: () =>
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 lg:p-8 animate-fade-in-up" style={{ animationDuration: '0.2s' }}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 lg:p-8 animate-fade-in-up" style={{ animationDuration: '0.2s' }}>
        <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={onClose} />
-       
-       <div className="relative bg-white w-full max-w-7xl h-full max-h-[90vh] rounded-3xl shadow-2xl flex flex-col overflow-hidden border border-slate-200">
-          
-          <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-slate-50">
-             <div className="flex items-center gap-4">
-                <div className="flex flex-col">
-                   <div className="flex items-center gap-2">
-                      <span className="px-2 py-0.5 bg-[#0a192f] text-white text-[10px] font-bold rounded uppercase tracking-wider">{doc.code}</span>
-                      <h2 className="text-lg font-extrabold text-[#0a192f] line-clamp-1">{doc.name}</h2>
+
+       <div className="relative bg-white w-full max-w-7xl h-full max-h-[96vh] sm:max-h-[92vh] lg:max-h-[90vh] rounded-2xl sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden border border-slate-200">
+
+          <div className="flex items-center justify-between gap-2 px-3 sm:px-6 py-3 sm:py-4 border-b border-slate-100 bg-slate-50">
+             <div className="flex items-center gap-2 sm:gap-4 min-w-0 flex-1">
+                <div className="flex flex-col min-w-0">
+                   <div className="flex items-center gap-2 min-w-0">
+                      <span className="px-2 py-0.5 bg-[#0a192f] text-white text-[10px] font-bold rounded uppercase tracking-wider shrink-0">{doc.code}</span>
+                      <h2 className="text-sm sm:text-lg font-extrabold text-[#0a192f] line-clamp-1">{doc.name}</h2>
                    </div>
-                   <p className="text-xs text-slate-500 font-medium mt-1">Nguồn: Cơ sở dữ liệu Cục Hải Quan • Phân loại: {doc.type}</p>
+                   <p className="text-[11px] sm:text-xs text-slate-500 font-medium mt-1 line-clamp-1">Nguồn: Cơ sở dữ liệu Cục Hải Quan • Phân loại: {doc.type}</p>
                 </div>
              </div>
-             <div className="flex items-center gap-3">
-                <button 
+             <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+                <button
                   onClick={handleExportPDF}
-                  className="px-4 py-2 bg-orange-100 text-orange-700 hover:bg-orange-600 hover:text-white rounded-lg text-sm font-bold transition-colors flex items-center gap-2 group"
+                  className="px-2.5 sm:px-4 py-2 bg-orange-100 text-orange-700 hover:bg-orange-600 hover:text-white rounded-lg text-xs sm:text-sm font-bold transition-colors flex items-center gap-1.5 sm:gap-2 group"
                 >
-                   <Download className="w-4 h-4 group-hover:-translate-y-0.5 transition-transform" /> Xuất PDF
+                   <Download className="w-4 h-4 group-hover:-translate-y-0.5 transition-transform" /> <span className="hidden sm:inline">Xuất PDF</span>
                 </button>
                 <button onClick={onClose} className="p-2 bg-white hover:bg-red-50 text-slate-400 hover:text-red-500 rounded-full transition-colors border border-slate-200">
                    <X className="w-5 h-5" />
@@ -503,9 +503,9 @@ function DocumentAnalysisModal({ doc, onClose }: { doc: Document, onClose: () =>
              </div>
           </div>
 
-          <div className="flex flex-1 overflow-hidden">
-             
-             <div className="w-full lg:w-1/2 border-r border-slate-200 relative flex flex-col bg-[#0a192f]">
+          <div className="flex flex-col lg:flex-row flex-1 overflow-y-auto lg:overflow-hidden">
+
+             <div className="w-full lg:w-1/2 border-b lg:border-b-0 lg:border-r border-slate-200 relative flex flex-col bg-[#0a192f] min-h-[280px] lg:min-h-0">
                 {/* Top bar */}
                 <div className="flex items-center gap-2 px-4 py-2.5 border-b border-white/10 flex-shrink-0">
                   <span className="w-2 h-2 rounded-full bg-red-400/80"/>

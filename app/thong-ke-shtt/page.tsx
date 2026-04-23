@@ -194,7 +194,7 @@ export default function ThongKeSHTT() {
   const yearLabel = yearKey === 'all' ? 'Tất cả' : `Năm ${yearKey}`;
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#f8fafc] -m-6 lg:-m-12 p-6 lg:p-10 font-sans text-slate-800 relative">
+    <div className="flex flex-col min-h-screen bg-[#f8fafc] -m-4 sm:-m-6 lg:-m-12 p-4 sm:p-6 lg:p-10 font-sans text-slate-800 relative">
 
       {/* TOAST */}
       <AnimatePresence>
@@ -249,7 +249,7 @@ export default function ThongKeSHTT() {
       </motion.div>
 
       {/* KPI CARDS */}
-      <div className="grid grid-cols-2 xl:grid-cols-4 gap-5 mb-8 relative z-10">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5 mb-6 sm:mb-8 relative z-10">
         <KpiCard label="Tổng hồ sơ bảo hộ" value={String(d.docs.length || ALL.length)} sub={`Toàn bộ hồ sơ ${yearLabel.toLowerCase()}`} icon={FileText} color="text-blue-600" bg="bg-blue-50" change={`${ALL.length} tổng`} changeDir="up" delay={0}/>
         <KpiCard label="Hồ sơ cấp mới" value={String(d.capMoi.length)} sub="Nhãn hiệu được cấp phép mới" icon={ShieldCheck} color="text-indigo-600" bg="bg-indigo-50" change="Mới nhất 04/2026" changeDir="up" delay={0.07}/>
         <KpiCard label="Hồ sơ gia hạn" value={String(d.giaHan.length)} sub="Nhãn hiệu gia hạn hiệu lực" icon={CheckCircle2} color="text-emerald-600" bg="bg-emerald-50" change={`${Math.round((d.giaHan.length/(d.docs.length||1))*100)}% tổng hồ sơ`} changeDir="flat" delay={0.14}/>
@@ -296,7 +296,7 @@ export default function ThongKeSHTT() {
 
           {yearKey === 'all' ? (
             /* ─── ALL MODE: split into two year panels side by side ─── */
-            <div className="flex flex-1 divide-x divide-slate-100" style={{ minHeight: 260 }}>
+            <div className="flex flex-col xl:flex-row flex-1 divide-y xl:divide-y-0 xl:divide-x divide-slate-100" style={{ minHeight: 260 }}>
               {(['2025','2026'] as const).map((yr, yi) => {
                 const yd = DATA[yr];
                 const yMax = Math.max(...yd.monthly, 1);

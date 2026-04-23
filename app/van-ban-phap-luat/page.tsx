@@ -345,7 +345,7 @@ export default function VanBanPhapLuat() {
   if (!mounted) return null;
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#f1f5f9] -m-6 lg:-m-12 p-6 lg:p-10 space-y-8 max-w-[1600px] mx-auto font-sans">
+    <div className="flex flex-col min-h-screen bg-[#f1f5f9] -m-4 sm:-m-6 lg:-m-12 p-4 sm:p-6 lg:p-10 space-y-6 sm:space-y-8 max-w-[1600px] mx-auto font-sans">
       
       {/* ── HEADER KHÔNG GIAN CITADEL ── */}
       <div className="animate-fade-in-up bg-[#0a192f] rounded-3xl p-8 lg:p-12 shadow-2xl relative overflow-hidden border border-slate-800">
@@ -709,29 +709,29 @@ function LegalDocumentAnalysisModal({ doc, onClose }: { doc: LawDocument, onClos
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 lg:p-8 animate-fade-in-up" style={{ animationDuration: '0.2s' }}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 lg:p-8 animate-fade-in-up" style={{ animationDuration: '0.2s' }}>
        <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={onClose} />
-       
-       <div className="relative bg-white w-full max-w-7xl h-full max-h-[90vh] rounded-3xl shadow-2xl flex flex-col overflow-hidden border border-slate-200">
-          
-          <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-slate-50">
-             <div className="flex items-center gap-4">
-                <div className="flex flex-col">
-                   <div className="flex items-center gap-2">
-                      <span className="px-2 py-0.5 bg-[#0a192f] text-white text-[10px] font-bold rounded uppercase tracking-wider">{doc.number}</span>
-                      <h2 className="text-lg font-extrabold text-[#0a192f] line-clamp-1">{doc.type} - {doc.agency}</h2>
+
+       <div className="relative bg-white w-full max-w-7xl h-full max-h-[96vh] sm:max-h-[92vh] lg:max-h-[90vh] rounded-2xl sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden border border-slate-200">
+
+          <div className="flex items-center justify-between gap-2 px-3 sm:px-6 py-3 sm:py-4 border-b border-slate-100 bg-slate-50">
+             <div className="flex items-center gap-2 sm:gap-4 min-w-0 flex-1">
+                <div className="flex flex-col min-w-0">
+                   <div className="flex items-center gap-2 min-w-0">
+                      <span className="px-2 py-0.5 bg-[#0a192f] text-white text-[10px] font-bold rounded uppercase tracking-wider shrink-0">{doc.number}</span>
+                      <h2 className="text-sm sm:text-lg font-extrabold text-[#0a192f] line-clamp-1">{doc.type} - {doc.agency}</h2>
                    </div>
                 </div>
              </div>
-             <div className="flex items-center gap-3">
+             <div className="flex items-center gap-2 sm:gap-3 shrink-0">
                 {doc.pdfFile ? (
                   <a href={doc.pdfFile} download target="_blank" rel="noopener noreferrer"
-                     className="px-4 py-2 bg-orange-100 text-orange-700 hover:bg-orange-600 hover:text-white rounded-lg text-sm font-bold transition-colors flex items-center gap-2">
-                    <Download className="w-4 h-4" /> Tải PDF gốc
+                     className="px-2.5 sm:px-4 py-2 bg-orange-100 text-orange-700 hover:bg-orange-600 hover:text-white rounded-lg text-xs sm:text-sm font-bold transition-colors flex items-center gap-1.5 sm:gap-2">
+                    <Download className="w-4 h-4" /> <span className="hidden sm:inline">Tải PDF gốc</span>
                   </a>
                 ) : (
-                  <button onClick={handleExportPDF} className="px-4 py-2 bg-slate-100 text-slate-500 hover:bg-slate-200 rounded-lg text-sm font-bold transition-colors flex items-center gap-2">
-                    <Download className="w-4 h-4" /> Xuất PDF
+                  <button onClick={handleExportPDF} className="px-2.5 sm:px-4 py-2 bg-slate-100 text-slate-500 hover:bg-slate-200 rounded-lg text-xs sm:text-sm font-bold transition-colors flex items-center gap-1.5 sm:gap-2">
+                    <Download className="w-4 h-4" /> <span className="hidden sm:inline">Xuất PDF</span>
                   </button>
                 )}
                 <button onClick={onClose} className="p-2 bg-white hover:bg-red-50 text-slate-400 hover:text-red-500 rounded-full transition-colors border border-slate-200">
@@ -740,10 +740,10 @@ function LegalDocumentAnalysisModal({ doc, onClose }: { doc: LawDocument, onClos
              </div>
           </div>
 
-          <div className="flex flex-1 overflow-hidden">
-             
+          <div className="flex flex-col lg:flex-row flex-1 overflow-y-auto lg:overflow-hidden">
+
              {/* LEFT SIDE: PDF VIEWER */}
-             <div className="w-full lg:w-1/2 bg-[#f0f2f5] border-r border-slate-200 relative flex flex-col overflow-hidden">
+             <div className="w-full lg:w-1/2 bg-[#f0f2f5] border-b lg:border-b-0 lg:border-r border-slate-200 relative flex flex-col overflow-hidden min-h-[280px] lg:min-h-0">
 
                 {/* Status banner */}
                 {doc.status !== 'active' && (
