@@ -194,6 +194,17 @@
   animation: pulseGlow 1.8s ease-in-out infinite;
 }
 
+/* ── Navi eye blink ──────────────────────────────────────────── */
+@keyframes naviBlink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  95%, 97%    { transform: scaleY(0.08); }
+}
+.navi-eyes {
+  transform-origin: center 54px;
+  transform-box: fill-box;
+  animation: naviBlink 4.5s ease-in-out infinite;
+}
+
 /* ── Custom scrollbar — professional thin style ──────────────── */
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;

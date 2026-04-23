@@ -17,66 +17,155 @@ type Message = {
   ts: number;
 };
 
-/** Avatar SVG — cô gái đội mũ Hải quan, style phẳng chuyên nghiệp */
+/** Avatar SVG — chibi 3D cô gái Hải quan, mắt to long lanh, tóc dài gợn sóng */
 function NaviAvatar({ size = 44 }: { size?: number }) {
+  // random-ish id để tránh conflict nhiều instance cùng defs
+  const uid = React.useId().replace(/:/g, '');
   return (
     <svg
       width={size}
       height={size}
-      viewBox="0 0 64 64"
+      viewBox="0 0 100 100"
       xmlns="http://www.w3.org/2000/svg"
-      aria-label="Navi avatar"
+      aria-label="Navi — cô gái Hải quan"
     >
       <defs>
-        <linearGradient id="navi-bg" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#fbbf24" />
-          <stop offset="55%" stopColor="#f97316" />
-          <stop offset="100%" stopColor="#e11d48" />
+        <radialGradient id={`bg-${uid}`} cx="50%" cy="45%" r="65%">
+          <stop offset="0%" stopColor="#fef3c7" />
+          <stop offset="55%" stopColor="#fb923c" />
+          <stop offset="100%" stopColor="#be123c" />
+        </radialGradient>
+        <radialGradient id={`face-${uid}`} cx="50%" cy="40%" r="65%">
+          <stop offset="0%" stopColor="#fff6ea" />
+          <stop offset="70%" stopColor="#fde4cf" />
+          <stop offset="100%" stopColor="#e8b891" />
+        </radialGradient>
+        <linearGradient id={`hair-${uid}`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#6b3f24" />
+          <stop offset="100%" stopColor="#2a1610" />
         </linearGradient>
-        <linearGradient id="navi-hat" x1="0" y1="0" x2="0" y2="1">
+        <linearGradient id={`hat-${uid}`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#2a4a9f" />
+          <stop offset="50%" stopColor="#1e3a8a" />
+          <stop offset="100%" stopColor="#0a192f" />
+        </linearGradient>
+        <radialGradient id={`hatShine-${uid}`} cx="32%" cy="25%" r="45%">
+          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.55" />
+          <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
+        </radialGradient>
+        <linearGradient id={`uniform-${uid}`} x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor="#1e3a8a" />
           <stop offset="100%" stopColor="#0a192f" />
         </linearGradient>
-        <linearGradient id="navi-skin" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#fde4cf" />
-          <stop offset="100%" stopColor="#f4c49c" />
-        </linearGradient>
+        <radialGradient id={`cheek-${uid}`} cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#fb7185" stopOpacity="0.7" />
+          <stop offset="100%" stopColor="#fb7185" stopOpacity="0" />
+        </radialGradient>
+        <radialGradient id={`iris-${uid}`} cx="50%" cy="40%" r="60%">
+          <stop offset="0%" stopColor="#7c4a28" />
+          <stop offset="100%" stopColor="#1a0a04" />
+        </radialGradient>
       </defs>
-      {/* bg */}
-      <circle cx="32" cy="32" r="32" fill="url(#navi-bg)" />
-      {/* neck/shoulders (navy uniform) */}
-      <path d="M14 60 C 16 50, 24 46, 32 46 C 40 46, 48 50, 50 60 Z" fill="#0a192f" />
-      {/* collar white */}
-      <path d="M26 48 L32 52 L38 48 L36 58 L28 58 Z" fill="#f8fafc" />
-      {/* gold badge on collar */}
-      <circle cx="32" cy="54" r="1.6" fill="#fbbf24" />
-      {/* face */}
-      <ellipse cx="32" cy="30" rx="10" ry="11" fill="url(#navi-skin)" />
-      {/* hair side */}
-      <path d="M22 28 Q 20 38 24 42 L 26 32 Z" fill="#3b2418" />
-      <path d="M42 28 Q 44 38 40 42 L 38 32 Z" fill="#3b2418" />
-      {/* hair under hat (bangs) */}
-      <path d="M24 22 Q 32 18 40 22 L 40 26 Q 32 23 24 26 Z" fill="#3b2418" />
-      {/* hat brim */}
-      <rect x="19" y="20" width="26" height="3.2" rx="1.2" fill="#0a192f" />
-      {/* hat top */}
-      <path d="M22 20 Q 22 10 32 10 Q 42 10 42 20 Z" fill="url(#navi-hat)" />
-      {/* hat band */}
-      <rect x="22" y="17" width="20" height="2" fill="#fbbf24" />
-      {/* hat emblem (star) */}
-      <polygon
-        points="32,12 33,15 36,15 33.5,17 34.5,20 32,18.2 29.5,20 30.5,17 28,15 31,15"
-        fill="#fbbf24"
+
+      {/* nền gradient ấm */}
+      <circle cx="50" cy="50" r="50" fill={`url(#bg-${uid})`} />
+
+      {/* vai đồng phục + cổ áo trắng + cà vạt vàng */}
+      <path d="M12 100 C 15 80, 28 74, 50 74 C 72 74, 85 80, 88 100 Z" fill={`url(#uniform-${uid})`} />
+      <path d="M38 76 L50 86 L62 76 L58 96 L42 96 Z" fill="#f8fafc" />
+      <path d="M48 86 L52 86 L53.5 96 L46.5 96 Z" fill="#fbbf24" />
+      <circle cx="50" cy="90" r="1" fill="#b45309" />
+
+      {/* tóc dài phía sau (gợn sóng) */}
+      <path d="M26 44 Q 20 66 28 84 L 38 78 L 36 50 Z" fill={`url(#hair-${uid})`} />
+      <path d="M74 44 Q 80 66 72 84 L 62 78 L 64 50 Z" fill={`url(#hair-${uid})`} />
+
+      {/* khuôn mặt chibi */}
+      <ellipse cx="50" cy="52" rx="17" ry="19" fill={`url(#face-${uid})`} />
+
+      {/* tóc mái & fringe bên */}
+      <path
+        d="M32 38 Q 40 28 50 30 Q 60 28 68 38 Q 66 47 60 44 Q 54 38 50 42 Q 46 38 40 44 Q 34 47 32 38 Z"
+        fill={`url(#hair-${uid})`}
       />
-      {/* eyes */}
-      <circle cx="28" cy="31" r="1.1" fill="#0a192f" />
-      <circle cx="36" cy="31" r="1.1" fill="#0a192f" />
-      {/* cheeks */}
-      <circle cx="26" cy="34" r="1.2" fill="#fca5a5" opacity="0.55" />
-      <circle cx="38" cy="34" r="1.2" fill="#fca5a5" opacity="0.55" />
-      {/* smile */}
-      <path d="M29 36 Q 32 38.5 35 36" stroke="#0a192f" strokeWidth="1.2" fill="none" strokeLinecap="round" />
+      <path d="M33 40 Q 30 56 36 66 L 38 52 Z" fill={`url(#hair-${uid})`} />
+      <path d="M67 40 Q 70 56 64 66 L 62 52 Z" fill={`url(#hair-${uid})`} />
+
+      {/* vành mũ */}
+      <ellipse cx="50" cy="34" rx="23" ry="3.2" fill="#0a192f" />
+      {/* đế mũ vàng */}
+      <rect x="27" y="28.5" width="46" height="3.2" fill="#fbbf24" />
+      <rect x="27" y="28.5" width="46" height="1" fill="#fde68a" />
+      {/* thân mũ */}
+      <path d="M30 28.5 Q 30 13 50 11 Q 70 13 70 28.5 Z" fill={`url(#hat-${uid})`} />
+      {/* highlight bóng mũ */}
+      <path d="M30 28.5 Q 30 13 50 11 Q 70 13 70 28.5 Z" fill={`url(#hatShine-${uid})`} />
+      {/* sao vàng trên mũ */}
+      <g transform="translate(50 20)">
+        <polygon
+          points="0,-5.5 1.6,-1.6 5.6,-1.6 2.4,1.1 3.6,5 0,2.7 -3.6,5 -2.4,1.1 -5.6,-1.6 -1.6,-1.6"
+          fill="#fbbf24"
+          stroke="#b45309"
+          strokeWidth="0.35"
+        />
+      </g>
+
+      {/* lông mày */}
+      <path d="M39 46 Q 43 44.2 46.5 46" stroke="#3b2418" strokeWidth="1" fill="none" strokeLinecap="round" />
+      <path d="M53.5 46 Q 57 44.2 61 46" stroke="#3b2418" strokeWidth="1" fill="none" strokeLinecap="round" />
+
+      {/* mắt anime to — tròng trắng */}
+      <g className="navi-eyes">
+        <ellipse cx="42.5" cy="53" rx="3.2" ry="4.2" fill="#ffffff" />
+        <ellipse cx="57.5" cy="53" rx="3.2" ry="4.2" fill="#ffffff" />
+        {/* tròng đen (iris gradient) */}
+        <circle cx="42.5" cy="53.5" r="2.6" fill={`url(#iris-${uid})`} />
+        <circle cx="57.5" cy="53.5" r="2.6" fill={`url(#iris-${uid})`} />
+        {/* điểm sáng to */}
+        <circle cx="43.6" cy="52.3" r="1.1" fill="#ffffff" />
+        <circle cx="58.6" cy="52.3" r="1.1" fill="#ffffff" />
+        {/* điểm sáng nhỏ */}
+        <circle cx="41.5" cy="54.5" r="0.45" fill="#ffffff" />
+        <circle cx="56.5" cy="54.5" r="0.45" fill="#ffffff" />
+        {/* mí mắt trên (lông mi) */}
+        <path d="M39.5 50.5 Q 42.5 48.8 45.5 50.5" stroke="#0a192f" strokeWidth="1.1" fill="none" strokeLinecap="round" />
+        <path d="M54.5 50.5 Q 57.5 48.8 60.5 50.5" stroke="#0a192f" strokeWidth="1.1" fill="none" strokeLinecap="round" />
+      </g>
+
+      {/* má hồng */}
+      <ellipse cx="39" cy="61" rx="3" ry="2" fill={`url(#cheek-${uid})`} />
+      <ellipse cx="61" cy="61" rx="3" ry="2" fill={`url(#cheek-${uid})`} />
+
+      {/* mũi nhỏ */}
+      <path d="M50 57 Q 50.2 60 48.8 61" stroke="#d9a57a" strokeWidth="0.7" fill="none" strokeLinecap="round" />
+
+      {/* miệng cười bóng */}
+      <path d="M46 65 Q 50 68.5 54 65" fill="#f43f5e" stroke="#be123c" strokeWidth="0.9" strokeLinejoin="round" />
+      <path d="M46.8 65.2 Q 50 66.3 53.2 65.2" fill="#fecdd3" opacity="0.75" />
     </svg>
+  );
+}
+
+/** Sparkles animation quanh avatar — dùng cho toggle button & header */
+function AvatarSparkles() {
+  const dots = [
+    { x: '8%', y: '12%', delay: 0 },
+    { x: '88%', y: '18%', delay: 0.6 },
+    { x: '92%', y: '74%', delay: 1.2 },
+    { x: '6%', y: '78%', delay: 1.8 },
+  ];
+  return (
+    <>
+      {dots.map((d, i) => (
+        <motion.span
+          key={i}
+          className="absolute w-1.5 h-1.5 rounded-full bg-white shadow-[0_0_6px_rgba(255,255,255,0.95)] pointer-events-none"
+          style={{ left: d.x, top: d.y }}
+          animate={{ scale: [0, 1.4, 0], opacity: [0, 1, 0] }}
+          transition={{ duration: 2.2, delay: d.delay, repeat: Infinity, ease: 'easeInOut' }}
+        />
+      ))}
+    </>
   );
 }
 
@@ -182,11 +271,32 @@ export default function ChatBot() {
             {/* Header */}
             <div className="flex items-center justify-between px-4 sm:px-5 py-3.5 bg-gradient-to-r from-[#0a192f] via-[#13284a] to-[#0a192f] text-white border-b border-slate-800">
               <div className="flex items-center gap-3 min-w-0">
-                <div className="relative shrink-0">
-                  <div className="w-11 h-11 rounded-2xl bg-white shadow-lg ring-2 ring-amber-400/50 overflow-hidden flex items-center justify-center">
+                <div className="relative shrink-0 w-12 h-12">
+                  {/* hào quang xoay */}
+                  <motion.span
+                    aria-hidden
+                    className="absolute inset-0 rounded-2xl"
+                    style={{
+                      background:
+                        'conic-gradient(from 0deg, #fbbf24, #fb923c, #e11d48, #fbbf24)',
+                      filter: 'blur(6px)',
+                      opacity: 0.85,
+                    }}
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 6, repeat: Infinity, ease: 'linear' }}
+                  />
+                  {/* avatar nổi bồng bềnh */}
+                  <motion.div
+                    className="absolute inset-0.5 rounded-2xl bg-white shadow-lg ring-2 ring-amber-300 overflow-hidden flex items-center justify-center"
+                    animate={{ y: [0, -2.5, 0] }}
+                    transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+                  >
                     <NaviAvatar size={44} />
-                  </div>
-                  <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-emerald-400 border-2 border-[#0a192f] animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.9)]" />
+                  </motion.div>
+                  {/* tia sparkle */}
+                  <AvatarSparkles />
+                  {/* chấm online */}
+                  <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-emerald-400 border-2 border-[#0a192f] animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.9)] z-20" />
                 </div>
                 <div className="min-w-0">
                   <div className="flex items-center gap-1.5">
@@ -366,33 +476,81 @@ export default function ChatBot() {
         )}
       </AnimatePresence>
 
-      {/* Toggle Button */}
-      <motion.button
-        whileHover={{ scale: 1.06, y: -2 }}
-        whileTap={{ scale: 0.94 }}
-        onClick={() => setOpen(!open)}
-        className="relative w-16 h-16 rounded-2xl flex items-center justify-center shadow-2xl pointer-events-auto border-4 border-white overflow-hidden group"
-        style={{ boxShadow: '0 20px 40px rgba(234,88,12,0.35)' }}
-      >
-        {open ? (
-          <div className="w-full h-full bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center">
-            <ChevronDown className="w-7 h-7 text-white" />
-          </div>
-        ) : (
+      {/* Toggle Button — cô gái Navi với hào quang xoay + sparkle + float */}
+      <div className="relative pointer-events-auto group">
+        {!open && (
           <>
-            <div className="absolute inset-0 bg-gradient-to-br from-amber-300 via-orange-400 to-rose-500" />
-            <div className="relative z-10 w-full h-full flex items-center justify-center">
-              <NaviAvatar size={56} />
-            </div>
-            {/* online dot */}
-            <div className="absolute top-1 right-1 w-3.5 h-3.5 bg-emerald-400 border-2 border-white rounded-full shadow-[0_0_10px_rgba(52,211,153,0.9)] animate-pulse z-20" />
-            {/* hover tooltip */}
-            <span className="absolute right-full mr-3 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-[#0a192f] text-white text-xs font-bold rounded-lg shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0 transition-all pointer-events-none">
-              Hỏi Navi <MessageCircle className="inline w-3 h-3 ml-1" />
-            </span>
+            {/* vòng hào quang xoay (ngoài cùng) */}
+            <motion.span
+              aria-hidden
+              className="absolute -inset-2 rounded-[28px]"
+              style={{
+                background:
+                  'conic-gradient(from 0deg, #fde68a, #fb923c, #f43f5e, #a855f7, #fde68a)',
+                filter: 'blur(10px)',
+                opacity: 0.75,
+              }}
+              animate={{ rotate: 360 }}
+              transition={{ duration: 7, repeat: Infinity, ease: 'linear' }}
+            />
+            {/* pulse ring */}
+            <motion.span
+              aria-hidden
+              className="absolute inset-0 rounded-2xl border-2 border-amber-300"
+              animate={{ scale: [1, 1.35, 1], opacity: [0.75, 0, 0.75] }}
+              transition={{ duration: 2.2, repeat: Infinity, ease: 'easeOut' }}
+            />
           </>
         )}
-      </motion.button>
+        <motion.button
+          whileHover={{ scale: 1.08, y: -3 }}
+          whileTap={{ scale: 0.94 }}
+          animate={open ? {} : { y: [0, -5, 0] }}
+          transition={open ? {} : { duration: 3.2, repeat: Infinity, ease: 'easeInOut' }}
+          onClick={() => setOpen(!open)}
+          className="relative w-16 h-16 rounded-2xl flex items-center justify-center shadow-2xl border-4 border-white overflow-hidden"
+          style={{ boxShadow: '0 20px 40px rgba(234,88,12,0.45)' }}
+        >
+          {open ? (
+            <div className="w-full h-full bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center">
+              <ChevronDown className="w-7 h-7 text-white" />
+            </div>
+          ) : (
+            <>
+              {/* nền gradient động */}
+              <motion.div
+                className="absolute inset-0"
+                style={{
+                  backgroundImage:
+                    'linear-gradient(135deg, #fde68a 0%, #fb923c 45%, #e11d48 100%)',
+                  backgroundSize: '200% 200%',
+                }}
+                animate={{ backgroundPosition: ['0% 0%', '100% 100%', '0% 0%'] }}
+                transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+              />
+              <div className="relative z-10 w-full h-full flex items-center justify-center">
+                <NaviAvatar size={56} />
+              </div>
+              {/* online dot */}
+              <div className="absolute top-1 right-1 w-3.5 h-3.5 bg-emerald-400 border-2 border-white rounded-full shadow-[0_0_10px_rgba(52,211,153,0.9)] animate-pulse z-20" />
+            </>
+          )}
+        </motion.button>
+
+        {/* sparkles ngoài nút */}
+        {!open && (
+          <div className="absolute inset-0 pointer-events-none">
+            <AvatarSparkles />
+          </div>
+        )}
+
+        {/* tooltip */}
+        {!open && (
+          <span className="absolute right-full mr-3 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-[#0a192f] text-white text-xs font-bold rounded-lg shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0 transition-all pointer-events-none">
+            Hỏi Navi <MessageCircle className="inline w-3 h-3 ml-1" />
+          </span>
+        )}
+      </div>
     </div>
   );
 }
