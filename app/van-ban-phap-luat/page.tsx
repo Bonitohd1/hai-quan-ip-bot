@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { Scale, FileText, Download, ExternalLink, BookOpen, Search, Filter, Sparkles, ChevronRight, Loader2, ArrowRight, ShieldCheck, Database, X, Bot, Zap, Network, AlignLeft, Send, User, CheckCircle, AlertTriangle, History, AlertOctagon, CornerRightDown } from 'lucide-react';
+import NaviChat from '../../components/NaviChat';
 
 interface LawDocument {
   id: string;
@@ -826,12 +827,12 @@ function LegalDocumentAnalysisModal({ doc, onClose }: { doc: LawDocument, onClos
                    <button onClick={() => setActiveTab('diff')} className={`px-5 py-3.5 text-[11px] font-bold uppercase tracking-wide border-b-2 transition-colors flex items-center gap-1.5 whitespace-nowrap ${activeTab === 'diff' ? 'border-amber-500 text-amber-600' : 'border-transparent text-slate-400 hover:text-slate-600 hover:bg-slate-50'}`}>
                      <History className="w-3.5 h-3.5" /> Đối chiếu
                    </button>
-                   <button onClick={() => setActiveTab('chat')} className={`px-5 py-3.5 text-[11px] font-bold uppercase tracking-wide border-b-2 transition-colors flex items-center gap-1.5 whitespace-nowrap ${activeTab === 'chat' ? 'border-blue-600 text-blue-700' : 'border-transparent text-slate-400 hover:text-slate-600 hover:bg-slate-50'}`}>
-                     <Bot className="w-3.5 h-3.5" /> Trợ lý AI
+                   <button onClick={() => setActiveTab('chat')} className={`px-5 py-3.5 text-[11px] font-bold uppercase tracking-wide border-b-2 transition-colors flex items-center gap-1.5 whitespace-nowrap ${activeTab === 'chat' ? 'border-orange-500 text-orange-600' : 'border-transparent text-slate-400 hover:text-slate-600 hover:bg-slate-50'}`}>
+                     <Sparkles className="w-3.5 h-3.5" /> Hỏi Navi
                    </button>
                 </div>
 
-                <div className="flex-1 overflow-y-auto p-6 bg-white custom-scrollbar">
+                <div className={`flex-1 bg-white ${activeTab === 'chat' ? 'overflow-hidden' : 'overflow-y-auto p-6 custom-scrollbar'}`}>
                    {activeTab === 'read' && (
                       <div className="h-full flex flex-col animate-fade-in-up">
                          <div className="flex items-center justify-between mb-4">
@@ -1016,53 +1017,10 @@ function LegalDocumentAnalysisModal({ doc, onClose }: { doc: LawDocument, onClos
                    )}
 
                    {activeTab === 'chat' && (
-                      <div className="h-full flex flex-col animate-fade-in-up">
-                         <div className="flex-1 overflow-y-auto space-y-4 pb-4">
-                            {chatMessages.map((msg, idx) => (
-                               <div key={idx} className={`flex gap-3 ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}>
-                                  <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${msg.role === 'ai' ? 'bg-[#0a192f]' : 'bg-orange-500'}`}>
-                                     {msg.role === 'ai' ? <Bot className="w-4 h-4 text-white" /> : <User className="w-4 h-4 text-white" />}
-                                  </div>
-                                  <div className={`p-3.5 rounded-2xl shadow-sm border max-w-[85%] ${
-                                     msg.role === 'ai' 
-                                        ? 'bg-white border-slate-200 rounded-tl-none' 
-                                        : 'bg-[#0a192f] text-white border-slate-800 rounded-tr-none'
-                                  }`}>
-                                     <p className="text-sm leading-relaxed font-medium">{msg.text}</p>
-                                  </div>
-                               </div>
-                            ))}
-                            {isChatLoading && (
-                               <div className="flex gap-3">
-                                  <div className="w-8 h-8 rounded-full bg-[#0a192f] flex items-center justify-center shrink-0">
-                                     <Bot className="w-4 h-4 text-white" />
-                                  </div>
-                                  <div className="bg-white p-3.5 rounded-2xl rounded-tl-none shadow-sm border border-slate-200 flex items-center gap-2">
-                                     <Loader2 className="w-4 h-4 text-orange-500 animate-spin" />
-                                     <span className="text-xs text-slate-500 font-bold uppercase tracking-wider">ĐANG PHÂN TÍCH...</span>
-                                  </div>
-                               </div>
-                            )}
-                            <div ref={chatEndRef} />
-                         </div>
-                         <div className="relative mt-4 shrink-0">
-                            <input 
-                               value={chatInput}
-                               onChange={(e) => setChatInput(e.target.value)}
-                               onKeyDown={(e) => e.key === 'Enter' && handleSendChat()}
-                               type="text" 
-                               placeholder="VD: Điều kiện xử phạt tiền là bao nhiêu..."
-                               className="w-full pl-4 pr-12 py-4 bg-white border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent font-medium shadow-sm transition-all"
-                            />
-                            <button 
-                               onClick={handleSendChat}
-                               disabled={!chatInput.trim() || isChatLoading}
-                               className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-orange-600 hover:bg-orange-500 disabled:bg-slate-300 disabled:cursor-not-allowed text-white rounded-lg transition-all"
-                            >
-                               <Send className="w-4 h-4" />
-                            </button>
-                         </div>
-                      </div>
+                      <NaviChat
+                        contextLabel={`${doc.number} — ${doc.title}`}
+                        initialGreeting={`Xin chào! Tôi là **Navi** — Trợ lý SHTT Hải quan. Tôi đã đọc văn bản **${doc.number}** (${doc.title}) do ${doc.agency} ban hành năm ${doc.year}. Bạn có câu hỏi gì về các điều khoản, cách áp dụng hoặc mối liên hệ với các văn bản khác không?`}
+                      />
                    )}
                 </div>
              </div>

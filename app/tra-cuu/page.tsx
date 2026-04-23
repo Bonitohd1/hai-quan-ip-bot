@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { Search, FileText, Download, AlertTriangle, Loader2, Filter, Sparkles, ChevronRight, X, Bot, FileSearch, Zap, Send, User, ExternalLink, FolderOpen } from 'lucide-react';
+import NaviChat from '../../components/NaviChat';
 
 interface Document {
   id: string;
@@ -582,15 +583,15 @@ function DocumentAnalysisModal({ doc, onClose }: { doc: Document, onClose: () =>
                    >
                      <Zap className="w-4 h-4" /> AI Tóm tắt
                    </button>
-                   <button 
+                   <button
                       onClick={() => setActiveTab('chat')}
-                      className={`flex-1 py-4 text-sm font-bold uppercase tracking-wide border-b-2 transition-colors flex justify-center items-center gap-2 ${activeTab === 'chat' ? 'border-blue-600 text-blue-700' : 'border-transparent text-slate-400 hover:text-slate-600 hover:bg-slate-50'}`}
+                      className={`flex-1 py-4 text-sm font-bold uppercase tracking-wide border-b-2 transition-colors flex justify-center items-center gap-2 ${activeTab === 'chat' ? 'border-orange-500 text-orange-600' : 'border-transparent text-slate-400 hover:text-slate-600 hover:bg-slate-50'}`}
                    >
-                     <Bot className="w-4 h-4" /> Hỏi đáp Tài liệu
+                     <Sparkles className="w-4 h-4" /> Hỏi Navi
                    </button>
                 </div>
 
-                <div className="flex-1 overflow-y-auto p-6 bg-white">
+                <div className={`flex-1 ${activeTab === 'chat' ? 'overflow-hidden' : 'overflow-y-auto p-6'} bg-white`}>
                    {activeTab === 'summary' && (
                       <div className="space-y-6 animate-fade-in-up">
                          <div className="p-5 bg-orange-50 rounded-xl border border-orange-100">
@@ -644,53 +645,10 @@ function DocumentAnalysisModal({ doc, onClose }: { doc: Document, onClose: () =>
                    )}
 
                    {activeTab === 'chat' && (
-                      <div className="h-full flex flex-col animate-fade-in-up">
-                         <div className="flex-1 bg-slate-50 rounded-xl border border-slate-200 p-4 mb-4 overflow-y-auto space-y-4 shadow-inner">
-                            {chatMessages.map((msg, idx) => (
-                               <div key={idx} className={`flex gap-3 ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}>
-                                  <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${msg.role === 'ai' ? 'bg-[#0a192f]' : 'bg-orange-500'}`}>
-                                     {msg.role === 'ai' ? <Bot className="w-4 h-4 text-white" /> : <User className="w-4 h-4 text-white" />}
-                                  </div>
-                                  <div className={`p-3.5 rounded-2xl shadow-sm border max-w-[85%] ${
-                                     msg.role === 'ai' 
-                                        ? 'bg-white border-slate-200 rounded-tl-none' 
-                                        : 'bg-[#0a192f] text-white border-slate-800 rounded-tr-none'
-                                  }`}>
-                                     <p className="text-sm leading-relaxed font-medium">{msg.text}</p>
-                                  </div>
-                               </div>
-                            ))}
-                            {isChatLoading && (
-                               <div className="flex gap-3">
-                                  <div className="w-8 h-8 rounded-full bg-[#0a192f] flex items-center justify-center shrink-0">
-                                     <Bot className="w-4 h-4 text-white" />
-                                  </div>
-                                  <div className="bg-white p-3.5 rounded-2xl rounded-tl-none shadow-sm border border-slate-200 flex items-center gap-2">
-                                     <Loader2 className="w-4 h-4 text-orange-500 animate-spin" />
-                                     <span className="text-xs text-slate-500 font-bold uppercase tracking-wider">ĐANG PHÂN TÍCH...</span>
-                                  </div>
-                               </div>
-                            )}
-                            <div ref={chatEndRef} />
-                         </div>
-                         <div className="relative mt-auto">
-                            <input 
-                               value={chatInput}
-                               onChange={(e) => setChatInput(e.target.value)}
-                               onKeyDown={(e) => e.key === 'Enter' && handleSendChat()}
-                               type="text" 
-                               placeholder="Ví dụ: Chỉ ra các điều khoản quy định mức phạt..."
-                               className="w-full pl-4 pr-12 py-4 bg-white border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent font-medium shadow-sm transition-all"
-                            />
-                            <button 
-                               onClick={handleSendChat}
-                               disabled={!chatInput.trim() || isChatLoading}
-                               className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-orange-600 hover:bg-orange-500 disabled:bg-slate-300 disabled:cursor-not-allowed text-white rounded-lg transition-all"
-                            >
-                               <Send className="w-4 h-4" />
-                            </button>
-                         </div>
-                      </div>
+                      <NaviChat
+                        contextLabel={`${doc.code} — ${doc.name}`}
+                        initialGreeting={`Xin chào! Tôi là **Navi** — Trợ lý SHTT Hải quan. Tôi đã đọc xong hồ sơ **${doc.code}** (${doc.name}, phân loại: ${doc.type}). Bạn cần tôi phân tích điều khoản nào hoặc có câu hỏi gì về khung pháp lý, mức phạt, quy trình xử lý không?`}
+                      />
                    )}
                 </div>
              </div>
