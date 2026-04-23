@@ -14,127 +14,301 @@ interface LawDocument {
   status: 'active' | 'partial' | 'expired';
   articles: { title: string; content: string }[];
   expertSummary: string;
+  pdfFile?: string;
 }
 
 const DOCUMENTS: LawDocument[] = [
+  // ── LUẬT SỞ HỮU TRÍ TUỆ ──────────────────────────────────────────
   {
     id: '1',
-    title: 'Luật Sở hữu trí tuệ 2005 (sửa đổi, bổ sung 2009, 2019, 2022)',
+    title: 'Luật Sở hữu trí tuệ 2005 (Luật số 50/2005/QH11)',
     type: 'Luật',
-    number: '07/2022/QH15',
-    year: '2022',
-    desc: 'Văn bản cốt lõi định hình khung pháp lý toàn diện về quyền sở hữu công nghiệp và bảo vệ quyền SHTT tại biên giới hải quan.',
+    number: '50/2005/QH11',
+    year: '2005',
+    desc: 'Văn bản gốc thiết lập toàn bộ khung pháp lý về quyền tác giả, quyền sở hữu công nghiệp và quyền đối với giống cây trồng tại Việt Nam. Nền tảng pháp lý cốt lõi cho hoạt động kiểm soát SHTT tại biên giới hải quan.',
     agency: 'Quốc hội',
-    status: 'active',
+    status: 'partial',
+    pdfFile: '/van-ban/50_2005_QH11.pdf',
     articles: [
-      { title: 'CHƯƠNG I. NHỮNG QUY ĐỊNH CHUNG', content: '' },
-      { title: 'Điều 1. Phạm vi điều chỉnh', content: 'Luật này quy định về quyền tác giả, quyền liên quan đến quyền tác giả, quyền sở hữu công nghiệp, quyền đối với giống cây trồng và việc bảo hộ các quyền đó. Quy định rõ khung ràng buộc cho hàng hóa nhập khẩu có tính chất thương mại biên mậu.' },
-      { title: 'Điều 2. Đối tượng áp dụng', content: 'Luật này áp dụng đối với tổ chức, cá nhân Việt Nam; tổ chức, cá nhân nước ngoài đáp ứng các điều kiện quy định tại Luật này và điều ước quốc tế mà Cộng hoà xã hội chủ nghĩa Việt Nam là thành viên.' },
-      { title: 'Điều 3. Đối tượng quyền sở hữu trí tuệ', content: '1. Đối tượng quyền tác giả bao gồm tác phẩm văn học, nghệ thuật, khoa học; đối tượng quyền liên quan đến quyền tác giả bao gồm cuộc biểu diễn, bản ghi âm, ghi hình, chương trình phát sóng, tín hiệu vệ tinh mang chương trình được mã hoá.\n2. Đối tượng quyền sở hữu công nghiệp bao gồm sáng chế, kiểu dáng công nghiệp, thiết kế bố trí mạch tích hợp bán dẫn, bí mật kinh doanh, nhãn hiệu, tên thương mại và chỉ dẫn địa lý.' },
-      { title: 'CHƯƠNG P. KIỂM SOÁT HẢI QUAN', content: '' },
-      { title: 'Điều 211. Các hành vi xâm phạm quyền SHTT', content: 'Tổ chức, cá nhân thực hiện hành vi xâm phạm quyền SHTT với hàng hóa nhập lậu, chưa qua thông quan, làm giả bao bì, sẽ chịu chế tài tịch thu, tiêu hủy và có thể bị truy cứu trách nhiệm hình sự.' },
-      { title: 'Điều 216. Biện pháp kiểm soát của cơ quan Hải quan', content: '1. Cơ quan hải quan tiếp nhận đơn yêu cầu bảo hộ từ chủ thể sở hữu và tiến hành các biện pháp giám sát tập trung hoặc ngẫu nhiên tại cửa khẩu.\n2. Việc tạm dừng thông quan để giám định không vượt quá 20 ngày làm việc.\n3. Chủ sở hữu tài sản hoặc người đại diện hợp pháp phải nộp chi phí lưu kho, bảo quản hàng hóa trong suốt thời gian nghị án theo biểu phí quy định của hải quan khu vực.' },
-      { title: 'Điều 218. Xử lý hàng hóa giả mạo nhãn hiệu và hàng hóa xâm phạm quyền bản quyền', content: '1. Hàng hóa giả mạo nhãn hiệu và hàng hóa xâm phạm bản quyền bị coi là tang vật vi phạm hành chính, và sẽ bị tịch thu tiêu hủy theo quy định của pháp luật.\n2. Lực lượng hải quan có thẩm quyền đình chỉ phương tiện vận tải tham gia vào quá trình buôn lậu và cấu kết vận chuyển hàng hóa vi phạm SHTT.' }
+      { title: 'Điều 1. Phạm vi điều chỉnh', content: 'Quy định về quyền tác giả, quyền liên quan đến quyền tác giả, quyền sở hữu công nghiệp, quyền đối với giống cây trồng và việc bảo hộ các quyền đó.' },
+      { title: 'Điều 74. Nhãn hiệu được bảo hộ', content: 'Nhãn hiệu được bảo hộ nếu đáp ứng các điều kiện: có khả năng phân biệt hàng hóa, dịch vụ của chủ sở hữu với hàng hóa, dịch vụ của chủ thể khác.' },
+      { title: 'Điều 211. Các hành vi xâm phạm quyền SHTT', content: 'Tổ chức, cá nhân thực hiện hành vi xâm phạm quyền SHTT sẽ bị xử lý bằng biện pháp dân sự, hành chính hoặc hình sự tùy theo tính chất, mức độ vi phạm.' },
+      { title: 'Điều 216. Biện pháp kiểm soát hàng hóa tại biên giới', content: 'Chủ thể quyền SHTT có quyền yêu cầu cơ quan hải quan tạm dừng làm thủ tục hải quan đối với hàng hóa bị nghi ngờ xâm phạm quyền SHTT.' },
     ],
-    expertSummary: 'Luật SHTT 2022 đã nới rộng quyền hạn của Chi cục Hải quan trong việc chủ động thiết lập hàng rào rà soát. Điểm cốt lõi là sự bao trùm không chỉ nhãn hiệu (như trước 2019) mà cập nhật thêm kiểu dáng công nghiệp và bản quyền tác giả. Cán bộ hải quan cần lưu ý thời gian thụ lý đơn yêu cầu bảo hộ đã được rút gọn chỉ còn 20 ngày.'
+    expertSummary: 'Luật SHTT 2005 là nền tảng, đã được sửa đổi nhiều lần (2009, 2019, 2022, 2025). Khi tra cứu, cần đối chiếu với các luật sửa đổi bổ sung mới nhất để áp dụng đúng điều khoản hiện hành.'
   },
   {
     id: '2',
+    title: 'Luật sửa đổi, bổ sung Luật SHTT năm 2019 (Luật số 42/2019/QH14)',
+    type: 'Luật',
+    number: '42/2019/QH14',
+    year: '2019',
+    desc: 'Sửa đổi, bổ sung một số điều của Luật SHTT 2005, tập trung vào quyền tác giả và quyền liên quan, đặc biệt các quy định về môi trường số và thương mại điện tử.',
+    agency: 'Quốc hội',
+    status: 'partial',
+    pdfFile: '/van-ban/42_2019_QH14.pdf',
+    articles: [
+      { title: 'Khoản sửa đổi liên quan quyền tác giả', content: 'Bổ sung quy định về quyền tác giả trong môi trường số, quyền phân phối trực tuyến và trách nhiệm của nhà cung cấp dịch vụ trung gian.' },
+      { title: 'Quy định về thực thi quyền', content: 'Tăng cường cơ chế phối hợp giữa cơ quan hải quan và cơ quan SHTT trong kiểm soát hàng hóa vi phạm tại cửa khẩu.' },
+    ],
+    expertSummary: 'Luật 42/2019 chủ yếu điều chỉnh quyền tác giả, ít tác động trực tiếp đến kiểm soát biên giới. Tuy nhiên, các quy định về thực thi quyền tại Điều 73a được vận dụng trong kiểm tra hàng hóa kỹ thuật số nhập khẩu.'
+  },
+  {
+    id: '3',
+    title: 'Luật sửa đổi, bổ sung Luật SHTT năm 2022 (Luật số 07/2022/QH15)',
+    type: 'Luật',
+    number: '07/2022/QH15',
+    year: '2022',
+    desc: 'Sửa đổi toàn diện Luật SHTT, mở rộng đáng kể phạm vi bảo hộ nhãn hiệu, kiểu dáng công nghiệp và tăng thẩm quyền kiểm soát biên giới của Hải quan.',
+    agency: 'Quốc hội',
+    status: 'partial',
+    pdfFile: '/van-ban/07_2022_QH15.pdf',
+    articles: [
+      { title: 'Điều 1. Các nội dung sửa đổi chính', content: 'Sửa đổi 102 điều, bổ sung 12 điều mới. Trọng tâm: mở rộng đối tượng bảo hộ, đơn giản hóa thủ tục, tăng cường thực thi.' },
+      { title: 'Điều 74. Nhãn hiệu nổi tiếng', content: 'Bổ sung các tiêu chí xác định nhãn hiệu nổi tiếng, tạo cơ sở pháp lý vững chắc hơn cho việc từ chối hàng nhái nhãn hiệu nổi tiếng tại cửa khẩu.' },
+      { title: 'Điều 216. Biện pháp kiểm soát biên giới', content: 'Nới rộng quyền hạn của Hải quan: chủ động phát hiện, tạm dừng thông quan không cần đơn yêu cầu trong trường hợp vi phạm rõ ràng.' },
+    ],
+    expertSummary: 'Luật 07/2022 là bước ngoặt quan trọng: lần đầu tiên cho phép Hải quan chủ động tạm dừng thông quan mà không cần đơn yêu cầu của chủ thể quyền. Cán bộ cần nắm rõ Điều 216 mới để vận dụng đúng thẩm quyền.'
+  },
+  {
+    id: '4',
+    title: 'Luật sửa đổi, bổ sung Luật SHTT năm 2025 (Luật số 131/2025/QH15)',
+    type: 'Luật',
+    number: '131/2025/QH15',
+    year: '2025',
+    desc: 'Văn bản pháp lý mới nhất về SHTT năm 2025, cập nhật các quy định phù hợp với các cam kết quốc tế và thực tiễn thương mại hiện đại.',
+    agency: 'Quốc hội',
+    status: 'active',
+    pdfFile: '/van-ban/131_2025_QH15.pdf',
+    articles: [
+      { title: 'Nội dung sửa đổi năm 2025', content: 'Bổ sung, hoàn thiện các quy định về bảo hộ SHTT trong bối cảnh chuyển đổi số, thương mại điện tử xuyên biên giới và các hiệp định thương mại tự do thế hệ mới.' },
+      { title: 'Quy định về kiểm soát biên giới', content: 'Cập nhật cơ chế phối hợp giữa cơ quan hải quan, cơ quan SHTT và chủ thể quyền trong xử lý hàng hóa vi phạm SHTT tại cửa khẩu.' },
+    ],
+    expertSummary: 'Luật 131/2025 là văn bản pháp lý SHTT mới nhất, hiện đang có hiệu lực. Ưu tiên áp dụng luật này khi xử lý các vụ việc phát sinh từ năm 2025 trở đi.'
+  },
+
+  // ── NGHỊ ĐỊNH HƯỚNG DẪN LUẬT SHTT ────────────────────────────────
+  {
+    id: '5',
     title: 'Nghị định 65/2023/NĐ-CP hướng dẫn Luật SHTT về sở hữu công nghiệp',
     type: 'Nghị định',
     number: '65/2023/NĐ-CP',
     year: '2023',
-    desc: 'Bản phân tích chi tiết biện pháp thi hành chế tài SHTT, xác lập quyền bảo vệ với sáng chế, nhãn hiệu và kiểu dáng công nghiệp.',
+    desc: 'Chi tiết hóa các quy định về xác lập, thực thi quyền sở hữu công nghiệp (nhãn hiệu, sáng chế, kiểu dáng công nghiệp). Văn bản hướng dẫn trực tiếp phục vụ nghiệp vụ kiểm soát SHTT tại biên giới.',
     agency: 'Chính phủ',
     status: 'active',
+    pdfFile: '/van-ban/65_2023_ND-CP.pdf',
     articles: [
-      { title: 'Chương I: Quy định thực tiễn', content: '' },
-      { title: 'Điều 12. Phạm vi bảo hộ nhãn hiệu', content: 'Nghị định này định nghĩa rõ ranh giới các dấu hiệu trùng lắp, tương tự gây nhầm lẫn trên bao bì hàng hóa nhập khẩu.' },
-      { title: 'Điều 45. Trình tự xác lập thủ tục', content: 'Mọi hàng hóa nhập khẩu nếu bị tình nghi, cơ quan hải quan có quyền tạm dừng thông quan tối đa 20 ngày làm việc để xác minh.' },
-      { title: 'Điều 48. Đánh giá tính pháp lý của tài liệu', content: 'Yêu cầu các đơn vị liên quan nộp đủ giấy chứng nhận độc quyền hoặc hợp đồng chuyển giao công nghệ do Cục SHTT cấp phép. Hàng hóa không chứng minh được nguồn gốc bị liệt vào diện nghi ngờ bắt buộc.' }
+      { title: 'Điều 12. Phạm vi bảo hộ nhãn hiệu', content: 'Xác định rõ ranh giới nhãn hiệu trùng lặp, tương tự gây nhầm lẫn trên bao bì hàng hóa nhập khẩu — căn cứ trực tiếp để cán bộ hải quan xác định vi phạm.' },
+      { title: 'Điều 45. Tạm dừng thông quan', content: 'Hàng hóa nhập khẩu bị nghi ngờ vi phạm SHTT: cơ quan hải quan có quyền tạm dừng thông quan tối đa 20 ngày làm việc để xác minh.' },
+      { title: 'Điều 48. Đánh giá hồ sơ bảo hộ', content: 'Yêu cầu chủ thể quyền nộp giấy chứng nhận đăng ký nhãn hiệu, hợp đồng li-xăng hoặc tài liệu chứng minh quyền sở hữu hợp pháp.' },
     ],
-    expertSummary: 'Nghị định 65/2023 cung cấp một "chiếc đũa thần" cho lực lượng hải quan qua Điều 45: Quyền được tạm dừng thông quan để xác minh. Doanh nghiệp giờ đây phải tự nộp phí lưu kho trong quá trình chờ giám định, giảm thiểu gánh nặng cho ngân sách hải quan nhà nước.'
+    expertSummary: 'Nghị định 65/2023 là văn bản hướng dẫn cốt lõi cho nghiệp vụ kiểm soát SHCN tại biên giới. Điều 45 về tạm dừng thông quan 20 ngày là công cụ pháp lý quan trọng nhất cán bộ hải quan cần nắm vững.'
   },
   {
-    id: '3',
-    title: 'Thông tư 13/2023/TT-BKHCN hướng dẫn Nghị định 65/2023',
-    type: 'Thông tư',
-    number: '13/2023/TT-BKHCN',
-    year: '2023',
-    desc: 'Trình tự, thủ tục thẩm định quyền sở hữu công nghiệp làm cơ sở rà soát hàng hóa vi phạm tại các chi cục Hải quan.',
-    agency: 'Bộ KH&CN',
-    status: 'partial',
-    articles: [
-      { title: 'Chương I. Thủ tục khiếu nại', content: '' },
-      { title: 'Điều 5. Thẩm định hình thức', content: 'Quy định chi tiết các bước tiếp nhận hồ sơ khiếu nại SHTT, từ kiểm tra thực thể đến đối chiếu catalog. Hồ sơ phải được phân loại và thụ lý trong vòng 48 giờ làm việc kể từ khi nộp qua cổng DVCHQ.' },
-      { title: 'Chương II. Phân loại và kết luận', content: '' },
-      { title: 'Điều 8. Phân loại kỹ thuật', content: 'Xác định các phương pháp kỹ thuật được phép sử dụng tại bãi kiểm hóa để đối chứng vi phạm. Chỉ áp dụng các phân tích cảm quan đối với mặt hàng quần áo, giày dép hạng nhẹ.' },
-      { title: 'Điều 12. Trích lục báo cáo', content: 'Sau quá trình thẩm định nhanh, hải quan khu vực bắt buộc xuất báo cáo điện tử kèm hình ảnh hiện trường.' }
-    ],
-    expertSummary: 'Đây là cẩm nang cầm tay của đội kiểm hóa. Thông tư 13 cung cấp bảng phân loại kỹ thuật, giúp phân biệt nhanh đâu là hàng nhái "fake loại 1" thông qua các tiêu chí đo lường vật lý (Được chi tiết hóa ở Điều 8).'
-  },
-  {
-    id: '4',
-    title: 'Nghị định 99/2013/NĐ-CP về xử phạt vi phạm hành chính trong lĩnh vực SHCN',
-    type: 'Nghị định',
-    number: '99/2013/NĐ-CP',
-    year: '2013',
-    desc: 'Khung quy định xử phạt vi phạm hành chính, tiền đề cho các chức năng cưỡng chế và tịch thu tang vật vi phạm của cán bộ hải quan.',
-    agency: 'Chính phủ',
-    status: 'active',
-    articles: [
-      { title: 'Chương I. NHỮNG QUY ĐỊNH CHUNG', content: '' },
-      { title: 'Điều 1. Phạm vi điều chỉnh', content: 'Nghị định này quy định về hành vi vi phạm hành chính, hình thức, mức xử phạt, biện pháp khắc phục hậu quả, thẩm quyền và thủ tục xử phạt vi phạm hành chính trong lĩnh vực sở hữu công nghiệp.' },
-      { title: 'Điều 2. Đối tượng bị xử phạt', content: '1. Tổ chức, cá nhân Việt Nam có hành vi vi phạm hành chính.\n2. Tổ chức, cá nhân nước ngoài có hành vi vi phạm hành chính trong mảng logistics quá cảnh.' },
-      { title: 'Điều 3. Hình thức Xử phạt và Biện pháp khắc phục', content: '1. Phạt tiền từ 1.000.000 VND đến 500.000.000 VND.\n2. Hình thức xử phạt bổ sung: Tịch thu tang vật, phương tiện vi phạm hành chính, bao gồm container, xe tải trung chuyển. Đình chỉ hoạt động xuất nhập khẩu đối với doanh nghiệp từ 01 tháng đến 03 tháng.' },
-      { title: 'Chương II. MỨC PHẠT VÀ THẨM QUYỀN HẢI QUAN', content: '' },
-      { title: 'Điều 14. Vi phạm quy định về bảo vệ quyền SHTT', content: 'Phạt tiền từ 10.000.000 đồng đến 20.000.000 đồng đối với hành vi làm mang nhãn hiệu, chỉ dẫn địa lý, kiểu dáng công nghiệp, tên thương mại đã được bảo hộ lên hàng hoá, bao bì hàng hoá nhập khẩu nhằm mục đích kinh doanh.' },
-      { title: 'Điều 15. Phạt tiền theo giá trị hàng hóa', content: 'Giá trị hàng hóa vi phạm được tính theo giá CIF (đối với hàng nhập khẩu) để làm căn cứ tính tiền phạt. Nếu hàng hóa vi phạm có giá trị trên 500 triệu đồng sẽ chuyển ngay hồ sơ sang cơ quan điều tra hình sự.' },
-      { title: 'Chương III. THỦ TỤC VÀ ĐÌNH CHỈ', content: '' },
-      { title: 'Điều 21. Thẩm quyền xử phạt của Hải quan', content: 'Lực lượng hải quan có thẩm quyền tạm dừng thông quan tại chỗ đối với hàng hóa bị tình nghi, không bắt buộc phải có lệnh của tòa án. Mọi tổn thất do dừng thông quan sai lệnh sẽ được cấu thành vào rủi ro nghiệp vụ.' }
-    ],
-    expertSummary: 'Nghị định 99/2013 vẫn là kim chỉ nam quan trọng nhất trong việc ra quyết định xử phạt vi phạm hành chính. Mức phạt tiền bám sát giá trị CIF của hàng hóa nhập khẩu là một điều khoản then chốt mà cán bộ hải quan cần đặc biệt lưu ý để tránh thất thoát án phí.'
-  },
-  {
-    id: '5',
+    id: '6',
     title: 'Nghị định 17/2023/NĐ-CP hướng dẫn Luật SHTT về quyền tác giả',
     type: 'Nghị định',
     number: '17/2023/NĐ-CP',
     year: '2023',
-    desc: 'Chi tiết hóa quyền tác giả và quyền liên quan, áp dụng cho quá trình giám sát hàng hóa xuất nhập khẩu, ấn phẩm văn hóa.',
+    desc: 'Hướng dẫn chi tiết về quyền tác giả và quyền liên quan, áp dụng cho hàng hóa xuất nhập khẩu là ấn phẩm, phần mềm, sản phẩm văn hóa có quyền tác giả.',
     agency: 'Chính phủ',
-    status: 'expired',
+    status: 'active',
+    pdfFile: '/van-ban/17_2023_ND-CP.pdf',
     articles: [
-      { title: 'Chương I: Những khái niệm', content: '' },
-      { title: 'Điều 1. Khái niệm quyền tác giả', content: 'Quyền tác giả áp dụng đối với hàng in ấn, xuất bản phẩm ngoại nhập, thiết bị công nghệ mang mã nguồn độc quyền.' },
-      { title: 'Điều 8. Kiểm duyệt tác phẩm', content: 'Toàn bộ băng đĩa và văn hóa phẩm đục lậu qua biên giới sẽ được xếp vào vi phạm tác quyền nghiêm trọng, chịu xử lý 100% hình sự nếu số lượng trên 1000 bản sao.' }
+      { title: 'Điều 1. Phạm vi điều chỉnh', content: 'Áp dụng với tác phẩm văn học, nghệ thuật, khoa học; bản ghi âm, ghi hình; chương trình phát sóng nhập khẩu qua các cửa khẩu.' },
+      { title: 'Điều 8. Quy định về hàng hóa vi phạm bản quyền', content: 'Hàng hóa sao chép, giả mạo bản quyền nhập khẩu với số lượng lớn được xử lý hình sự theo quy định của Bộ luật hình sự.' },
     ],
-    expertSummary: 'Cảnh báo: Nghị định 17/2023 đã lỗi thời trong một số quy định về bản quyền số học. Cần cẩn trọng khi áp dụng cho các phần mềm nhúng trong phần cứng nhập khẩu (như vi mạch ô tô).'
+    expertSummary: 'Nghị định 17/2023 đặc biệt quan trọng khi xử lý hàng hóa là ấn phẩm, phần mềm, nhạc, phim lậu nhập khẩu. Phối hợp với Cục Bản quyền tác giả khi cần giám định.'
   },
   {
-    id: '6',
-    title: 'Thông tư 11/2015/TT-BKHCN hướng dẫn Nghị định 99/2013',
-    type: 'Thông tư',
-    number: '11/2015/TT-BKHCN',
-    year: '2015',
-    desc: 'Các diễn giải cụ thể về hành vi xâm phạm và áp dụng hình thức xử lý vi phạm sở hữu công nghiệp.',
-    agency: 'Bộ KH&CN',
-    status: 'expired',
+    id: '7',
+    title: 'Nghị định 100/2026/NĐ-CP hướng dẫn Luật SHTT năm 2025',
+    type: 'Nghị định',
+    number: '100/2026/NĐ-CP',
+    year: '2026',
+    desc: 'Nghị định hướng dẫn thi hành Luật SHTT sửa đổi năm 2025, cập nhật các quy trình thực thi phù hợp với thực tiễn mới.',
+    agency: 'Chính phủ',
+    status: 'active',
+    pdfFile: '/van-ban/100_2026_ND-CP.pdf',
     articles: [
-      { title: 'Điều 4. Yếu tố xâm phạm', content: 'Định hình khái niệm tương tự đến mức gây nhầm lẫn trên bao bì thương phẩm.' }
+      { title: 'Quy định hướng dẫn mới nhất', content: 'Chi tiết hóa các điều khoản của Luật SHTT 2025, đặc biệt các quy định về kiểm soát hàng hóa xuyên biên giới trong môi trường thương mại điện tử.' },
     ],
-    expertSummary: 'Văn bản đã hết hiệu lực. Khuyến nghị không sử dụng Thông tư 11/2015 làm căn cứ bắt giữ tại thời điểm hiện tại.'
-  }
+    expertSummary: 'Nghị định 100/2026 là văn bản hướng dẫn mới nhất, đang có hiệu lực. Ưu tiên áp dụng cùng với Luật 131/2025 cho các vụ việc từ năm 2026.'
+  },
+  {
+    id: '8',
+    title: 'Nghị định 134/2026/NĐ-CP hướng dẫn Luật SHTT năm 2025',
+    type: 'Nghị định',
+    number: '134/2026/NĐ-CP',
+    year: '2026',
+    desc: 'Nghị định hướng dẫn bổ sung các quy định chi tiết về thực thi quyền SHTT, xử lý hàng hóa vi phạm tại biên giới theo Luật SHTT 2025.',
+    agency: 'Chính phủ',
+    status: 'active',
+    pdfFile: '/van-ban/134_2026_ND-CP.pdf',
+    articles: [
+      { title: 'Quy định thực thi mới nhất', content: 'Bổ sung, hoàn thiện quy trình phối hợp giữa Hải quan, Cục SHTT và cơ quan thực thi pháp luật trong xử lý vi phạm SHTT tại cửa khẩu.' },
+    ],
+    expertSummary: 'Nghị định 134/2026 ban hành kèm Nghị định 100/2026 tạo thành bộ hướng dẫn toàn diện cho Luật SHTT 2025. Cần đọc song song cả hai nghị định khi xử lý vụ việc mới.'
+  },
+
+  // ── NGHỊ ĐỊNH XỬ PHẠT VI PHẠM HÀNH CHÍNH SHTT ────────────────────
+  {
+    id: '9',
+    title: 'Nghị định 99/2013/NĐ-CP xử phạt VPHC trong lĩnh vực sở hữu công nghiệp',
+    type: 'Nghị định',
+    number: '99/2013/NĐ-CP',
+    year: '2013',
+    desc: 'Khung xử phạt vi phạm hành chính trong lĩnh vực SHCN — nền tảng pháp lý cho cưỡng chế, tịch thu tang vật và xử phạt tiền đối với hàng hóa vi phạm SHTT tại cửa khẩu.',
+    agency: 'Chính phủ',
+    status: 'partial',
+    pdfFile: '/van-ban/99_2013_ND-CP.pdf',
+    articles: [
+      { title: 'Điều 1. Phạm vi điều chỉnh', content: 'Quy định hành vi vi phạm, hình thức, mức xử phạt và thẩm quyền xử phạt vi phạm hành chính trong lĩnh vực sở hữu công nghiệp.' },
+      { title: 'Điều 14. Vi phạm về nhãn hiệu', content: 'Phạt tiền từ 10 - 20 triệu đồng với hành vi gắn nhãn hiệu đã bảo hộ lên hàng hóa, bao bì nhập khẩu không được phép. Phạt nặng hơn nếu vi phạm có tổ chức.' },
+      { title: 'Điều 15. Phạt theo giá trị CIF', content: 'Hàng hóa vi phạm trên 500 triệu đồng (giá CIF) → chuyển hồ sơ sang cơ quan điều tra hình sự.' },
+      { title: 'Điều 21. Thẩm quyền xử phạt của Hải quan', content: 'Cơ quan hải quan có thẩm quyền tạm dừng thông quan tại chỗ với hàng bị tình nghi mà không cần lệnh tòa án.' },
+    ],
+    expertSummary: 'Nghị định 99/2013 đã được sửa đổi bởi NĐ 126/2021 và NĐ 46/2024. Khi xử phạt phải tra cứu văn bản hợp nhất 01/VBHN-BKHCN để áp dụng mức phạt cập nhật nhất.'
+  },
+  {
+    id: '10',
+    title: 'Nghị định 126/2021/NĐ-CP sửa đổi Nghị định 99/2013/NĐ-CP',
+    type: 'Nghị định',
+    number: '126/2021/NĐ-CP',
+    year: '2021',
+    desc: 'Sửa đổi, bổ sung một số điều của Nghị định 99/2013, điều chỉnh mức phạt tiền và bổ sung hành vi vi phạm mới trong bối cảnh thương mại điện tử phát triển.',
+    agency: 'Chính phủ',
+    status: 'active',
+    pdfFile: '/van-ban/126_2021_ND-CP.pdf',
+    articles: [
+      { title: 'Điều 1. Sửa đổi mức phạt', content: 'Tăng mức phạt tiền tối đa lên phù hợp với giá trị hàng hóa vi phạm hiện nay. Bổ sung hành vi vi phạm SHTT qua thương mại điện tử.' },
+      { title: 'Biện pháp bổ sung', content: 'Bổ sung biện pháp tịch thu phương tiện, đình chỉ kinh doanh áp dụng với đơn vị tái phạm nhiều lần.' },
+    ],
+    expertSummary: 'Đọc NĐ 126/2021 cùng NĐ 99/2013 và NĐ 46/2024. Văn bản hợp nhất 01/VBHN-BKHCN là tài liệu tra cứu nhanh nhất khi cần xác định mức phạt áp dụng.'
+  },
+  {
+    id: '11',
+    title: 'Nghị định 46/2024/NĐ-CP sửa đổi Nghị định 99/2013/NĐ-CP',
+    type: 'Nghị định',
+    number: '46/2024/NĐ-CP',
+    year: '2024',
+    desc: 'Sửa đổi, bổ sung mới nhất đối với Nghị định 99/2013 về xử phạt VPHC lĩnh vực SHCN — cập nhật mức phạt và bổ sung các hành vi vi phạm trong bối cảnh hiện nay.',
+    agency: 'Chính phủ',
+    status: 'active',
+    pdfFile: '/van-ban/46_2024_ND-CP.pdf',
+    articles: [
+      { title: 'Điều 1. Sửa đổi bổ sung mới nhất 2024', content: 'Cập nhật mức phạt tối đa và bổ sung các hành vi vi phạm mới, đặc biệt liên quan đến hàng nhái nhãn hiệu nổi tiếng và hàng giả xuất xứ.' },
+    ],
+    expertSummary: 'NĐ 46/2024 là bản sửa đổi mới nhất (tính đến 2024). Khi xử phạt vi phạm, áp dụng NĐ 46/2024 cùng với văn bản hợp nhất 01/VBHN-BKHCN để có mức phạt chính xác nhất.'
+  },
+  {
+    id: '12',
+    title: 'Văn bản hợp nhất 01/VBHN-BKHCN — Nghị định xử phạt VPHC lĩnh vực SHCN',
+    type: 'Nghị định',
+    number: '01/VBHN-BKHCN',
+    year: '2024',
+    desc: 'Văn bản hợp nhất toàn bộ NĐ 99/2013, NĐ 126/2021 và NĐ 46/2024 — tài liệu tra cứu nhanh nhất và đầy đủ nhất để xác định mức xử phạt hiện hành.',
+    agency: 'Bộ KH&CN',
+    status: 'active',
+    pdfFile: '/van-ban/01_VBHN-BKHCN.pdf',
+    articles: [
+      { title: 'Toàn bộ khung xử phạt hợp nhất', content: 'Tích hợp tất cả sửa đổi từ NĐ 99/2013, NĐ 126/2021, NĐ 46/2024 thành một văn bản thống nhất, dễ tra cứu.' },
+      { title: 'Mức phạt cập nhật đầy đủ', content: 'Bảng mức phạt đầy đủ theo từng hành vi vi phạm, thẩm quyền xử phạt của từng cấp hải quan và biện pháp bổ sung.' },
+    ],
+    expertSummary: 'Đây là tài liệu tra cứu ƯU TIÊN khi xác định mức xử phạt. Thay vì đọc 3 nghị định riêng lẻ, cán bộ hải quan nên dùng văn bản hợp nhất này để có thông tin đầy đủ và chính xác nhất.'
+  },
+
+  // ── VĂN BẢN CHỈ ĐẠO CỤC HẢI QUAN ───────────────────────────────
+  {
+    id: '13',
+    title: 'Kế hoạch kiểm soát chống buôn lậu hàng giả, SHTT năm 2026',
+    type: 'Văn bản chỉ đạo',
+    number: 'KH-CHQ/2026',
+    year: '2026',
+    desc: 'Kế hoạch tổng thể của Cục Hải quan về kiểm soát chống buôn lậu hàng giả và vi phạm SHTT năm 2026 — định hướng hoạt động và phân công nhiệm vụ cho toàn ngành.',
+    agency: 'Cục Hải quan',
+    status: 'active',
+    pdfFile: '/van-ban/KH_KSCBL_SHTT_2026.pdf',
+    articles: [
+      { title: 'Mục tiêu năm 2026', content: 'Tăng cường phát hiện, xử lý hàng giả, hàng vi phạm SHTT tại các cửa khẩu trọng điểm. Phối hợp với các lực lượng thực thi pháp luật trong và ngoài nước.' },
+      { title: 'Phân công nhiệm vụ', content: 'Giao chỉ tiêu cụ thể cho từng Chi cục Hải quan; tăng cường tập huấn nghiệp vụ nhận biết hàng giả, hàng vi phạm SHTT.' },
+    ],
+    expertSummary: 'Kế hoạch năm 2026 xác định các mặt hàng trọng điểm cần giám sát đặc biệt (thuốc lá, hàng hiệu, thiết bị điện tử). Cán bộ cần nắm rõ chỉ tiêu và lĩnh vực ưu tiên của đơn vị mình.'
+  },
+  {
+    id: '14',
+    title: 'Chỉ thị 02/CT-TTg ngày 30/01/2026 về tăng cường thực thi quyền SHTT',
+    type: 'Văn bản chỉ đạo',
+    number: '02/CT-TTg',
+    year: '2026',
+    desc: 'Chỉ thị của Thủ tướng Chính phủ về tăng cường thực thi quyền SHTT, chống hàng giả, hàng nhái — văn bản chỉ đạo cấp cao nhất định hướng toàn ngành.',
+    agency: 'Thủ tướng Chính phủ',
+    status: 'active',
+    pdfFile: '/van-ban/02_CT-TTg_2026.pdf',
+    articles: [
+      { title: 'Chỉ đạo toàn diện về thực thi SHTT', content: 'Yêu cầu các bộ, ngành, địa phương tăng cường phối hợp liên ngành trong kiểm soát, xử lý hàng hóa vi phạm SHTT, đặc biệt tại các cửa khẩu và thị trường nội địa.' },
+      { title: 'Nhiệm vụ cho Cục Hải quan', content: 'Tăng cường kiểm tra, giám sát hàng hóa XNK có dấu hiệu vi phạm SHTT; hoàn thiện cơ chế tiếp nhận đơn yêu cầu bảo hộ từ doanh nghiệp.' },
+    ],
+    expertSummary: 'Chỉ thị 02/CT-TTg 2026 là mệnh lệnh hành chính cấp cao nhất về thực thi SHTT. Mọi hoạt động kiểm soát SHTT tại biên giới đều cần bám sát định hướng của văn bản này.'
+  },
+  {
+    id: '15',
+    title: 'Chỉ thị 7988/CT-TCHQ ngày 25/12/2019 — Chống gian lận xuất xứ, nhãn hiệu hàng hóa',
+    type: 'Văn bản chỉ đạo',
+    number: '7988/CT-TCHQ',
+    year: '2019',
+    desc: 'Chỉ thị của Tổng Cục Hải quan về tăng cường các giải pháp đồng bộ chống gian lận, giả mạo xuất xứ và ghi nhãn hàng hóa không đúng quy định tại cửa khẩu.',
+    agency: 'Cục Hải quan',
+    status: 'active',
+    pdfFile: '/van-ban/7988_CT-TCHQ_2019.pdf',
+    articles: [
+      { title: 'Giải pháp chống gian lận xuất xứ', content: 'Tăng cường kiểm tra C/O, xác minh xuất xứ thực tế của hàng hóa nhập khẩu; phát hiện và xử lý hàng hóa giả mạo xuất xứ Việt Nam.' },
+      { title: 'Quy trình ghi nhãn hàng hóa', content: 'Yêu cầu kiểm tra chặt chẽ nhãn hàng hóa nhập khẩu: ngôn ngữ, nội dung bắt buộc và thông tin nhà sản xuất theo Nghị định 43/2017/NĐ-CP.' },
+    ],
+    expertSummary: 'Chỉ thị 7988 đặt nền móng cho quy trình kiểm tra xuất xứ và nhãn hàng hóa hiện nay. Dù ban hành năm 2019, nội dung vẫn còn nguyên giá trị pháp lý và nghiệp vụ.'
+  },
+  {
+    id: '16',
+    title: 'Công văn CHQ.15405 ngày 18/07/2025 — Hướng dẫn kiểm soát SHTT',
+    type: 'Văn bản chỉ đạo',
+    number: 'CHQ.15405',
+    year: '2025',
+    desc: 'Công văn của Cục Hải quan hướng dẫn chi tiết nghiệp vụ kiểm soát quyền sở hữu trí tuệ tại các chi cục hải quan cửa khẩu.',
+    agency: 'Cục Hải quan',
+    status: 'active',
+    pdfFile: '/van-ban/CHQ_15405_2025.pdf',
+    articles: [
+      { title: 'Hướng dẫn nghiệp vụ kiểm soát SHTT', content: 'Cập nhật quy trình tiếp nhận đơn yêu cầu bảo hộ, xác minh nhãn hiệu, phối hợp với chủ thể quyền trong quá trình xử lý vụ việc.' },
+    ],
+    expertSummary: 'Văn bản hướng dẫn nghiệp vụ trực tiếp năm 2025 — cán bộ kiểm soát SHTT tại các chi cục nên đọc và lưu để tham chiếu khi phát sinh vụ việc cụ thể.'
+  },
+  {
+    id: '17',
+    title: 'Văn bản QUB26.07 — Triển khai Chỉ thị 02/CT-TTg tăng cường thực thi quyền SHTT',
+    type: 'Văn bản chỉ đạo',
+    number: 'QUB26.07',
+    year: '2026',
+    desc: 'Văn bản triển khai Chỉ thị 02/CT-TTg tại cấp Cục Hải quan, phân công nhiệm vụ cụ thể cho các đơn vị trong toàn ngành về tăng cường thực thi quyền SHTT.',
+    agency: 'Cục Hải quan',
+    status: 'active',
+    pdfFile: '/van-ban/QUB26_CT02_SHTT.pdf',
+    articles: [
+      { title: 'Triển khai Chỉ thị 02/CT-TTg', content: 'Phân giao nhiệm vụ cụ thể đến từng Chi cục Hải quan; xác định lộ trình thực hiện và các chỉ số đánh giá hiệu quả.' },
+      { title: 'Phối hợp liên ngành', content: 'Quy trình phối hợp với Cục SHTT, lực lượng Quản lý thị trường, Công an kinh tế trong xử lý hàng hóa vi phạm SHTT quy mô lớn.' },
+    ],
+    expertSummary: 'Văn bản cụ thể hóa Chỉ thị 02 thành nhiệm vụ hành động tại cấp Cục. Cán bộ cần theo dõi tiến độ và báo cáo kết quả thực hiện theo đúng lịch được giao.'
+  },
 ];
 
 const STATS = [
   { label: 'Tổng văn bản rà soát', value: String(DOCUMENTS.length), icon: Database, color: 'text-blue-600', bg: 'bg-blue-100' },
   { label: 'Bộ luật hiện hành', value: String(DOCUMENTS.filter(d => d.type === 'Luật').length), icon: Scale, color: 'text-orange-600', bg: 'bg-orange-100' },
   { label: 'Nghị định liên quan', value: String(DOCUMENTS.filter(d => d.type === 'Nghị định').length), icon: ShieldCheck, color: 'text-emerald-600', bg: 'bg-emerald-100' },
-  { label: 'Thông tư thi hành', value: String(DOCUMENTS.filter(d => d.type === 'Thông tư').length), icon: BookOpen, color: 'text-purple-600', bg: 'bg-purple-100' },
+  { label: 'Văn bản chỉ đạo', value: String(DOCUMENTS.filter(d => d.type === 'Văn bản chỉ đạo').length), icon: BookOpen, color: 'text-purple-600', bg: 'bg-purple-100' },
 ];
 
-const FILTER_TYPES = ['Tất cả', 'Luật', 'Nghị định', 'Thông tư'];
+const FILTER_TYPES = ['Tất cả', 'Luật', 'Nghị định', 'Văn bản chỉ đạo'];
 
 function getStatusProps(status: 'active' | 'partial' | 'expired') {
    switch (status) {
@@ -340,9 +514,15 @@ export default function VanBanPhapLuat() {
                                 </div>
 
                                 <div className="flex items-center gap-2">
-                                   <button className="w-8 h-8 rounded-full bg-slate-50 hover:bg-slate-200 text-slate-500 hover:text-[#0a192f] flex items-center justify-center transition-colors">
-                                      <Download className="w-4 h-4" />
-                                   </button>
+                                   {doc.pdfFile ? (
+                                      <a href={doc.pdfFile} download target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-slate-50 hover:bg-slate-200 text-slate-500 hover:text-[#0a192f] flex items-center justify-center transition-colors">
+                                         <Download className="w-4 h-4" />
+                                      </a>
+                                   ) : (
+                                      <span className="w-8 h-8 rounded-full bg-slate-50 text-slate-300 flex items-center justify-center cursor-not-allowed">
+                                         <Download className="w-4 h-4" />
+                                      </span>
+                                   )}
                                    <button 
                                       onClick={() => setSelectedDoc(doc)}
                                       className="px-4 py-1.5 bg-[#0a192f] hover:bg-orange-600 text-white text-xs font-bold rounded-full transition-colors flex items-center gap-1"
