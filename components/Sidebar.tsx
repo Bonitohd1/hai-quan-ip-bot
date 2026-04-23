@@ -12,7 +12,6 @@ import {
 const NAV_ITEMS = [
   { label: 'Tổng quan', icon: Home, href: '/' },
   { label: 'Tra cứu hồ sơ', icon: Search, href: '/tra-cuu' },
-  { label: 'Hồ sơ bảo hộ', icon: ShieldCheck, href: '/ho-so-bao-ho' },
   { label: 'Văn bản pháp luật', icon: FileText, href: '/van-ban-phap-luat' },
   { label: 'Lịch sử SHTT', icon: History, href: '/lich-su-shtt' },
   { label: 'Báo cáo thống kê', icon: BarChart3, href: '/thong-ke-shtt' },

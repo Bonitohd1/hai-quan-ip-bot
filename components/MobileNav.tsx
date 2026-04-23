@@ -2,13 +2,13 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Search, FileText, BarChart3, ShieldCheck } from 'lucide-react';
+import { Home, Search, FileText, BarChart3, History } from 'lucide-react';
 
 const TABS = [
   { label: 'Tổng quan', icon: Home, href: '/' },
   { label: 'Tra cứu', icon: Search, href: '/tra-cuu' },
-  { label: 'Bảo hộ', icon: ShieldCheck, href: '/ho-so-bao-ho' },
   { label: 'Văn bản', icon: FileText, href: '/van-ban-phap-luat' },
+  { label: 'Lịch sử', icon: History, href: '/lich-su-shtt' },
   { label: 'Thống kê', icon: BarChart3, href: '/thong-ke-shtt' },
 ];
 

@@ -164,7 +164,31 @@ export default function ThongKeSHTT() {
   const handleExport = () => {
     if (exporting) return;
     setExporting(true);
-    setTimeout(() => { setExporting(false); setExportDone(true); setTimeout(()=>setExportDone(false),3000); }, 1500);
+
+    // Generate real CSV with BOM for Excel UTF-8
+    const headers = ['Ngày hiệu lực', 'Nhãn hiệu', 'Loại hồ sơ', 'Mã số', 'Ngành hàng'];
+    const sortedDocs = [...d.docs].sort((a, b) => {
+      const { y: ay, m: am, d: ad } = parseDMY(a.date);
+      const { y: by, m: bm, d: bd } = parseDMY(b.date);
+      return new Date(by, bm-1, bd).getTime() - new Date(ay, am-1, ad).getTime();
+    });
+    const rows = sortedDocs.map(doc => [
+      fmtDate(doc.date), doc.name, doc.type, doc.code, classify(doc),
+    ]);
+    const csv = [headers, ...rows]
+      .map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(','))
+      .join('\n');
+    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `bao-cao-shtt-${yearKey === 'all' ? 'tat-ca' : yearKey}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    setTimeout(() => { setExporting(false); setExportDone(true); setTimeout(() => setExportDone(false), 3000); }, 400);
   };
 
   const yearLabel = yearKey === 'all' ? 'Tất cả' : `Năm ${yearKey}`;
@@ -241,56 +265,102 @@ export default function ThongKeSHTT() {
           <div className="px-6 py-5 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
             <div>
               <h2 className="text-base font-bold text-slate-900">Biến động hồ sơ theo tháng</h2>
-              <p className="text-[12px] text-slate-400 font-medium mt-0.5">Số hồ sơ được xử lý / cấp phép · {yearLabel}</p>
+              <p className="text-[12px] text-slate-400 font-medium mt-0.5">Số hồ sơ cấp phép & gia hạn · {yearLabel}</p>
             </div>
-            <div className="flex items-center gap-4 text-[12px]">
-              <span className="flex items-center gap-1.5 font-bold text-slate-600">
-                <span className="w-3 h-3 rounded bg-blue-500 inline-block"/> Cấp mới
+            <div className="flex items-center gap-5 text-[12px]">
+              <span className="flex items-center gap-1.5 font-bold text-slate-700">
+                <span className="w-3 h-3 rounded bg-blue-500 inline-block shadow-sm shadow-blue-300"/> Cấp mới
+                <span className="ml-1 font-black text-blue-600">{d.capMoi.length}</span>
               </span>
-              <span className="flex items-center gap-1.5 font-bold text-slate-600">
-                <span className="w-3 h-3 rounded bg-emerald-400 inline-block"/> Gia hạn
+              <span className="flex items-center gap-1.5 font-bold text-slate-700">
+                <span className="w-3 h-3 rounded bg-emerald-500 inline-block shadow-sm shadow-emerald-300"/> Gia hạn
+                <span className="ml-1 font-black text-emerald-600">{d.giaHan.length}</span>
               </span>
             </div>
           </div>
-          <div className="p-6 flex-1 relative" style={{ minHeight: 280 }}>
-            {/* Axis labels left */}
-            <div className="absolute left-2 inset-y-6 flex flex-col justify-between pointer-events-none pb-8">
-              {[maxMonthly, Math.round(maxMonthly*0.75), Math.round(maxMonthly*0.5), Math.round(maxMonthly*0.25), 0].map(v=>(
+          <div className="px-6 pt-4 pb-2 flex gap-4 flex-wrap">
+            <div className="flex items-center gap-2 px-3 py-1.5 bg-blue-50 rounded-lg border border-blue-100">
+              <div className="w-2 h-2 rounded-full bg-blue-500"/>
+              <span className="text-[11px] font-bold text-blue-700">Cấp mới: {d.capMoi.length} hồ sơ ({Math.round((d.capMoi.length/(d.docs.length||1))*100)}%)</span>
+            </div>
+            <div className="flex items-center gap-2 px-3 py-1.5 bg-emerald-50 rounded-lg border border-emerald-100">
+              <div className="w-2 h-2 rounded-full bg-emerald-500"/>
+              <span className="text-[11px] font-bold text-emerald-700">Gia hạn: {d.giaHan.length} hồ sơ ({Math.round((d.giaHan.length/(d.docs.length||1))*100)}%)</span>
+            </div>
+          </div>
+          <div className="p-6 flex-1 relative" style={{ minHeight: 260 }}>
+            {/* Y-axis labels */}
+            <div className="absolute left-2 inset-y-4 flex flex-col justify-between pointer-events-none pb-8">
+              {[maxMonthly, Math.ceil(maxMonthly*0.5), 0].map(v=>(
                 <span key={v} className="text-[10px] text-slate-300 font-bold leading-none">{v}</span>
               ))}
             </div>
-            {/* Grid */}
-            <div className="absolute inset-x-8 inset-y-6 flex flex-col justify-between pb-8 pointer-events-none">
-              {[0,1,2,3,4].map(i=>(
+            {/* Grid lines */}
+            <div className="absolute inset-x-8 inset-y-4 flex flex-col justify-between pb-8 pointer-events-none">
+              {[0,1,2].map(i=>(
                 <div key={i} className="w-full border-t border-dashed border-slate-100"/>
               ))}
             </div>
-            {/* Bars */}
-            <div className="relative flex items-end justify-between h-full pb-8 pl-8 gap-1">
-              {d.monthly.map((val,i) => {
-                const month = i+1;
-                const cmCount = d.capMoi.filter(doc=>parseDMY(doc.date).m===month).length;
-                const ghCount = d.giaHan.filter(doc=>parseDMY(doc.date).m===month).length;
-                const pct = (val/maxMonthly)*100;
+            {/* Grouped bars — blue (cap moi) LEFT, green (gia han) RIGHT per month */}
+            <div className="relative flex items-end justify-between h-full pb-8 pl-8 gap-0.5">
+              {d.monthly.map((val, i) => {
+                const month = i + 1;
+                const cmCount = d.capMoi.filter(doc => parseDMY(doc.date).m === month).length;
+                const ghCount = d.giaHan.filter(doc => parseDMY(doc.date).m === month).length;
+                const cmPct = (cmCount / maxMonthly) * 100;
+                const ghPct = (ghCount / maxMonthly) * 100;
+                const hasData = val > 0;
                 return (
-                  <div key={i} className="flex-1 flex flex-col items-center justify-end group h-full relative">
-                    {val>0 && (
-                      <span className="absolute -top-5 text-[10px] font-black text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">{val} hồ sơ</span>
+                  <div key={i} className="flex-1 flex flex-col items-center justify-end h-full group relative">
+                    {/* Tooltip on hover */}
+                    {hasData && (
+                      <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-[10px] font-bold px-2.5 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap z-20 shadow-xl">
+                        <div className="flex gap-3">
+                          {cmCount > 0 && <span className="text-blue-300">↑ Cấp mới: {cmCount}</span>}
+                          {ghCount > 0 && <span className="text-emerald-300">✓ Gia hạn: {ghCount}</span>}
+                        </div>
+                        <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-slate-900"/>
+                      </div>
                     )}
-                    <div className="w-full relative flex flex-col justify-end" style={{ height: '100%' }}>
-                      <motion.div
-                        initial={{ height:0 }} animate={{ height:`${pct}%` }}
-                        transition={{ duration:0.7, delay:0.1+i*0.04, type:'spring', bounce:0.25 }}
-                        className="w-full rounded-t-lg overflow-hidden flex flex-col"
-                        style={{ minHeight: val>0?4:0 }}
-                      >
-                        {/* stack: green bottom (gia han), blue top (cap moi) */}
-                        {ghCount>0 && <div className="flex-1 bg-emerald-400 group-hover:bg-emerald-500 transition-colors"/>}
-                        {cmCount>0 && <div style={{ flex: cmCount/(val||1) }} className="bg-blue-500 group-hover:bg-blue-600 transition-colors"/>}
-                        {val===0 && <div className="h-1 bg-slate-100 rounded"/>}
-                      </motion.div>
+                    {/* Two bars side by side */}
+                    <div className="w-full flex items-end justify-center gap-[2px] h-full">
+                      {/* Blue — Cấp mới */}
+                      <div className="flex-1 flex flex-col justify-end h-full">
+                        {cmCount > 0 ? (
+                          <motion.div
+                            initial={{ height: 0 }} animate={{ height: `${cmPct}%` }}
+                            transition={{ duration: 0.7, delay: 0.1 + i * 0.04, type: 'spring', bounce: 0.2 }}
+                            className="w-full min-h-[4px] rounded-t-md bg-blue-500 group-hover:bg-blue-600 transition-colors flex items-start justify-center pt-0.5"
+                          >
+                            {cmCount >= 2 && (
+                              <span className="text-[9px] font-black text-white leading-none">{cmCount}</span>
+                            )}
+                          </motion.div>
+                        ) : (
+                          <div className="w-full h-[2px] rounded-t bg-slate-100"/>
+                        )}
+                      </div>
+                      {/* Green — Gia hạn */}
+                      <div className="flex-1 flex flex-col justify-end h-full">
+                        {ghCount > 0 ? (
+                          <motion.div
+                            initial={{ height: 0 }} animate={{ height: `${ghPct}%` }}
+                            transition={{ duration: 0.7, delay: 0.12 + i * 0.04, type: 'spring', bounce: 0.2 }}
+                            className="w-full min-h-[4px] rounded-t-md bg-emerald-500 group-hover:bg-emerald-600 transition-colors flex items-start justify-center pt-0.5"
+                          >
+                            {ghCount >= 2 && (
+                              <span className="text-[9px] font-black text-white leading-none">{ghCount}</span>
+                            )}
+                          </motion.div>
+                        ) : (
+                          <div className="w-full h-[2px] rounded-t bg-slate-100"/>
+                        )}
+                      </div>
                     </div>
-                    <span className="absolute -bottom-6 text-[10px] font-bold text-slate-400 group-hover:text-blue-600 transition-colors">{MONTHS[i]}</span>
+                    {/* Month label */}
+                    <span className={`absolute -bottom-6 text-[10px] font-bold transition-colors ${hasData ? 'text-slate-600 group-hover:text-blue-600' : 'text-slate-300'}`}>
+                      {MONTHS[i]}
+                    </span>
                   </div>
                 );
               })}
