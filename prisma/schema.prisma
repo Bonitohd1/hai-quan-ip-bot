@@ -1,14 +1,14 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// Prisma schema - v5 compatible (SQLite for local/Vercel ephemeral)
+// Production falls back to lib/documents.json when DB is empty
 
 generator client {
-  provider = "prisma-client-js"
-  binaryTargets = ["native", "rhel-debian-pg-3.0.x"]
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-1.0.x", "rhel-openssl-3.0.x"]
 }
 
 datasource db {
   provider = "sqlite"
-  url      = "file:../dev.db"
+  url      = env("DATABASE_URL")
 }
 
 // Document model for storing uploaded PDFs
@@ -18,12 +18,12 @@ model Document {
   date        String   // Format: DDMMYYYY (e.g., 16092025)
   name        String
   filename    String   @unique
-  type        String   // e.g., "Gia hạn", "Cấp mới"
+  type        String   // e.g., "Gia han", "Cap moi"
   description String
-  
+
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  
+
   @@index([code])
   @@index([name])
   @@index([type])
@@ -33,27 +33,10 @@ model Document {
 model AdminUser {
   id        String   @id @default(cuid())
   username  String   @unique
-  password  String   // Should be hashed in production
+  password  String
   email     String?  @unique
   isActive  Boolean  @default(true)
-  
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-}
-
-// Activity log for tracking document uploads and operations
-model ActivityLog {
-  id        String   @id @default(cuid())
-  action    String   // e.g., "UPLOAD", "DELETE", "VIEW", "DOWNLOAD"
-  resource  String   // e.g., "document", "user"
-  resourceId String
-  details   String?  // JSON stringified details
-  ipAddress String?
-  userAgent String?
-  
-  createdAt DateTime @default(now())
-  
-  @@index([action])
-  @@index([resourceId])
-  @@index([createdAt])
 }
